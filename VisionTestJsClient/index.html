@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+	<script>
+		//@ChenShao     获得地址栏参数
+		function GetQueryString(name){
+			 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			 var r = window.location.search.substr(1).match(reg);
+			 if(r!=null)return  unescape(r[2]); return null;
+		}
+		
+		if(!GetQueryString("WXopenid")){
+			location.href = "http://lingmaojia.cn/h5/weixin/wxopen?jump="+location.href ;
+		}
+		
+	</script>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+		<title>标准对数视力表 【GB11533-2011】 测试</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<img  src="分享后的小图标的地址" style ="display: none;">
+		
+		<div class="waper">
+			<!--第三页 结果-->
+			<div class="page-3 hide">
+				<p class="fenxiang">
+					<img src="img/fenxiang.png">
+				</p>
+				<p class="result-num">1.2</p>
+				<p  class="result-txt">深度老花</p>
+				<p  class="result-hint">少玩手机，下个月再试试看</p>
+				<div class="age-test">
+					<p class="seach">
+						<span><input type="number" value="" placeholder="21"></span>
+					</p>
+					<p class="hint">输入你的年龄,和同龄人比比</p>
+				</div>
+				<p><span class="start" >重新测试</span></p>
+			</div>
+			<!--第二页 测试中-->
+			<div class="page-2  hide">
+				<div class="screen-box">
+					<div class="box R0 hidebg">
+						<p class="Countdown">
+							<span>3</span>
+						</p>
+						
+						<div class="overbox">
+							<p class="over-txt">时间到</p>
+							<p class="over-match">正在为您计算结果</p>
+						</div>
+					</div>
+					<p class="time">倒计时</p>
+				</div>
+				<div class="touch-control">
+					<div class="btn-group ready">
+						<ul>
+							<li class="R0" data ="0"></li>
+							<li class="R45" data ="45"></li>
+							<li class="R90" data ="90"></li>
+							<li class="R135" data ="135"></li>
+						</ul>
+						<ul>
+							<li class="R180" data ="180"></li>
+							<li class="R225" data ="225"></li>
+							<li class="R270" data ="270"></li>
+							<li class="R315" data ="315"></li>
+						</ul>
+					</div>
+					
+					<p class ="control-hint" > 快速选择你看到的图形 </p>
+				</div>
+			</div>
+			
+			
+			<!--第1页-->
+			<div class="page-1 ">
+				<p class="title">测测你的视力</p>
+				<!-- <p class="title2">标准对数视力表 GB 11533-2011 标准</p>-->
+				<p><img class="GBE" src="img/GBE.png" > </p>
+				<div class="btn-group ready">
+					<ul>
+						<li class="R0" data ="0"></li>
+						<li class="R45" data ="45"></li>
+						<li class="R90" data ="90"></li>
+						<li class="R135" data ="135"></li>
+					</ul>
+					<ul>
+						<li class="R180" data ="180"></li>
+						<li class="R225" data ="225"></li>
+						<li class="R270" data ="270"></li>
+						<li class="R315" data ="315"></li>
+					</ul>
+				</div>
+				<p class="rule" >将手机放在眼前约25cm处(大概是手机高度的2倍)<br>点击开始，在绿色选项中找到灰圆内闪过的“E”。<br>友情提示： 一闪即逝，要集中精力！</p>
+				<p><span class="start" >开始</span></p>
+			</div>
+			
+			
+		</div>
+		
+		
+	</body>
+	<script src="js/jquery-1.8.3.min.js"></script>
+	<script>
+
+	function requestAjax(url,param,callback,errorFun){
+		var host = "http://121.40.190.205:6090" ;
+			$.ajax({
+			//url :host + "/visiontest/basic/testrun?apiKey=aimu2016",
+			url :host + url,
+			type : "POST",
+			dataType : "json",
+			data : param ,
+			contentType: 'application/json;charset=UTF-8',
+			beforeSend: function(){
+			}, //加载执行方法
+			success : function(msg) {
+				console.log(msg)
+				callback(msg);
+			},
+			error : function(msg) {
+				errorFun(msg)
+			}
+		});
+	}
+	var browser={
+	    versions:function(){
+	           var u = navigator.userAgent, app = navigator.appVersion;
+	           return {//移动终端浏览器版本信息
+	                trident: u.indexOf('Trident') > -1, //IE内核
+	                presto: u.indexOf('Presto') > -1, //opera内核
+	                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+	                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+	                mobile: !!u.match(/AppleWebKit.*Mobile.*/)||!!u.match(/AppleWebKit/), //是否为移动终端
+	                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+	                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+	                iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+	                iPad: u.indexOf('iPad') > -1, //是否iPad
+	                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+	            };
+	         }(),
+	         language:(navigator.browserLanguage || navigator.language).toLowerCase()
+	}
+		
+	
+	</script>
+	<script>
+	var result ={};
+		random = [0,45,90,135,180,225,270,315] ;
+		var testRunId = 3 , deviceId = "none" ; 
+			if(browser.versions.android){
+				deviceId = "android" ;
+			}else if(browser.versions.iPhone){
+				deviceId = "iPhone" ;
+			}else if(browser.versions.iPad){
+				deviceId = "iPad" ;
+			}
+		if(GetQueryString("WXopenid")){
+			requestAjax("/visiontest/basic/testrun?apiKey=aimu2016",JSON.stringify({wechatSubjectId:GetQueryString("WXopenid"), deviceId:deviceId}),function(msg){
+				testRunId = msg.testRunId ;
+			})
+		}
+		$(function(){
+			$(".start").on("touchend",function(e){
+				/*初始化*/
+				result ={
+					settime:"",
+					setcurtime:"",
+					next :1,
+					nextvlaue:0,
+					times:{} ,
+					value:{} ,
+					test:{init:7.26,power:1.258925,alltime:10000,time:1000,currenttime:0,level:10}
+				} 
+				$(".page-2").removeClass("over");
+				$(".page-2 .touch-control").show();
+				$(".page-2 .overbox").hide();
+				$(".page-2 .box").css({
+					"width":"35%",
+					"padding-bottom":"35%",
+					"margin-top":"0"
+				},700);
+				$(".page-1").hide();
+				$(".page-3").hide();
+				$(".page-2").show();
+				$(".page-2 .btn-group ").addClass("ready");
+				$(".Countdown").show();
+				$(".page-2 .box").addClass("hidebg");
+				$(".page-2 .screen-box .time").text("倒计时")
+				var Countdown = 3 , CountdownInterval ;
+				CountdownInterval = setInterval(function(){
+					Countdown--;
+					$(".page-2 .box .Countdown span").text(Countdown);
+					if(Countdown<1){
+						$(".page-2 .btn-group ").removeClass("ready");
+						clearInterval(CountdownInterval);
+						$(".Countdown").fadeOut(500,function(){
+							init();
+						});
+					}
+				},500)
+				
+				
+				if(e.target!=e.currentTarget) return;
+			})
+			$("body").bind("touchmove",function(){
+				return false;
+			})
+			$("page-2").bind("touchend",function(){
+				return false ;
+			})
+			$(".page-2 .btn-group ").on("touchstart","li",function(e){
+				if($(this).closest(".btn-group").hasClass("ready")){
+					return ;
+				}
+				$(this).removeClass("on");
+				var _value = parseInt( $(this).attr("data") ) ;
+ 				if(result.nextvlaue ==_value){
+					/*回答正确*/
+					result.value[result.next] = result.next+","+result.test.currenttime+","+"1" ;
+					$(this).css({"background-color":"#19a34d"});
+					result.next++;
+				}else if(result.nextvlaue!==_value){
+					/*回答错误*/
+					result.value[result.next] = result.next+","+result.test.currenttime +","+"0" ;
+ 					$(this).css({"background-color":"#e82533"});
+ 					if(result.times[result.next]){
+ 						result.times[result.next] ++ ;
+ 						if(result.times[result.next]>2){
+ 							//回答超过三次错误
+ 							$(".overbox .over-txt").text("连续错误");
+ 							return over();
+ 						}
+ 					}else{
+ 						result.times[result.next] = 1 ;
+ 					}
+					if(result.next>1){
+						result.next--;
+					}
+				}
+				/*进入下一关*/
+				result.test.currenttime = 0 ;
+				clearTimeout(result.settime);
+				nextlevel();
+				
+				if(e.target!=e.currentTarget) return;
+				return false ;
+			})
+			
+			/*选择后*/
+			$(".page-2 .btn-group").on("touchend","li",function(e){
+				$(this).addClass("on");
+				$(this).css({"background-color":"#e3e3e3"});
+				if(e.target!=e.currentTarget) return;
+				return false ;
+			})
+			$(".page-3 .seach input").on("blur",function(){
+				var age = parseInt($(this).val());					
+				if(age){
+					$(".age-test .seach").hide();
+					
+					$(".age-test .hint").text("正在匹配结果···");
+					requestAjax("/visiontest/basic/testrun/"+testRunId+"/age?apiKey=aimu2016",""+age,function(msg){
+						$(".age-test .hint").addClass("on");
+						$(".age-test .hint").text(msg.message);
+						
+					},function(msg){
+						$(".age-test .hint").addClass("on");
+						$(".age-test .hint").text("你比同辈中"+parseInt( Math.random()*100 )+"%强" );
+					})
+				}else{
+					$(this).val("");
+				}
+				
+			})
+			/*开始*/
+			function init(){
+				result.test.currenttime = 0 ;
+				clearTimeout(result.settime);
+				nextlevel();
+				currentTime();
+				$(".age-test .seach").show();
+				$(".age-test .seach input").val("");
+				$(".age-test .hint").text("输入你的年龄,和同龄人比比");
+				$(".age-test .hint").removeClass("on");
+			}
+			/*结束**/
+			function over(){
+					clearTimeout(result.settime);
+					clearTimeout(result.setcurtime);
+					result.value[result.next] = result.next+","+(result.test.time-result.test.currenttime) +","+"0" ;
+ 					$(".page-2 .screen-box .box").attr("class","box R0")
+					$(".page-2 .touch-control").hide();
+					$(".page-2 .overbox").fadeIn();
+					$(".page-2 .box").animate({
+						"width":"45%",
+						"padding-bottom":"45%",
+						"margin-top":"26%"
+					},700);
+					$(".page-2").addClass("over");
+				
+					var reqValue =result.test.init+"mm"
+					for(var i in result.value){
+						reqValue+=";"+result.value[i]
+					}
+					requestAjax("/visiontest/basic/testrun/"+testRunId+"/data?apiKey=aimu2016",reqValue,function(msg){
+				
+						$(".page-3 .result-num").text(msg.score);
+						$(".page-3 .result-txt").text(msg.outcome);
+						$(".page-3 .result-hint").text(msg.message);
+						$(".page-1").hide();
+						$(".page-2").fadeOut(500);
+						$(".page-3").fadeIn(1000);
+				
+					},function(msg){
+						$(".page-1").hide();
+						$(".page-2").fadeOut(500);
+						$(".page-3").fadeIn(1000);
+					})	
+			}
+			/*时间*/
+			function currentTime(){
+				result.test.currenttime += 10 ;
+				result.test.alltime -= 10 ;
+				$(".page-2 .time").text(parseInt(result.test.alltime/1000) );
+				if(result.test.alltime <0){
+					$(".overbox .over-txt").text("时间到");
+					over();
+					clearTimeout(result.setcurtime);
+				}else{
+					result.setcurtime = setTimeout(function(){
+	 					currentTime()
+					},10)
+				}
+			}
+			/*下一关*/
+			function nextlevel(){
+				$(".page-2 .screen-box .box").removeClass("hidebg");
+				result.test.currenttime = 0 ;
+				result.nextvlaue = random[parseInt( Math.random()*8 ) ];
+				bs= result.test.init/(Math.pow(result.test.power,result.next-1))
+				$(".page-2 .screen-box .box").css("background-size",bs+"mm");
+				$(".page-2 .screen-box .box").attr("class","box R"+result.nextvlaue)
+				/*倒计时*/
+				result.settime = setTimeout (function(){
+					
+					$(".page-2 .screen-box .box").addClass("hidebg");
+					/*result.value[result.next] = result.next+","+(result.test.time-result.test.currenttime) +","+"0" ;
+ 					if(result.times[result.next]){
+ 						result.times[result.next] ++ ;
+ 						if(result.times[result.next]>2){
+ 							//回答超过三次错误
+ 							return over(),console.log(result.times);
+ 						}
+ 					}else{
+ 						result.times[result.next] = 1 ;
+ 					}
+					if(result.next>1){
+						result.next--;
+					}
+					nextlevel();*/
+				},result.test.time/2)
+			}
+			
+		})
+	</script>
+	
+</html>
