@@ -1,4 +1,6 @@
 com/tongchuang/visiondemo/Application.class
-com/tongchuang/visiondemo/PerimetryTestRepository.class
 com/tongchuang/visiondemo/ApplicationController.class
+com/tongchuang/visiondemo/CalibrationRepository.class
+com/tongchuang/visiondemo/PerimetryTestRepository.class
+com/tongchuang/visiondemo/Calibration.class
 com/tongchuang/visiondemo/PerimetryTest.class
