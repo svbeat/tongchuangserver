@@ -1,0 +1,10 @@
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/service/VisionTestService.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/database/VisionTestRunRepository.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/database/entity/VisionTestOutcome.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/response/TestResultResponse.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/database/VisionTestOutcomeRepository.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/Application.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/dto/TestRunDto.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/ApplicationController.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/database/entity/VisionTestRun.java
+/Users/qingdi/workspace/VisionTestBasic/src/main/java/com/aimu/visiontest/service/impl/VisionTestServiceImpl.java
