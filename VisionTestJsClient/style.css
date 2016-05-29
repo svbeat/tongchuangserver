@@ -6,9 +6,9 @@ body {background:#fff;background-size:100% auto;background-position-y:-55px;}
 .waper p {text-align:center;}
 .page-1 .title {font-size:35px;font-family:"黑体";margin-top:10%;}
 .page-1 .title2 {color:#acbeb4;font-size:10px;}
-.page-1 .GBE {width:23%;margin-top:9%;}
+.page-1 .GBE {width:23%;margin-top:5%;}
 .btn-group {text-align:center;margin-top:11%;}
-.btn-group li {list-style:none;background-color:#e3e3e3;border-radius:50%;background-image:url(img/E.png);display:inline-block;width:13.5%;padding-bottom:13.5%;margin:.5%;height:0;background-position:center;background-size:9.26mm;background-repeat:no-repeat;opacity:.75;}
+.btn-group li {list-style:none;background-color:#E8F3E8;border-radius:50%;background-image:url(img/E.png);display:inline-block;width:13.5%;padding-bottom:13.5%;margin-top:1.5%;margin-bottom:1.5%;margin-left:2.5%;margin-right:2.5%;height:0;background-position:center;background-size:40%;background-repeat:no-repeat;opacity:.75;}
 .btn-group li.on {-webkit-transition:all .5s ease-out;}
 .R0 {-webkit-transform:rotate(0deg);}
 .R45 {-webkit-transform:rotate(45deg);}
@@ -18,9 +18,8 @@ body {background:#fff;background-size:100% auto;background-position-y:-55px;}
 .R225 {-webkit-transform:rotate(225deg);}
 .R270 {-webkit-transform:rotate(270deg);}
 .R315 {-webkit-transform:rotate(315deg);}
-.Rdummy {background-image: none }
-.page-1 .rule {margin:13% 9% 0 9%;text-align:justify;text-align:left;font-size:14px;color:#666;line-height:160%;}
-.page-1 .start {margin-top:10%;background:#19a34d;width:45%;display:inline-block;border-radius:8px;color:#fff;font-size:20px;border:none;line-height:35px;cursor:pointer;}
+.page-1 .rule {margin:5% 9% 0 9%;text-align:justify;text-align:left;font-size:14px;color:#666;line-height:160%;}
+.page-1 .start {margin-top:10%;background:#ADE493;width:45%;display:inline-block;border-radius:8px;color:#fff;font-size:20px;border:none;line-height:35px;cursor:pointer;}
 .hide {display:none;}
 .page-2 .screen-box {position:absolute;width:100%;height:100%;left:0;top:0;text-align:center;margin-top:24%;}
 .page-2 .screen-box .box {display:inline-block;width:35%;height:0;padding-bottom:35%;border:2px solid #19a34d;border-right-color:#139544;border-radius:50%;background-image:url(img/E.png);background-position:center;background-size:7.26mm;background-repeat:no-repeat;}
@@ -69,7 +68,7 @@ body {background:#fff;background-size:100% auto;background-position-y:-55px;}
 .page-3 .age-test .seach span:after {content:"";position:absolute;bottom:0;right:0;display:inline-block;width:26px;height:26px;background:url(img/seach.png);background-position:center;background-size:90%;background-repeat:no-repeat;}
 .page-3 .age-test .hint {font-size:13px;color:#c6d2cb;}
 .page-3 .age-test .hint.on {font-size:20px;color:#19a34d;}
-.page-3 .start {margin-top:15%;background:#19a34d;width:45%;display:inline-block;border-radius:8px;color:#fff;font-size:18px;border:none;line-height:35px;cursor:pointer;}
+.page-3 .start {margin-top:15%;background:#ADE493;width:45%;display:inline-block;border-radius:8px;color:#fff;font-size:18px;border:none;line-height:35px;cursor:pointer;}
 @media only screen and (max-width:321px) {
 .page-1 .title {margin-top:8%;}
 .page-1 .rule {font-size:12px;margin:11% 9% 0 9%}

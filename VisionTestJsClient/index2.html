@@ -83,8 +83,12 @@
 			<!--第1页-->
 			<div class="page-1 ">
 				<p class="title">测测你的视力</p>
-				<p class="title2">标准对数视力表 GB 11533-2011 标准</p>
-				<p><img class="GBE" src="img/GBE.png" > </p>
+				<p class="rule" >将手机放在眼前约25cm处(大概是手机高度的2倍)<br>点击开始，在绿色选项中找到灰圆内闪过的“E”。<br>友情提示： 一闪即逝，要集中精力！</p>
+				
+				<!-- p class="title2">标准对数视力表 GB 11533-2011 标准</p-->
+				<!-- p><img class="GBE" src="img/E.png" > </p-->
+				
+				<div class="top-box"><div class="box R0"></div></div>
 				<div class="btn-group ready">
 						<ul>
 							<li class="R225" data ="225"></li>
@@ -93,7 +97,7 @@
 						</ul>
 						<ul>
 							<li class="R180" data ="180"></li>
-							<li style="background: url(img/seach.png);" data ="-1"></li>
+							<li style="background: none;" data ="-1"></li>
 							<li class="R0" data ="0"></li>
 							
 						</ul>
@@ -103,7 +107,6 @@
 							<li class="R45" data ="45"></li>
 						</ul>
 				</div>
-				<p class="rule" >将手机放在眼前约25cm处(大概是手机高度的2倍)<br>点击开始，在绿色选项中找到灰圆内闪过的“E”。<br>友情提示： 一闪即逝，要集中精力！</p>
 				<p><span class="start" >开始</span></p>
 			</div>
 			
@@ -117,7 +120,7 @@
 
 	function requestAjax(url,param,callback,errorFun){
 		var host = "http://121.40.190.205:6090" ;
-			$.ajax({
+		/*	$.ajax({
 			//url :host + "/visiontest/basic/testrun?apiKey=aimu2016",
 			url :host + url,
 			type : "POST",
@@ -133,7 +136,7 @@
 			error : function(msg) {
 				errorFun(msg)
 			}
-		});
+		});*/
 	}
 	var browser={
 	    versions:function(){
@@ -173,7 +176,7 @@
 			})
 		}
 		$(function(){
-			$(".start").on("touchend",function(e){
+			$(".start").on("touchend click",function(e){
 				/*初始化*/
 				result ={
 					settime:"",
