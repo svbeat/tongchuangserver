@@ -28,7 +28,10 @@ public class VisionTestServiceImpl implements VisionTestService {
 	private final VisionTestOutcomeRepository visionTestOutcomeRepository;
 
 	private Map<Integer, List<VisionTestOutcome>> testOutcomes;
-	
+
+	private String[] standardVision={"3.7- (0.05-)", "3.7 (0.05)", "3.8 (0.06)", "3.9 (0.08)", "4.0 (0.1)",
+			"4.1 (0.12)", "4.2 (0.15)", "4.3 (0.2)", "4.4 (0.25)", "4.5 (0.3)", "4.6 (0.4)", "4.7 (0.5)", "4.8 (0.6)",
+			"4.9 (0.8)", "5.0 (1.0)", "5.1 (1.2)", "5.1+ (1.2+)"};
 	@Autowired
 	public VisionTestServiceImpl(VisionTestRunRepository visionTestRunRepository, VisionTestOutcomeRepository visionTestOutcomeRepository) {
 		this.visionTestRunRepository = visionTestRunRepository;
@@ -41,7 +44,7 @@ public class VisionTestServiceImpl implements VisionTestService {
 	@Override
 	public TestResultResponse createTestRun(VisionTestRun testRun) {
 		if (testRun.getData() != null) {
-			testRun.setScore(calcTestScore(testRun.getData()));
+			calcTestScore(testRun, testRun.getData());
 		}
 		visionTestRunRepository.save(testRun);
 		TestResultResponse response = new TestResultResponse(testRun.getTestRunId());
@@ -55,6 +58,7 @@ public class VisionTestServiceImpl implements VisionTestService {
 		
 		int score = testRun.getScore();
 		response.setScore(score);
+		response.setVision(testRun.getVision());
 		List<VisionTestOutcome> outcomes = getTestOutcomes(testRun.getTestId());
 		for (VisionTestOutcome o : outcomes) {
 			if (o.getScoreRangeMax() > score && o.getScoreRangeMin() <= score) {
@@ -83,26 +87,29 @@ public class VisionTestServiceImpl implements VisionTestService {
 		testOutcomes = testOutcomesHolder;
 	}
 
-	private int calcTestScore(String data) {
-		int score = 0;
+	private void calcTestScore(VisionTestRun testRun, String data) {
+		int visionIndex = 0;
 		
-		if (data == null) {
-			return score;
-		}
-		
-		String[] levelValues = data.split(";");
-		for (int i = levelValues.length; i>0; i--) {
-			String[] values = levelValues[i-1].split(",");
-			if (values.length == 3 && Integer.parseInt(values[2])==1) {
-				score = Integer.parseInt(values[0]) *5;
-				break;
+		if (data != null) {
+			String[] levelValues = data.split(";");
+			for (int i = levelValues.length; i>0; i--) {
+				String[] values = levelValues[i-1].split(",");
+				if (values.length == 3 && Integer.parseInt(values[2])==1) {
+					visionIndex = Integer.parseInt(values[0]);
+					break;
+				}
 			}
 		}
 		
-		if (score >=100) {
-			score = 100;
+		int score = visionIndex*5;
+		if (visionIndex < 0) {
+			visionIndex = 0;
+		} else if (visionIndex > standardVision.length) {
+			visionIndex = standardVision.length-1;
 		}
-		return score;
+		
+		testRun.setScore(score);
+		testRun.setVision(standardVision[visionIndex]);
 	}
 
 	/* (non-Javadoc)
@@ -113,7 +120,7 @@ public class VisionTestServiceImpl implements VisionTestService {
 		log.info("updateTestRunData: testRunId="+testRunId);
 		VisionTestRun testRun = visionTestRunRepository.findOne(testRunId);
 		testRun.setData(data);
-		testRun.setScore(calcTestScore(data));
+		calcTestScore(testRun, data);
 		testRun.setLastUpdateDate(null);
 		visionTestRunRepository.save(testRun);		
 
@@ -137,6 +144,9 @@ public class VisionTestServiceImpl implements VisionTestService {
 		
 		int runCountByAge = visionTestRunRepository.findRunCountByAge(age);
 		int runCountByAgeScore = visionTestRunRepository.findRunCountByAgeScore(testRun.getScore(), age);
+		if (runCountByAgeScore>=runCountByAge) {
+			runCountByAgeScore = runCountByAge-1;
+		}
 		int score = runCountByAgeScore*100/runCountByAge;
 		List<VisionTestOutcome> outcomes = getTestOutcomes(0);
 		for (VisionTestOutcome o : outcomes) {

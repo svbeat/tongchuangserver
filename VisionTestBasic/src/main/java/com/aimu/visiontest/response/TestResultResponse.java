@@ -3,6 +3,7 @@ package com.aimu.visiontest.response;
 public class TestResultResponse {
 	private long	testRunId;
 	private int		score;
+	private String	vision;
 	private String	outcome;
 	private	String	message;
 	
@@ -26,7 +27,15 @@ public class TestResultResponse {
 		this.score = score;
 	}
 	
-	
+
+	public String getVision() {
+		return vision;
+	}
+
+	public void setVision(String vision) {
+		this.vision = vision;
+	}
+
 	public String getOutcome() {
 		return outcome;
 	}

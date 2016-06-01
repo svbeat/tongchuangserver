@@ -43,6 +43,7 @@ public class VisionTestRun {
     private int		subjectAge;
     private String	data;
     private int		score;
+    private String	vision;
 	
 	public long getTestRunId() {
 		return testRunId;
@@ -109,14 +110,20 @@ public class VisionTestRun {
 		this.score = score;
 	}
 	
+	public String getVision() {
+		return vision;
+	}
+	public void setVision(String vision) {
+		this.vision = vision;
+	}
+	
 	@Override
 	public String toString() {
 		return "VisionTestRun [testRunId=" + testRunId + ", testId=" + testId + ", creationDate=" + creationDate
 				+ ", lastUpdateDate=" + lastUpdateDate + ", deviceId=" + deviceId + ", subjectType=" + subjectType
 				+ ", subjectId=" + subjectId + ", subjectAge=" + subjectAge + ", data=" + data + ", score=" + score
-				+ "]";
+				+ ", vision=" + vision + "]";
 	}
-
-    
-    
+	
+	
 }
