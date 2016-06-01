@@ -232,7 +232,7 @@
 					if(Countdown<1){
 						$(".page-2 .btn-group ").removeClass("ready");
 						clearInterval(CountdownInterval);
-						$(".Countdown").fadeOut(500,function(){
+						$(".Countdown").fadeOut(700,function(){
 							init();
 						});
 					}
@@ -400,9 +400,6 @@
 			}
 			/*下一关*/
 			function nextlevel(){
-				setTimeout(function() {nextlevelInner()}, 300);
-			}
-			function nextlevelInner(){
 				$(".page-2 .screen-box .box").removeClass("hidebg");
 				result.test.currenttime = 0 ;
 				result.nextvlaue = random[parseInt( Math.random()*8 ) ];
