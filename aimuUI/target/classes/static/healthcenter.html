@@ -1,0 +1,37 @@
+
+<div>
+	<ul class="nav nav-tabs">
+		<li ng-class="{ active: controller.isSet(1) }"><a href
+			ng-click="controller.setTab(1)">首页</a></li>
+		<li ng-class="{ active: controller.isSet(2) }"><a href
+			ng-click="controller.setTab(2)">通知栏</a></li>
+		<li ng-class="{ active: controller.isSet(3) }"><a href
+			ng-click="controller.setTab(3)">测试记录</a></li>
+		<li ng-class="{ active: controller.isSet(4) }"><a href
+			ng-click="controller.setTab(4)">我的医生</a></li>
+		<li ng-class="{ active: controller.isSet(5) }"><a href
+			ng-click="controller.setTab(5)">检测有约</a></li>
+		<button type="button" class="btn btn-link pull-right">退出</button>
+		<li class="pull-right">
+			<img style="height:32px !important" src="images/shoppingcart.png" alt="">
+		</li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane-new" ng-show="controller.isSet(1)">
+			<div ng-include="'views/patienthome.html'"></div>
+		</div>
+		<div class="tab-pane-new" ng-show="controller.isSet(2)">
+			<div ng-include="'views/notifications.html'"></div>
+		</div>
+		<div class="tab-pane-new" ng-show="controller.isSet(3)">
+			<div ng-include="'views/mytests.html'"></div>
+		</div>
+		<div class="tab-pane-new" ng-show="controller.isSet(4)">
+			<div ng-include="'views/mydoctors.html'"></div>
+		</div>
+		<div class="tab-pane-new" ng-show="controller.isSet(5)">
+			<div ng-include="'views/ordertests.html'"></div>
+		</div>
+	</div>
+</div>

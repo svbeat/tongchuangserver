@@ -1,0 +1,83 @@
+<div class="container-fluid">
+	<div class="row row-content">
+		<div class="col-md-6">
+			<div class="panel panel-warning">
+				<div class="panel-heading">通知栏</div>
+				<div class="panel-body"
+					style="padding-top: 0 !important; padding-bottom: 0">
+					<div ng-repeat="notification in controller.notifications"
+						class="row row-content"
+						style="padding: 5px !important; background-image: linear-gradient(to bottom, #F9F9F9 70%, #E9E9E9 100%); !important">
+						<div class="col-md-1"
+							style="paddining-top: 1 !important; padding-right: 0 !important">
+							<img class="custom-icon"
+								ng-src="{{controller.getNotificationIcon(notification.type)}}"
+								alt="">
+						</div>
+						<div class="col-md-11 custom_text-overflow"
+							style="padding: 3px !important;">
+							<span class="label label-primary">{{notification.sentFrom
+								}}:</span> {{notification.subject }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-info">
+				<div class="panel-heading">检测有约</div>
+				<div class="panel-body"
+					style="padding-top: 0 !important; padding-bottom: 0">
+					<div ng-repeat="test in controller.tests" class="row row-content"
+						style="padding: 5px !important; background-image: linear-gradient(to bottom, #F9F9F9 70%, #E9E9E9 100%); !important">
+						<div class="col-md-9 custom_text-overflow"
+							style="padding-top: 3px !important;">{{test.name}}</div>
+						<div class="col-md-2" style="padding-top: 3px !important;">
+							{{test.price}}</div>
+						<div class="col-md-1" style="padding-left: 0">
+							<img class="custom-icon" src="images/addToCart.png" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row row-content">
+		<div class="col-md-6">
+			<div class="panel panel-success">
+				<div class="panel-heading">检测记录</div>
+				<div class="panel-body"
+					style="padding-top: 0 !important; padding-bottom: 0">
+					<div ng-repeat="test in controller.mytests" class="row row-content"
+						style="padding: 5px !important; background-image: linear-gradient(to bottom, #F9F9F9 70%, #E9E9E9 100%); !important">
+						<div class="col-md-3" style="padding-top: 3px !important;">
+							{{test.type}}</div>
+						<div class="col-md-7" style="padding-top: 3px !important;">
+							{{test.testDateDisplay}}</div>
+						<div class="col-md-2" style="padding-top: 3px !important;">
+							{{test.status}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-info">
+				<div class="panel-heading">我的医生</div>
+				<div class="panel-body"
+					style="padding-top: 0 !important; padding-bottom: 0">
+					<div ng-repeat="doc in controller.mydoctors"
+						class="row row-content"
+						style="padding: 5px !important; background-image: linear-gradient(to bottom, #F9F9F9 70%, #E9E9E9 100%); !important">
+						<div class="col-md-6" style="padding-top: 3px !important;">
+							{{doc.name}}</div>
+						<div class="col-md-4" style="padding-top: 3px !important;">
+							电话：{{doc.phone }}</div>
+						<div class="col-md-2">
+							<img class="custom-icon" src="images/inbox_orange.png" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

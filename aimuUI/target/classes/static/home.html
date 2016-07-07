@@ -1,0 +1,28 @@
+
+<div>
+		 <ul class="nav nav-tabs">
+			<li ng-class="{ active: controller.isSet(1) }">
+				<a href
+				ng-click="controller.setTab(1)">Home</a>
+				</li>
+			<li ng-class="{ active: controller.isSet(2) }"><a href
+				ng-click="controller.setTab(2)">Profile</a></li>
+			<li ng-class="{ active: controller.isSet(3) }"><a href
+				ng-click="controller.setTab(3)">Messages</a></li>
+		</ul>
+
+		<div class="tab-content">
+			<div class="tab-pane-new" ng-show="controller.isSet(1)">
+				<div ng-include="'views/patienthome.html'"></div>
+			</div>
+			<div class="tab-pane-new" ng-show="controller.isSet(2)">
+				<div ng-include="'views/mytests.html'"></div>
+				<h1>Profile page</h1>
+				<p>Profile information</p>
+			</div>
+			<div class="tab-pane-new" ng-show="controller.isSet(3)">
+				<h1>Messages</h1>
+				<p>Some messages</p>
+			</div>
+		</div> 
+</div>

@@ -1,0 +1,14 @@
+
+  <div ng-controller="CarouselDemoCtrl as ctrl" id="slides_control">
+    <div class="well" style="background: #F3F8F9;!important">
+      <carousel interval="ctrl.myInterval">
+        <slide ng-repeat="slide in ctrl.slides" active="slide.active">
+          <img ng-src="{{slide.image}}">
+          <div class="carousel-caption right-caption text-right">
+            <h2>{{slide.text}}</h2>
+          </div>
+        </slide>
+      </carousel>
+    </div>
+  </div>
+</div>  

@@ -1,0 +1,49 @@
+<div class="well well-lg" ng-controller="visionTests as controller">
+
+ 	<div class="pull-right" style="margin-bottom:-25px !important">
+ 		<dir-pagination-controls
+        	max-size="8"
+        	direction-links="true"
+        	boundary-links="true" 
+        	on-page-change="controller.getData(newPageNumber)">
+    	</dir-pagination-controls>
+ 	</div>
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th><a href="javascript:void(0);"
+					ng-click="controller.sortType = 'type';controller.sortReverse = !controller.sortReverse;"> 
+						测试名称<span ng-show="controller.sortType == 'type'" class="fa fa-caret-down"></span>
+				</a></th>
+				<th><a href="javascript:void(0);"
+					ng-click="controller.sortType = 'testDate';controller.sortReverse = !controller.sortReverse;"> 
+						测试日期<span ng-show="controller.sortType == 'testDate'" class="fa fa-caret-down"></span>
+				</a></th>
+				<th><a href=""
+					ng-click="controller.sortType = 'status';controller.sortReverse = !controller.sortReverse">  
+					结果<span ng-show="controller.sortType == 'status'" class="fa fa-caret-down"></span>
+				</a></th>
+				<th>报告</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr
+				dir-paginate="x in controller.tests|orderBy:controller.sortType:controller.sortReverse|itemsPerPage:controller.itemsPerPage" 
+					total-items="controller.total_count">
+				<td>{{ x.type }}</td>
+				<td>{{ x.testDateDisplay }}</td>
+				<td>{{ x.status }}</td>
+				<td><img class="custom-icon" src="images/report.png" alt=""></td>
+			</tr>
+		</tbody>
+	</table>
+ 	<div class="pull-right"  style="margin-top:-40px !important">
+ 		<dir-pagination-controls
+        	max-size="8"
+        	direction-links="true"
+        	boundary-links="true" 
+        	on-page-change="controller.getData(newPageNumber)">
+    	</dir-pagination-controls>
+ 	</div>
+
+</div>

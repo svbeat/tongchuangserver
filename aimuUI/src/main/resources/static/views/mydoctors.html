@@ -1,0 +1,26 @@
+<div class="well well-lg">
+
+<button class="btn btn-info pull-right">
+     联系新医生 <img src="images/findDoctor.png" width="20" />
+</button>
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>姓名</th>
+				<th>医院</th>
+				<th>问诊时间</th>
+				<th>电话</th>
+				<th>取消</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="doc in controller.mydoctors">
+				<td>{{doc.name}}</td>
+				<td>{{doc.hospital}}</td>
+				<td>{{doc.workHour }}</td>
+				<td>{{doc.phone}}</td>
+				<td><img class="custom-icon" src="images/delete.png" alt=""></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

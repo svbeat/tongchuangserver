@@ -1,0 +1,21 @@
+<div class="well well-lg">
+
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>检测名称</th>
+				<th>简介</th>
+				<th>价格</th>
+				<th>购买</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="test in controller.tests">
+				<td>{{test.name}}</td>
+				<td>{{test.description}}</td>
+				<td>{{test.price }}</td>
+				<td><img class="custom-icon" src="images/addToCart.png" alt=""></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

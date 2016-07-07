@@ -1,0 +1,134 @@
+.navbar-brand,
+.navbar-nav li a {
+    line-height: 60px;
+    height: 60px;
+    padding-top: 0;
+}
+
+
+.navbar {
+    border-radius: 0;
+}
+
+.navbar-new {
+    background-color: #E0EEEF;
+    border-color: #5AB2B0;
+}
+
+.navbar-new .navbar-brand,
+.navbar-new .navbar-brand:hover,
+.navbar-new .navbar-brand:focus {
+    color: #FFF;
+}
+
+.navbar-new .navbar-nav > li > a {
+    color: #5AB2B0;
+}
+
+
+.navbar-new .navbar-nav > li > a:hover,
+.navbar-new .navbar-nav > li > a:focus {
+    background-color: #5AB2B0;
+}
+
+.navbar-new .navbar-nav > .active > a,
+.navbar-new .navbar-nav > .active > a:hover,
+.navbar-new .navbar-nav > .active > a:focus {
+    color: #FFF;
+    background-color: #5AB2B0;
+}
+
+.navbar-new .navbar-text {
+    color: #5AB2B0;
+}
+
+.navbar-new .navbar-toggle {
+    border-color: #5AB2B0;
+}
+
+.navbar-new .navbar-toggle:hover,
+.navbar-new .navbar-toggle:focus {
+    background-color: #5AB2B0;
+}
+
+.navbar-new .navbar-toggle .icon-bar {
+    background-color: #FFF;
+}
+
+.jumbotron {
+	background-color: #F3F8F9;
+}
+
+.nav-tabs
+ {
+   border-color:#E0EEEF;
+   width:100%;
+ }
+
+.nav-tabs > li a { 
+    border: 1px solid #E0EEEF;
+    background-color:#E0EEEF; 
+    color:#5AB2B0;
+    }
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover{
+    background-color:#F3F8F9;
+    color:#000;
+    border: 1px solid #E0EEEF;
+    border-bottom-color: transparent;
+    }
+
+.nav-tabs > li > a:hover{
+  background-color: #F3F8F9 !important;
+    border-radius: 5px;
+    color:#000;
+
+} 
+
+.tab-pane-new {
+    border:solid 1px #E0EEEF;
+    border-top: 0; 
+    width:100%;
+    background-color:#F3F8F9;
+    padding:5px;
+	padding-top:25px;
+}
+
+.carousel-caption {
+	  right: 12;
+    left: auto;
+}
+.carousel-caption h2 {
+color:          #F8A71A !important;
+text-shadow: none;
+}
+
+.carousel-indicators li {
+  background-color: #999;
+  background-color: rgba(70,70,70,.25);
+}
+
+.carousel-indicators .active {
+  background-color: #ffe159;
+}
+
+.carousel-control.left {
+    background-image: linear-gradient(to right, rgba(184, 241, 245, 1.0) 0%, rgba(184, 241, 245, 0.0001) 100%);
+}
+
+.carousel-control.right {
+    background-image: linear-gradient(to right, rgba(184, 241, 245, 0.0001) 0%, rgba(184, 241, 245, 1.0) 100%);
+}
+
+.custom_text-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-icon {
+	height: 16px;
+    width: 16px;
+}
