@@ -45,7 +45,7 @@ public class AimuUiApplication {
 	        .httpBasic()
 	      .and()
 	        .authorizeRequests()
-	          .antMatchers("/index.html", "/login.html", "/products.html", "/aboutus.html", "/").permitAll()
+	          .antMatchers("/index.html", "/login.html", "/aboutus.html", "/").permitAll()
 	          .anyRequest().authenticated();
 	    }
 	  }
