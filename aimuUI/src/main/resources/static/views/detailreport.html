@@ -1,0 +1,28 @@
+<div id="print-content">
+	<div class="modal-header">
+		<h4 class="modal-title">视野测试报告 (编号-{{testId}}-{{eye}})</h4>
+	</div>
+	<div class="modal-body" data-ng-init="init()">
+
+		<div class="row row-header">
+			<div class="col-xs-12">
+				<h5>测试日期: {{testDate}}</h5>
+			</div>
+			<div class="col-xs-6">
+				<canvas id="canvasText" width="320" height="320"></canvas>
+			</div>
+			<div class="col-xs-6">
+				<canvas id="canvasShade" width="320" height="320"></canvas>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="pull-left">
+			<h5>&copy;2016 99aimu.com</h5>
+		</div>
+		<div class="pull-right hidden-print">
+			<button class="btn btn-primary" type="button" ng-click="print()">打印</button>
+			<button class="btn btn-primary" type="button" ng-click="close()">关闭</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.AimuUiApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.77 sec - in com.example.AimuUiApplicationTests
