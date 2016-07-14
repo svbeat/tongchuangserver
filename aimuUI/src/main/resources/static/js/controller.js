@@ -1,8 +1,9 @@
 angular.module('aimuApp')
-.controller('home', ['$rootScope', '$http', '$location', 'visionService', function($rootScope, $http, $location, visionService) {
+.controller('home', ['$rootScope', '$http', '$location', '$modal', 'visionService', 
+                     function($rootScope, $http, $location, $modal, visionService) {
 	if (!$rootScope.authenticated) {
 		$location.path("/login");
-	}
+	} 
 
 	var self = this;
 	self.tab = 1;
@@ -21,6 +22,10 @@ angular.module('aimuApp')
 		} else {
 			return "images/notifications_orange.png";
 		}
+	}
+
+	self.getUserName = function() {
+		return $rootScope.username;
 	}
 
 	self.tests= [
@@ -63,6 +68,13 @@ angular.module('aimuApp')
 		});
 	};
 
+	self.openUserDetails = function() {
+		var modalInstance = $modal.open({
+			templateUrl: 'views/userDetails.html',
+			controller: 'userDetails'
+		});
+	};
+
 	visionService.getNotifications()
 	.then(
 			function(response) {
@@ -78,6 +90,22 @@ angular.module('aimuApp')
 			}
 	);
 }])
+.controller('userDetails', function($rootScope, $scope, $modalInstance) {
+	$scope.username = $rootScope.username;
+	
+	$scope.init = function() {
+		var qrcode = new QRCode(document.getElementById('qrcode'));
+		qrcode.makeCode($scope.username);
+	};
+	
+	$scope.close = function () {
+		$modalInstance.dismiss('cancel');
+	}
+
+	$scope.print = function () {
+		window.print();
+	}
+})
 .controller('CarouselDemoCtrl',
 
 		function() {
@@ -148,75 +176,75 @@ angular.module('aimuApp')
 }])
 .controller('detailReport', function($scope, $modalInstance, test) {
 	$scope.testResult = test.result;
-	
+
 	$scope.testId = test.testId;
 	$scope.patient = test.patientId;
 	$scope.testDate = test.testDateDisplay;
-	
+
 	$scope.close = function () {
 		$modalInstance.dismiss('cancel');
 	}
 
 	$scope.print = function () {
-		 window.print();
+		window.print();
 	}
-	
-    $scope.init = function() {
-    	var canvas = document.getElementById('canvasText');
-    	var context = canvas.getContext('2d');
 
-        var data = $scope.testResult.split(";");
-        var center = data[0].split(":");
-        var centerX = Number(center[0]);
-        var centerY = Number(center[1]);
+	$scope.init = function() {
+		var canvas = document.getElementById('canvasText');
+		var context = canvas.getContext('2d');
 
-        if (centerX<centerY) {
-        	$scope.eye='左眼';
-        } else {
-        	$scope.eye='右眼';
-        }
-        centerX=160;
-        centerY=160;
-        var points = data[1].split(",");
-        var AMPLIFICATION = 0.1;
+		var data = $scope.testResult.split(";");
+		var center = data[0].split(":");
+		var centerX = Number(center[0]);
+		var centerY = Number(center[1]);
 
-        context.font = "10px Arial";
-        var results = []
+		if (centerX<centerY) {
+			$scope.eye='左眼';
+		} else {
+			$scope.eye='右眼';
+		}
+		centerX=160;
+		centerY=160;
+		var points = data[1].split(",");
+		var AMPLIFICATION = 0.1;
 
-        var displayInterval = 15;
-        var xInterval = 320;
-        var yInterval = 320;
-        for (var i = 0; i < points.length; i++) {
-        	var d = points[i].split(":");
-        	var p = {db:d[0].toString(), x: Number(d[1]), y:Number(d[2])};
-        	if (p.x>0 && p.x < xInterval) {
-        		xInterval = p.x;
-        	}
-        	if (p.y>0 && p.y < yInterval) {
-        		yInterval = p.y;
-        	}
-        	results.push(p);
-        }
-        
-        for (var i = 0; i < results.length; i++) {
-        	results[i].x = centerX+(results[i].x/xInterval)*displayInterval;
-        	results[i].y = centerY+(results[i].y/yInterval)*displayInterval;
-        }
-        
-        for (var i = 0; i < results.length; i++) {
-        	context.fillText(results[i].db, results[i].x, results[i].y);
-        }
-        
-    	canvas = document.getElementById('canvasShade');
-    	context = canvas.getContext('2d');
+		context.font = "10px Arial";
+		var results = []
 
-        for (var i = 0; i < results.length; i++) {
-        	var shade = (results[i].db-10)*5;
-        	 context.fillStyle='rgb('+shade+','+shade+','+shade+')';
-             context.fillRect(results[i].x, results[i].y,displayInterval,displayInterval);
-        }
+		var displayInterval = 15;
+		var xInterval = 320;
+		var yInterval = 320;
+		for (var i = 0; i < points.length; i++) {
+			var d = points[i].split(":");
+			var p = {db:d[0].toString(), x: Number(d[1]), y:Number(d[2])};
+			if (p.x>0 && p.x < xInterval) {
+				xInterval = p.x;
+			}
+			if (p.y>0 && p.y < yInterval) {
+				yInterval = p.y;
+			}
+			results.push(p);
+		}
 
-    }
+		for (var i = 0; i < results.length; i++) {
+			results[i].x = centerX+(results[i].x/xInterval)*displayInterval;
+			results[i].y = centerY+(results[i].y/yInterval)*displayInterval;
+		}
+
+		for (var i = 0; i < results.length; i++) {
+			context.fillText(results[i].db, results[i].x, results[i].y);
+		}
+
+		canvas = document.getElementById('canvasShade');
+		context = canvas.getContext('2d');
+
+		for (var i = 0; i < results.length; i++) {
+			var shade = (results[i].db-10)*5;
+			context.fillStyle='rgb('+shade+','+shade+','+shade+')';
+			context.fillRect(results[i].x, results[i].y,displayInterval,displayInterval);
+		}
+
+	}
 
 
 
@@ -240,6 +268,10 @@ angular.module('aimuApp')
 		var headers = credentials ? {authorization : "Basic "
 			+ btoa(credentials.username + ":" + credentials.password)
 		} : {};
+
+		if (credentials!=null) {
+			$rootScope.username = credentials.username;
+		}
 
 		$http.get('user', {headers : headers}).then(function(response) {
 			if (response.data.name) {

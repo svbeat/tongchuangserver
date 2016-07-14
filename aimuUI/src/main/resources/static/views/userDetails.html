@@ -1,0 +1,17 @@
+<div id="print-content">
+	<div class="modal-header">
+		<h4 class="modal-title">用户扫描码 - {{username}}</h4>
+	</div>
+	<div class="modal-body" data-ng-init="init()">
+		<div align="center" id="qrcode"></div>
+	</div>
+	<div class="modal-footer">
+		<div class="pull-left">
+			<h5>&copy;2016 99aimu.com</h5>
+		</div>
+		<div class="pull-right hidden-print">
+			<button class="btn btn-primary" type="button" ng-click="print()">打印</button>
+			<button class="btn btn-primary" type="button" ng-click="close()">关闭</button>
+		</div>
+	</div>
+</div>
