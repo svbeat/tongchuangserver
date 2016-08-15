@@ -23,7 +23,7 @@ import com.tongchuang.visiondemo.object.Notification;
 @RestController
 @CrossOrigin
 public class ApplicationController {
-	private final static String SUPER_API_KEY="rock2016";
+	public final static String SUPER_API_KEY="rock2016";
 
 	private final PerimetryTestRepository perimetryTestRepository;
 	private final CalibrationRepository calibrationRepository;
