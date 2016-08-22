@@ -5,7 +5,7 @@ import java.util.Map;
 import com.tongchuang.visiondemo.common.Point;
 import com.tongchuang.visiondemo.device.Intensity;
 public class PatientSettings {   
-	public static enum PatternType {P24_2, P30_2};
+	public static enum PatternType {P24_2, P30_2, PDEMO};
 	
 	private Map<String, Integer> initStimulusDBLeft;
 	private Map<String, Integer> stimulusPrioritiesLeft;
