@@ -6,6 +6,7 @@ import com.tongchuang.visiondemo.common.Point;
 import com.tongchuang.visiondemo.device.Intensity;
 public class PatientSettings {   
 	public static enum PatternType {P24_2, P30_2, PDEMO};
+    public static enum ExamFieldOption {LEFT, RIGHT, BOTH};
 	
 	private Map<String, Integer> initStimulusDBLeft;
 	private Map<String, Integer> stimulusPrioritiesLeft;
@@ -26,6 +27,8 @@ public class PatientSettings {
 	private String      stimulusRunnerClass;
 
 	private PatternType patternType;
+	
+	private ExamFieldOption	examFieldOption;
 
 
 
@@ -144,5 +147,14 @@ public class PatientSettings {
 		this.patternType = patternType;
 	}
 
+	public ExamFieldOption getExamFieldOption() {
+		return examFieldOption;
+	}
+
+	public void setExamFieldOption(ExamFieldOption examFieldOption) {
+		this.examFieldOption = examFieldOption;
+	}
+
+	
 
 }
