@@ -22,12 +22,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.tongchuang.visiondemo.ApplicationConstants;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityDeleted;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
-import com.tongchuang.visiondemo.Calibration;
-import com.tongchuang.visiondemo.PerimetryTest;
 import com.tongchuang.visiondemo.common.ResponseList;
+import com.tongchuang.visiondemo.device.Calibration;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
 import com.tongchuang.visiondemo.patient.PatientRepository;
 import com.tongchuang.visiondemo.patient.entity.Patient;
+import com.tongchuang.visiondemo.perimetry.PerimetryTest;
 import com.tongchuang.visiondemo.user.UserRoleRepository;
 import com.tongchuang.visiondemo.util.ApplicationUtil;
 

@@ -1,4 +1,4 @@
-package com.tongchuang.visiondemo;
+package com.tongchuang.visiondemo.device;
 
 import java.util.List;
 

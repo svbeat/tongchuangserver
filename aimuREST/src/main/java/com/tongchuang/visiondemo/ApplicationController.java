@@ -18,7 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.tongchuang.visiondemo.object.Notification;
+import com.tongchuang.visiondemo.device.Calibration;
+import com.tongchuang.visiondemo.device.CalibrationRepository;
+import com.tongchuang.visiondemo.notification.Notification;
+import com.tongchuang.visiondemo.notification.NotificationRepository;
+import com.tongchuang.visiondemo.perimetry.PerimetryTest;
+import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
 
 @RestController
 @CrossOrigin

@@ -10,17 +10,17 @@ public class PatientExamSettingsCompositePK implements Serializable{
     @Column
     private String examCode;
     @Column
-    private Integer patientId;
+    private String patientId;
 	public String getExamCode() {
 		return examCode;
 	}
 	public void setExamCode(String examCode) {
 		this.examCode = examCode;
 	}
-	public Integer getPatientId() {
+	public String getPatientId() {
 		return patientId;
 	}
-	public void setPatientId(Integer patientId) {
+	public void setPatientId(String patientId) {
 		this.patientId = patientId;
 	}
     

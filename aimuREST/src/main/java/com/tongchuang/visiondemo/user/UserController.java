@@ -68,7 +68,7 @@ public class UserController {
 		}
 		
 		System.out.println("Fetching Default patient settings");
-		PatientExamSettings settings = patientExamSettingsRepository.findSetting(examCode, 0);
+		PatientExamSettings settings = patientExamSettingsRepository.findSetting(examCode, "0");
 		if (settings==null) {
 			return new ResponseEntity<PatientSettings>(HttpStatus.NOT_FOUND);
 		}
@@ -85,9 +85,9 @@ public class UserController {
 		}
 		
 		System.out.println("Fetching patient settings for patient:"+patientId);
-		PatientExamSettings settings = patientExamSettingsRepository.findSetting(examCode, Integer.valueOf(patientId));
+		PatientExamSettings settings = patientExamSettingsRepository.findSetting(examCode, patientId);
 		if (settings==null) {
-			settings = patientExamSettingsRepository.findSetting(examCode, 0);
+			settings = patientExamSettingsRepository.findSetting(examCode, "0");
 			if (settings == null)
 				return new ResponseEntity<PatientSettings>(HttpStatus.NOT_FOUND);
 		}

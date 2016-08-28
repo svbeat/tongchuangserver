@@ -1,10 +1,8 @@
-package com.tongchuang.visiondemo;
+package com.tongchuang.visiondemo.notification;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
-
-import com.tongchuang.visiondemo.object.Notification;
 
 public interface NotificationRepository extends CrudRepository<Notification, Long> {
 

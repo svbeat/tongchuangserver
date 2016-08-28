@@ -12,6 +12,6 @@ import com.tongchuang.visiondemo.user.dto.UserInfo;
 
 public interface PatientExamSettingsRepository extends CrudRepository<PatientExamSettings, PatientExamSettingsCompositePK> {
 	 @Query("SELECT p FROM PatientExamSettings p WHERE patientId = :id and examCode=:code")
-	 public PatientExamSettings findSetting(@Param("code")String examCode, @Param("id")Integer  patientId);
+	 public PatientExamSettings findSetting(@Param("code")String examCode, @Param("id")String  patientId);
 
 }

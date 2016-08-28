@@ -8,6 +8,7 @@ public class PatientSettings {
 	public static enum PatternType {P24_2, P30_2, PDEMO};
     public static enum ExamFieldOption {LEFT, RIGHT, BOTH};
 	
+    private Integer      version;
 	private Map<String, Integer> initStimulusDBLeft;
 	private Map<String, Integer> stimulusPrioritiesLeft;
 
@@ -31,6 +32,14 @@ public class PatientSettings {
 	private ExamFieldOption	examFieldOption;
 
 
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
 	public Map<String, Integer> getInitStimulusDBLeft() {
 		return initStimulusDBLeft;

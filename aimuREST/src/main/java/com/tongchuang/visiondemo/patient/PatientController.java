@@ -21,13 +21,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.tongchuang.visiondemo.ApplicationConstants;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
-import com.tongchuang.visiondemo.Calibration;
-import com.tongchuang.visiondemo.PerimetryTest;
-import com.tongchuang.visiondemo.PerimetryTestRepository;
 import com.tongchuang.visiondemo.common.ResponseList;
+import com.tongchuang.visiondemo.device.Calibration;
 import com.tongchuang.visiondemo.doctor.DoctorRepository;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
 import com.tongchuang.visiondemo.patient.entity.Patient;
+import com.tongchuang.visiondemo.perimetry.PerimetryTest;
+import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
 import com.tongchuang.visiondemo.user.UserRoleRepository;
 import com.tongchuang.visiondemo.util.ApplicationUtil;
 
@@ -157,7 +157,7 @@ public class PatientController {
 	}
 	
 	
-	@RequestMapping(value = "/{patientId}/tests", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/patients/{patientId}/tests", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseList<PerimetryTest>> getPerimetryTests(@PathVariable("patientId") String patientId, 
 				@RequestParam("apiKey") String apiKey, 
 				@RequestParam(value = "filter", required=false) String filter,

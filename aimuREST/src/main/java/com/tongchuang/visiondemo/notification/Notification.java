@@ -1,4 +1,4 @@
-package com.tongchuang.visiondemo.object;
+package com.tongchuang.visiondemo.notification;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

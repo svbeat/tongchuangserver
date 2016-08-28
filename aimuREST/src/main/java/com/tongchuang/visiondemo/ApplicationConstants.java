@@ -8,4 +8,6 @@ public class ApplicationConstants {
 	public enum EntityDeleted {Y, N};
 	
 	public enum RelationshipType {DOCTOR_PATIENT};
+	
+	public enum ExamCode {PERIMETRY};
 }
