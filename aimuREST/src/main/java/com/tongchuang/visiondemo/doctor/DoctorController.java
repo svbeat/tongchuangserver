@@ -24,11 +24,15 @@ import com.tongchuang.visiondemo.ApplicationConstants.EntityDeleted;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
 import com.tongchuang.visiondemo.common.ResponseList;
 import com.tongchuang.visiondemo.device.Calibration;
+import com.tongchuang.visiondemo.doctor.dto.DoctorDTO;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
 import com.tongchuang.visiondemo.patient.PatientRepository;
+import com.tongchuang.visiondemo.patient.dto.PatientDTO;
 import com.tongchuang.visiondemo.patient.entity.Patient;
 import com.tongchuang.visiondemo.perimetry.PerimetryTest;
+import com.tongchuang.visiondemo.user.UserRepository;
 import com.tongchuang.visiondemo.user.UserRoleRepository;
+import com.tongchuang.visiondemo.user.dto.User;
 import com.tongchuang.visiondemo.util.ApplicationUtil;
 
 import io.swagger.annotations.ApiOperation;
@@ -42,12 +46,16 @@ public class DoctorController {
 
 	private DoctorRepository 	doctorRepository;
 	private PatientRepository 	patientRepository;
-	
+	private DoctorService		doctorService;
+	private UserRepository			userRepository;
 	
 	@Autowired
-	public DoctorController(DoctorRepository doctorRepository, PatientRepository patientRepository) {
+	public DoctorController(DoctorRepository doctorRepository, PatientRepository patientRepository,
+								DoctorService doctorService, UserRepository	userRepository) {
 		this.doctorRepository = doctorRepository;
 		this.patientRepository = patientRepository;
+		this.doctorService = doctorService;
+		this.userRepository = userRepository;
 	}
 
 
@@ -76,34 +84,48 @@ public class DoctorController {
 	
 
 	@RequestMapping(value = "/doctors", method = RequestMethod.POST)
-	public ResponseEntity<Doctor> createDoctor(@RequestParam("apiKey") String apiKey, @RequestBody Doctor doctor) {
+	public ResponseEntity createDoctor(@RequestParam("apiKey") String apiKey, @RequestBody DoctorDTO doctor) {
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<Doctor>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<DoctorDTO>(HttpStatus.UNAUTHORIZED);
 		}
-		doctor = doctorRepository.save(doctor);
-		return new ResponseEntity<Doctor>(doctor, HttpStatus.CREATED);
+		
+		DoctorDTO newDoctor = null;
+		
+		try {
+			newDoctor = doctorService.doCreateDoctor(doctor);
+		} catch (Exception e) {
+			return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(e.getMessage());
+		}
+		
+		return new ResponseEntity<DoctorDTO>(newDoctor, HttpStatus.CREATED);
 	}
 		
 	@RequestMapping(value = "/doctors/{doctorId}", method = RequestMethod.POST)
-	public ResponseEntity<Doctor> updateDoctor(@PathVariable("doctorId")Integer doctorId,
+	public ResponseEntity updateDoctor(@PathVariable("doctorId")Integer doctorId,
 							@RequestParam("apiKey") String apiKey, 
-							@RequestBody Doctor doctor) {
+							@RequestBody DoctorDTO doctorDTO) {
 		
 		logger.info("updateDoctor: doctorId="+doctorId);
 
 		
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)
-				||!doctorId.equals(doctor.getDoctorId())) {
-			return new ResponseEntity<Doctor>(HttpStatus.UNAUTHORIZED);
+				||!doctorId.equals(doctorDTO.getDoctorId())) {
+			return new ResponseEntity<DoctorDTO>(HttpStatus.UNAUTHORIZED);
 		}
 		
-		Doctor origDoctor = doctorRepository.findOne(doctorId);
-		if (origDoctor == null) {
-			return new ResponseEntity<Doctor>(HttpStatus.NOT_FOUND); 
+		DoctorDTO newDoctor = null;
+		
+		try {
+			newDoctor = doctorService.doUpdateDoctor(doctorDTO);
+		} catch (Exception e) {
+			return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(e.getMessage());
 		}
-		doctorRepository.save(doctor);
-		doctor = doctorRepository.findOne(doctorId);
-		return new ResponseEntity<Doctor>(doctor, HttpStatus.OK);
+		
+		return new ResponseEntity<DoctorDTO>(newDoctor, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/doctors/{doctorId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -126,15 +148,20 @@ public class DoctorController {
 	}
 	
 	@RequestMapping(value = "/doctors/{doctorId}", method = RequestMethod.GET)
-	public ResponseEntity<Doctor> getDoctor(@PathVariable("doctorId")Integer doctorId, @RequestParam("apiKey") String apiKey) {
+	public ResponseEntity<DoctorDTO> getDoctor(@PathVariable("doctorId")Integer doctorId, @RequestParam("apiKey") String apiKey) {
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<Doctor>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<DoctorDTO>(HttpStatus.UNAUTHORIZED);
 		}
+
 		Doctor doctor = doctorRepository.findOne(doctorId);
 		if (doctor == null) {
-			return new ResponseEntity<Doctor>(HttpStatus.NOT_FOUND); 
+			return new ResponseEntity<DoctorDTO>(HttpStatus.NOT_FOUND); 
 		}
-		return new ResponseEntity<Doctor>(doctor, HttpStatus.CREATED);
+		
+		User user = userRepository.getUserByDoctorId(doctorId.toString());
+		DoctorDTO doctorDTO= new DoctorDTO(doctor, user);
+		
+		return new ResponseEntity<DoctorDTO>(doctorDTO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/doctors/{doctorId}/patients", method = RequestMethod.GET)

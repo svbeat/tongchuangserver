@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.tongchuang.visiondemo.ApplicationConstants;
 import com.tongchuang.visiondemo.ApplicationController;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityDeleted;
+import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
 import com.tongchuang.visiondemo.common.ResponseList;
 import com.tongchuang.visiondemo.device.dto.DeviceSettings;
 import com.tongchuang.visiondemo.device.entity.Device;
@@ -124,5 +125,25 @@ public class DeviceController {
 		}
 		return new ResponseEntity<Device>(device, HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/devices/{deviceId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> deleteDevice(@PathVariable("deviceId") String deviceId, @RequestParam("apiKey") String apiKey) {
+		
+		logger.info("deleteDevice: deviceId="+deviceId);
+
+		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
+			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+		}
+
+		Device device = deviceRepository.findOne(deviceId);
+		if (device == null) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND); 
+		}
+		
+		device.setStatus(EntityStatus.DELETED);
+		deviceRepository.save(device);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
 
 }

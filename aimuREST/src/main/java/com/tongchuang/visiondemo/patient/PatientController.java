@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +26,15 @@ import com.tongchuang.visiondemo.common.ResponseList;
 import com.tongchuang.visiondemo.device.Calibration;
 import com.tongchuang.visiondemo.doctor.DoctorRepository;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
+import com.tongchuang.visiondemo.patient.dto.PatientDTO;
 import com.tongchuang.visiondemo.patient.entity.Patient;
 import com.tongchuang.visiondemo.perimetry.PerimetryTest;
 import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
+import com.tongchuang.visiondemo.user.UserRepository;
 import com.tongchuang.visiondemo.user.UserRoleRepository;
+import com.tongchuang.visiondemo.user.dto.User;
+import com.tongchuang.visiondemo.user.dto.UserInfo.Role;
+import com.tongchuang.visiondemo.user.dto.UserRole;
 import com.tongchuang.visiondemo.util.ApplicationUtil;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,18 +46,26 @@ public class PatientController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private PatientRepository 	patientRepository;
-	private	DoctorRepository	doctorRespository;
+	private PatientRepository 		patientRepository;
+	private	DoctorRepository		doctorRespository;
+	private UserRepository			userRepository;
+	private UserRoleRepository		userRoleRepository;
 	private final PerimetryTestRepository perimetryTestRepository;
+	private PatientService			patientService;
 	
 	
 	
 	@Autowired
 	public PatientController(PatientRepository patientRepository, PerimetryTestRepository perimetryTestRepository,
-							DoctorRepository doctorRespository) {
+							DoctorRepository doctorRespository, UserRepository userRepository,
+							UserRoleRepository userRoleRepository,
+							PatientService patientService) {
 		this.patientRepository = patientRepository;
 		this.perimetryTestRepository = perimetryTestRepository;
 		this.doctorRespository = doctorRespository;
+		this.userRepository = userRepository;
+		this.userRoleRepository = userRoleRepository;
+		this.patientService = patientService;
 	}
 
 
@@ -80,36 +94,50 @@ public class PatientController {
 	
 
 	@RequestMapping(value = "/patients", method = RequestMethod.POST)
-	public ResponseEntity<Patient> createPatient(@RequestParam("apiKey") String apiKey, @RequestBody Patient patient) {
+	public ResponseEntity createPatient(@RequestParam("apiKey") String apiKey, @RequestBody PatientDTO patient) {
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<Patient>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<PatientDTO>(HttpStatus.UNAUTHORIZED);
 		}
-		patient.setPatientId(ApplicationUtil.getEntityID());
-		patientRepository.save(patient);
-		patient = patientRepository.findOne(patient.getPatientId());
-		return new ResponseEntity<Patient>(patient, HttpStatus.CREATED);
+		
+
+		PatientDTO newPatient = null;
+		
+		try {
+			newPatient = patientService.doCreatePatient(patient);
+		} catch (Exception e) {
+			return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(e.getMessage());
+		}
+		
+		return new ResponseEntity<PatientDTO>(newPatient, HttpStatus.CREATED);
 	}
 		
+
 	@RequestMapping(value = "/patients/{patientId}", method = RequestMethod.POST)
-	public ResponseEntity<Patient> updatePatient(@PathVariable("patientId")String patientId,
+	public ResponseEntity<?> updatePatientDTO(@PathVariable("patientId")String patientId,
 							@RequestParam("apiKey") String apiKey, 
-							@RequestBody Patient patient) {
+							@RequestBody PatientDTO patientDTO) {
 		
 		logger.info("updatePatient: patientId="+patientId);
 
 		
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)
-				||!patientId.equals(patient.getPatientId())) {
-			return new ResponseEntity<Patient>(HttpStatus.UNAUTHORIZED);
+				||!patientId.equals(patientDTO.getPatientId())) {
+			return new ResponseEntity<PatientDTO>(HttpStatus.UNAUTHORIZED);
 		}
 		
-		Patient origPatient = patientRepository.findOne(patientId);
-		if (origPatient == null) {
-			return new ResponseEntity<Patient>(HttpStatus.NOT_FOUND); 
+		PatientDTO newPatient = null;
+		
+		try {
+			newPatient = patientService.doUpdatePatient(patientDTO);
+		} catch (Exception e) {
+			return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(e.getMessage());
 		}
-		patientRepository.save(patient);
-		patient = patientRepository.findOne(patientId);
-		return new ResponseEntity<Patient>(patient, HttpStatus.OK);
+		
+		return new ResponseEntity<PatientDTO>(newPatient, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/patients/{patientId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -132,15 +160,18 @@ public class PatientController {
 	}
 	
 	@RequestMapping(value = "/patients/{patientId}", method = RequestMethod.GET)
-	public ResponseEntity<Patient> getPatient(@PathVariable("patientId")String patientId, @RequestParam("apiKey") String apiKey) {
+	public ResponseEntity<PatientDTO> getPatient(@PathVariable("patientId")String patientId, @RequestParam("apiKey") String apiKey) {
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<Patient>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<PatientDTO>(HttpStatus.UNAUTHORIZED);
 		}
 		Patient patient = patientRepository.findOne(patientId);
 		if (patient == null) {
-			return new ResponseEntity<Patient>(HttpStatus.NOT_FOUND); 
+			return new ResponseEntity<PatientDTO>(HttpStatus.NOT_FOUND); 
 		}
-		return new ResponseEntity<Patient>(patient, HttpStatus.CREATED);
+		
+		User user = userRepository.getUserByPatientId(patientId);
+		PatientDTO patientDTO= new PatientDTO(patient, user);
+		return new ResponseEntity<PatientDTO>(patientDTO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/patients/{patientId}/doctors", method = RequestMethod.GET)

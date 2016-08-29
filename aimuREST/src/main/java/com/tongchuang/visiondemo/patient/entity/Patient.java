@@ -43,6 +43,7 @@ public class Patient {
     private Integer			createdBy;
     private Integer			lastUpdatedBy;
     private String			name;
+    @Enumerated(EnumType.STRING)
     private Gender			gender;
     private Date			birthdate;
     private String			address;
@@ -50,7 +51,7 @@ public class Patient {
     private String			email;
     
     @Enumerated(EnumType.STRING)
-    private EntityStatus	status;
+    private EntityStatus	status = EntityStatus.ACTIVE;
     
 	public String getPatientId() {
 		return patientId;

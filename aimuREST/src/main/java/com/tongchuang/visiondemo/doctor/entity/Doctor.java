@@ -37,8 +37,8 @@ CREATE TABLE doctor (doctor_id int(11) not null auto_increment,
 public class Doctor {
 	
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private int 		doctorId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer 		doctorId;
     
     private Date		creationDate;    
     private Date		lastUpdateDate;
@@ -55,11 +55,11 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     private EntityDeleted	deleted;
 
-	public int getDoctorId() {
+	public Integer getDoctorId() {
 		return doctorId;
 	}
 
-	public void setDoctorId(int doctorId) {
+	public void setDoctorId(Integer doctorId) {
 		this.doctorId = doctorId;
 	}
 

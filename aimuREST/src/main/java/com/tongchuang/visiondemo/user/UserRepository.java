@@ -19,4 +19,12 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 
 	 @Query("SELECT u FROM User u WHERE u.username=:username and u.password=:password") 
 	 public User  getUser(@Param("username")String userName, @Param("password")String password);
+	 
+	 
+	 @Query("SELECT u FROM User u, UserRole ur WHERE u.userid=ur.userid and ur.role='PATIENT' and ur.subjectId=:patientid") 
+	 public User  getUserByPatientId(@Param("patientid")String patientId);
+
+
+	 @Query("SELECT u FROM User u, UserRole ur WHERE u.userid=ur.userid and ur.role='DOCTOR' and ur.subjectId=:doctorid") 
+	 public User  getUserByDoctorId(@Param("doctorid")String doctorId);
 }

@@ -11,9 +11,9 @@ import com.tongchuang.visiondemo.doctor.entity.Doctor;
 
 public interface DeviceRepository extends CrudRepository<Device, String>{
 
-	 @Query("SELECT d FROM Device d ")
+	 @Query("SELECT d FROM Device d where d.status<>'DELETED'")
 	 public List<Device> getDevices(Pageable pageable);
 	 
-   @Query("SELECT count(1) FROM Device d") 
+   @Query("SELECT count(1) FROM Device d where d.status<>'DELETED'") 
    Integer getTotalCount();
 }
