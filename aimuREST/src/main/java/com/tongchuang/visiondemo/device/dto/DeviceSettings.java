@@ -5,7 +5,7 @@ import java.util.Map;
 import com.tongchuang.visiondemo.common.Point;
 import com.tongchuang.visiondemo.device.Intensity;
 public class DeviceSettings {
-    private String      version;
+    private Integer      version;
     private Map<Integer, Intensity>     intensities;
 
     private Integer     stimulateDuration;
@@ -20,11 +20,11 @@ public class DeviceSettings {
     private int         textDisplaySize;
 
     
-    public String getVersion() {
+    public Integer getVersion() {
 		return version;
 	}
 
-	public void setVersion(String version) {
+	public void setVersion(Integer version) {
 		this.version = version;
 	}
 

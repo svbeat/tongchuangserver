@@ -17,6 +17,7 @@ public class PatientSettings {
 	
 	private Integer     stimulateDuration;
 	private Integer     stimulateInterval;
+	private Integer		stimulateCountMax;
 
 	private Integer     stimulusSpacing;
 	private Integer     stimulusRadius;
@@ -87,6 +88,15 @@ public class PatientSettings {
 
 	public void setStimulateInterval(Integer stimulateInterval) {
 		this.stimulateInterval = stimulateInterval;
+	}
+
+	
+	public Integer getStimulateCountMax() {
+		return stimulateCountMax;
+	}
+
+	public void setStimulateCountMax(Integer stimulateCountMax) {
+		this.stimulateCountMax = stimulateCountMax;
 	}
 
 	public Integer getStimulusSpacing() {
