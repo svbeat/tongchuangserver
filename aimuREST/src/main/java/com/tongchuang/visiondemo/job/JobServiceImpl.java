@@ -57,6 +57,9 @@ public class JobServiceImpl {
 	}
 	
 	private int markCompleteJobs(JobStatus s, List<Integer> ids) {
+		if (ids == null || ids.isEmpty()) {
+			return 0;
+		}
 		int rowCount = visionDBTemplate.update("update job_pending set status='"+JobStatus.DONE+"'"+
 				" where job_pending_id in (:ids)",
 			new MapSqlParameterSource("ids", ids));

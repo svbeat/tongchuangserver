@@ -30,7 +30,7 @@ import javax.persistence.Transient;
 public class PerimetryTest {
 	
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long 	testId;
     
     private Date	creationDate;

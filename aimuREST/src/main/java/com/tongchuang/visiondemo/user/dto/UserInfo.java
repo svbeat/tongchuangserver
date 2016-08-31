@@ -5,7 +5,7 @@ public class UserInfo {
 	
 	private int		userId;
 	private Role	role;
-	private int		subjectId;
+	private String	subjectId;
 	
 	
 	public int getUserId() {
@@ -20,10 +20,10 @@ public class UserInfo {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	public int getSubjectId() {
+	public String getSubjectId() {
 		return subjectId;
 	}
-	public void setSubjectId(int subjectId) {
+	public void setSubjectId(String subjectId) {
 		this.subjectId = subjectId;
 	}
 	

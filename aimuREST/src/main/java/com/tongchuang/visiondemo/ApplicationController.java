@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.google.gson.Gson;
 import com.tongchuang.visiondemo.device.Calibration;
 import com.tongchuang.visiondemo.device.CalibrationRepository;
+import com.tongchuang.visiondemo.job.PerimetryPendingDetails;
+import com.tongchuang.visiondemo.job.JobConstants.JobCode;
+import com.tongchuang.visiondemo.job.JobPendingRepository;
+import com.tongchuang.visiondemo.job.entity.JobPending;
 import com.tongchuang.visiondemo.notification.Notification;
 import com.tongchuang.visiondemo.notification.NotificationRepository;
 import com.tongchuang.visiondemo.perimetry.PerimetryTest;
@@ -33,6 +38,7 @@ public class ApplicationController {
 	private final PerimetryTestRepository perimetryTestRepository;
 	private final CalibrationRepository calibrationRepository;
 	private final NotificationRepository notificationRepository;
+	private final JobPendingRepository jobPendingRepository;
 	
 
 	@RequestMapping(value = "/{patientId}/perimetrytests", method = RequestMethod.POST)
@@ -41,7 +47,18 @@ public class ApplicationController {
 			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
 		}
 		
-		perimetryTestRepository.save(exam);
+		exam = perimetryTestRepository.save(exam);
+		
+		PerimetryPendingDetails pendingDetails =  new PerimetryPendingDetails();
+		pendingDetails.setPatientId(patientId);
+		pendingDetails.setTestId(exam.getTestId());
+		JobPending jobPending  = new JobPending();
+		
+		Gson gson = new Gson();
+		jobPending.setDetails(gson.toJson(pendingDetails));
+		jobPending.setJobCode(JobCode.PERIMETRY_POSTPROCESS);
+		jobPendingRepository.save(jobPending);
+		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/perimetrytests/{id}").buildAndExpand(exam.getTestId()).toUri());
 		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
@@ -172,10 +189,12 @@ public class ApplicationController {
 	@Autowired
 	public ApplicationController(PerimetryTestRepository perimetryExamRepository, 
 								 CalibrationRepository calibrationRepository,
-								 NotificationRepository notificationRepository) {
+								 NotificationRepository notificationRepository,
+								 JobPendingRepository jobPendingRepository) {
 		this.perimetryTestRepository = perimetryExamRepository;
 		this.calibrationRepository = calibrationRepository;
 		this.notificationRepository = notificationRepository;
+		this.jobPendingRepository = jobPendingRepository;
 	}
 
 	
