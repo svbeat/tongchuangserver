@@ -1,6 +1,6 @@
 angular.module('aimuApp')
-.controller('home', ['$rootScope', '$http', '$location', '$modal', 'visionService', 
-                     function($rootScope, $http, $location, $modal, visionService) {
+.controller('home', ['$rootScope', '$http', '$location', '$modal', 'visionService', '$window', 
+                     function($rootScope, $http, $location, $modal, visionService, $window) {
 	if (!$rootScope.authenticated) {
 		$location.path("/login");
 	} 
@@ -65,6 +65,7 @@ angular.module('aimuApp')
 		$http.post('logout', {}).finally(function() {
 			$rootScope.authenticated = false;
 			$location.path("/");
+			$window.localStorage.removeItem("patientId");
 		});
 	};
 
@@ -82,8 +83,8 @@ angular.module('aimuApp')
 			}
 	);
 
-
-	visionService.getPerimetryTests(1, 5)
+	var patientId = $window.localStorage.getItem("patientId");
+	visionService.getPerimetryTests(patientId, 1, 5)
 	.then(
 			function(response) {
 				self.mytests = response.data;
@@ -127,7 +128,7 @@ angular.module('aimuApp')
 	               }
 	               ];
 }) 
-.controller('visionTests',  ['visionService', '$modal', function(visionService, $modal) {
+.controller('visionTests',  ['visionService', '$modal', '$rootScope', '$window', function(visionService, $modal, $rootScope, $window) {
 	var self = this;
 	self.tests= [];
 	self.sortType     = 'testDate'; // set the default sort type
@@ -136,10 +137,11 @@ angular.module('aimuApp')
 	self.pageno=1;
 	self.total_count = 0;
 	self.itemsPerPage = 10;
+	self.patientId = $window.localStorage.getItem("patientId");
 
 	self.getTotal = function() {
 		self.total_count = 0;
-		visionService.getPerimetryTestsTotal()
+		visionService.getPerimetryTestsTotal(self.patientId)
 		.then(
 				function(response) {
 					self.total_count = response.data;
@@ -150,7 +152,7 @@ angular.module('aimuApp')
 	self.getData = function(pageno) {
 		self.tests= [];
 
-		visionService.getPerimetryTests(pageno, self.itemsPerPage)
+		visionService.getPerimetryTests(self.patientId, pageno, self.itemsPerPage)
 		.then(
 				function(response) {
 					self.tests = response.data;
@@ -181,6 +183,87 @@ angular.module('aimuApp')
 	$scope.patient = test.patientId;
 	$scope.testDate = test.testDateDisplay;
 
+	function showResult(textCanvasId, shadeCanvasId, examResult) {
+    	var myRegexp = /q([0-9]+)r([0-9]+)c([0-9]+)/g;
+		var results = [];
+		
+		var displayInterval = 15;
+		
+		for (var posCode in examResult) {
+		    if (examResult.hasOwnProperty(posCode)) {
+		    	var match = myRegexp.exec(posCode);
+		    	myRegexp.lastIndex = 0;
+		    	var q = Number(match[1]);
+		    	var r = Number(match[2]);
+		    	var c = Number(match[3]);
+
+		    	var x = (c-1+0.5)*displayInterval;
+		    	var y = (r-1+0.5)*displayInterval;
+		    	
+		        if (q == 1) {
+		            y = -y;
+		        } else if (q == 2) {
+		            x = -x;
+		            y = -y;
+		        } else if (q == 3) {
+		            x = -x;
+		        }
+		    	
+		    	var dbValue = examResult[posCode];
+		    	var complete=true;
+		    	if (examResult[posCode].endsWith("?")) {
+		    		dbValue = dbValue.substring(0, dbValue.length-1);
+		    		complete = false;
+		    	}
+		    	var p = {db:dbValue, x: x, y:y, complete:complete};
+		    	results.push(p);
+		    }
+		}
+		
+		var canvas = document.getElementById(textCanvasId);
+		var context = canvas.getContext('2d');
+	
+		centerX=100;
+		centerY=100;
+
+		var AMPLIFICATION = 0.1;
+
+		
+
+
+
+
+		for (var i = 0; i < results.length; i++) {
+			results[i].x = centerX+results[i].x;
+			results[i].y = centerY+results[i].y;
+		}
+
+		for (var i = 0; i < results.length; i++) {
+			if (results[i].complete) {
+				context.font = "bold 10px Arial";
+				context.fillStyle="black";
+			} else {
+				context.font = "10px Arial";
+				context.fillStyle="#4b78a6";
+			}
+			context.fillText(results[i].db, results[i].x, results[i].y);
+		}
+
+		canvas = document.getElementById(shadeCanvasId);
+		context = canvas.getContext('2d');
+
+		for (var i = 0; i < results.length; i++) {
+			var db = results[i].db;
+	    	if (db.endsWith("+")||db.endsWith("-")) {
+	    		db = db.substring(0, db.length-1);
+	    	}
+			var shade = (db-10)*5;
+			context.fillStyle='rgb('+shade+','+shade+','+shade+')';
+			context.fillRect(results[i].x, results[i].y,displayInterval,displayInterval);
+		}
+		
+	}
+	
 	$scope.close = function () {
 		$modalInstance.dismiss('cancel');
 	}
@@ -190,60 +273,23 @@ angular.module('aimuApp')
 	}
 
 	$scope.init = function() {
-		var canvas = document.getElementById('canvasText');
-		var context = canvas.getContext('2d');
 
-		var data = $scope.testResult.split(";");
-		var center = data[0].split(":");
-		var centerX = Number(center[0]);
-		var centerY = Number(center[1]);
+		var data = angular.fromJson($scope.testResult);
+		if (data.hasOwnProperty('examResultLeft')) {
+			showResult('canvasTextLeft', 'canvasShadeLeft', data.examResultLeft);
+		}
 
-		if (centerX<centerY) {
+		if (data.hasOwnProperty('examResultRight')) {
+			showResult('canvasTextRight', 'canvasShadeRight', data.examResultRight);
+		}
+
+		if (data.hasOwnProperty('examResultLeft') && data.hasOwnProperty('examResultRight')) {
+			$scope.eye='双眼';
+		} else if (data.hasOwnProperty('examResultLeft') ){
 			$scope.eye='左眼';
-		} else {
+		} else if (data.hasOwnProperty('examResultRight')){
 			$scope.eye='右眼';
 		}
-		centerX=160;
-		centerY=160;
-		var points = data[1].split(",");
-		var AMPLIFICATION = 0.1;
-
-		context.font = "10px Arial";
-		var results = []
-
-		var displayInterval = 15;
-		var xInterval = 320;
-		var yInterval = 320;
-		for (var i = 0; i < points.length; i++) {
-			var d = points[i].split(":");
-			var p = {db:d[0].toString(), x: Number(d[1]), y:Number(d[2])};
-			if (p.x>0 && p.x < xInterval) {
-				xInterval = p.x;
-			}
-			if (p.y>0 && p.y < yInterval) {
-				yInterval = p.y;
-			}
-			results.push(p);
-		}
-
-		for (var i = 0; i < results.length; i++) {
-			results[i].x = centerX+(results[i].x/xInterval)*displayInterval;
-			results[i].y = centerY+(results[i].y/yInterval)*displayInterval;
-		}
-
-		for (var i = 0; i < results.length; i++) {
-			context.fillText(results[i].db, results[i].x, results[i].y);
-		}
-
-		canvas = document.getElementById('canvasShade');
-		context = canvas.getContext('2d');
-
-		for (var i = 0; i < results.length; i++) {
-			var shade = (results[i].db-10)*5;
-			context.fillStyle='rgb('+shade+','+shade+','+shade+')';
-			context.fillRect(results[i].x, results[i].y,displayInterval,displayInterval);
-		}
-
 	}
 
 
@@ -259,7 +305,8 @@ angular.module('aimuApp')
 		context.stroke();  
 	}
 })
-.controller('navigation', function($rootScope, $http, $location) {
+.controller('navigation',  ['visionService', '$rootScope', '$http', '$location', '$window',
+                            			function(visionService, $rootScope, $http, $location, $window) {
 
 	var self = this
 
@@ -276,10 +323,29 @@ angular.module('aimuApp')
 		$http.get('user', {headers : headers}).then(function(response) {
 			if (response.data.name) {
 				$rootScope.authenticated = true;
+				var patientId = $window.localStorage.getItem("patientId");
+				if (patientId == null) {
+					visionService.getUserRole($rootScope.username)
+					.then(
+							function(response) {
+								var patientId = 0;
+								if (response.data.role=='PATIENT') {
+									console.log('after getUserInfo: patientId_1=', response.data.subjectId);
+									patientId = response.data.subjectId;
+									console.log('after getUserInfo: patientId_2=', $rootScope.patientId);
+								}
+								$window.localStorage.setItem("patientId", patientId);
+								callback && callback();
+							}
+					);					
+				} else {
+					callback && callback();
+				}
 			} else {
 				$rootScope.authenticated = false;
+				callback && callback();
 			}
-			callback && callback();
+			
 		}, function() {
 			$rootScope.authenticated = false;
 			callback && callback();
@@ -295,6 +361,7 @@ angular.module('aimuApp')
 
 	self.credentials = {};
 	self.login = function() {
+		$window.localStorage.removeItem("patientId");
 		authenticate(self.credentials, function() {
 			if ($rootScope.authenticated) {
 				$location.path("/healthcenter");
@@ -310,6 +377,7 @@ angular.module('aimuApp')
 		$http.post('logout', {}).finally(function() {
 			$rootScope.authenticated = false;
 			$location.path("/");
+			$window.localStorage.removeItem("patientId");
 		});
 	};
 
@@ -317,4 +385,4 @@ angular.module('aimuApp')
 		var locPath = $location.path().substr(0, path.length);
 		return ((locPath === path)||(locPath=='/' && path=="/healthcenter")) ? 'active' : '';
 	}
-});
+}]);

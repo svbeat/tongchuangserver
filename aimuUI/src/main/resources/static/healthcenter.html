@@ -11,7 +11,7 @@
 			ng-click="controller.setTab(4)">我的医生</a></li>
 		<li ng-class="{ active: controller.isSet(5) }"><a href
 			ng-click="controller.setTab(5)">检测有约</a></li>
-		<button type="button" class="btn btn-link pull-right">退出</button>
+		<button type="button" class="btn btn-link pull-right" ng-click="controller.logout()">退出</button>
 		<li class="pull-right">
 			<img style="height:32px !important" src="images/shoppingcart.png" alt="">
 		</li>
