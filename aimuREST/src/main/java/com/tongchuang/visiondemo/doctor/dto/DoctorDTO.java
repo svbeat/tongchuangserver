@@ -7,7 +7,7 @@ import com.tongchuang.visiondemo.user.dto.User;
 public class DoctorDTO {
 	private Doctor		doctorEntity;
 	private User		user;
-
+	private String		hospitalName;
 	
 	public DoctorDTO() {
 		doctorEntity = new Doctor();
@@ -38,6 +38,16 @@ public class DoctorDTO {
 
 	public void setHospitalId(Integer hospitalId) {
 		doctorEntity.setHospitalId(hospitalId);
+	}
+
+
+	public String getHospitalName() {
+		return hospitalName;
+	}
+
+
+	public void setHospitalName(String hospitalName) {
+		this.hospitalName = hospitalName;
 	}
 
 

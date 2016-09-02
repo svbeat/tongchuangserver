@@ -1,6 +1,9 @@
 package com.tongchuang.visiondemo.doctor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +25,20 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.tongchuang.visiondemo.ApplicationConstants;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityDeleted;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
+import com.tongchuang.visiondemo.ApplicationConstants.RelationshipType;
 import com.tongchuang.visiondemo.common.ResponseList;
 import com.tongchuang.visiondemo.device.Calibration;
 import com.tongchuang.visiondemo.doctor.dto.DoctorDTO;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
+import com.tongchuang.visiondemo.hospital.Hospital;
+import com.tongchuang.visiondemo.hospital.HospitalRepository;
 import com.tongchuang.visiondemo.patient.PatientRepository;
+import com.tongchuang.visiondemo.patient.PatientService;
 import com.tongchuang.visiondemo.patient.dto.PatientDTO;
 import com.tongchuang.visiondemo.patient.entity.Patient;
 import com.tongchuang.visiondemo.perimetry.PerimetryTest;
+import com.tongchuang.visiondemo.relationship.RelationshipRepository;
+import com.tongchuang.visiondemo.relationship.entity.Relationship;
 import com.tongchuang.visiondemo.user.UserRepository;
 import com.tongchuang.visiondemo.user.UserRoleRepository;
 import com.tongchuang.visiondemo.user.dto.User;
@@ -48,19 +57,36 @@ public class DoctorController {
 	private PatientRepository 	patientRepository;
 	private DoctorService		doctorService;
 	private UserRepository			userRepository;
+	private PatientService			patientService;
+	private RelationshipRepository 	relationshipRepository;
+	private HospitalRepository 	hospitalRepository;
+	
+	private Map<Integer, String>	hospitalMap;
 	
 	@Autowired
 	public DoctorController(DoctorRepository doctorRepository, PatientRepository patientRepository,
-								DoctorService doctorService, UserRepository	userRepository) {
+								DoctorService doctorService, UserRepository	userRepository,
+								PatientService patientService,
+								RelationshipRepository relationshipRepository,
+								HospitalRepository hospitalRepository) {
 		this.doctorRepository = doctorRepository;
 		this.patientRepository = patientRepository;
 		this.doctorService = doctorService;
 		this.userRepository = userRepository;
+		this.patientService = patientService;
+		this.relationshipRepository = relationshipRepository;
+		this.hospitalRepository = hospitalRepository;
+		
+		List<Hospital> hospitals = (List<Hospital>)hospitalRepository.findAll();
+		hospitalMap = new HashMap<Integer, String>();
+		for (Hospital h : hospitals) {
+			hospitalMap.put(h.getHospitalId(), h.getName());
+		}
 	}
 
 
 	@RequestMapping(value = "/doctors", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseList<Doctor>> getDoctors( 
+	public ResponseEntity<ResponseList<DoctorDTO>> getDoctors( 
 				@RequestParam("apiKey") String apiKey, 
 				@RequestParam(value = "filter", required=false) String filter,
 				@RequestParam(value = "returnTotal", required=false, defaultValue = "false") boolean returnTotal,
@@ -69,17 +95,26 @@ public class DoctorController {
 				@RequestParam(value = "pagesize", required=false, defaultValue = "10") int pagesize) {
 		
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<ResponseList<Doctor>>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<ResponseList<DoctorDTO>>(HttpStatus.UNAUTHORIZED);
 		}
 		logger.info("getDoctors: filter="+filter+"; pageno="+pageno+"; pagesize="+pagesize);
 		List<Doctor> doctors = doctorRepository.getDoctors(new PageRequest(pageno, pagesize));
-		ResponseList<Doctor> result = new ResponseList<Doctor>(doctors);
+		
+		List<DoctorDTO> doctorsDTO = new ArrayList<DoctorDTO>();
+		for (Doctor d : doctors) {
+			DoctorDTO dt = new DoctorDTO(d, null); 
+			if (d.getHospitalId() != null) {
+				dt.setHospitalName(hospitalMap.get(d.getHospitalId()));
+			}
+			doctorsDTO.add(dt);
+		}
+		ResponseList<DoctorDTO> result = new ResponseList<DoctorDTO>(doctorsDTO);
 		Integer total = null;
 		if (returnTotal) {
 			total = doctorRepository.getTotalCount();
 			result.setTotalCounts(total);
 		}
-		return new ResponseEntity<ResponseList<Doctor>>(result, HttpStatus.OK);
+		return new ResponseEntity<ResponseList<DoctorDTO>>(result, HttpStatus.OK);
 	}
 	
 
@@ -161,6 +196,9 @@ public class DoctorController {
 		User user = userRepository.getUserByDoctorId(doctorId.toString());
 		DoctorDTO doctorDTO= new DoctorDTO(doctor, user);
 		
+		if (doctor.getHospitalId() != null) {
+			doctorDTO.setHospitalName(hospitalMap.get(doctor.getHospitalId()));
+		}
 		return new ResponseEntity<DoctorDTO>(doctorDTO, HttpStatus.OK);
 	}
 	
@@ -185,5 +223,32 @@ public class DoctorController {
 		}
 		
 		return new ResponseEntity<ResponseList<Patient>>(result, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/doctors/{doctorId}/patients", method = RequestMethod.POST)
+	public ResponseEntity createPatient(@RequestParam("apiKey") String apiKey, @PathVariable("doctorId")Integer doctorId,
+								@RequestBody PatientDTO patient) {
+		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
+			return new ResponseEntity<PatientDTO>(HttpStatus.UNAUTHORIZED);
+		}
+		
+
+		PatientDTO newPatient = null;
+		
+		try {
+			newPatient = patientService.doCreatePatient(patient);
+		} catch (Exception e) {
+			return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(e.getMessage());
+		}
+		
+		Relationship relationship = new Relationship();
+		relationship.setRelationshipType(RelationshipType.DOCTOR_PATIENT);
+		relationship.setSubjectId(doctorId.toString());
+		relationship.setObjectId(newPatient.getPatientId());
+		relationshipRepository.save(relationship);
+		return new ResponseEntity<PatientDTO>(newPatient, HttpStatus.CREATED);
 	}
 }
