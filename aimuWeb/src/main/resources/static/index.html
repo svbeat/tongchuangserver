@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+	<title>Document</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.icon.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.5/es5-shim.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<style>
+        .ng-hide {
+            display: none !important;
+        }
+    </style>
+    <script type="text/javascript">
+        if (!window.console || !console.firebug) {
+            var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml", "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
+ 
+            window.console = {};
+            for (var i = 0; i < names.length; ++i)
+                window.console[names[i]] = function () {
+                }
+        }
+    </script>
+    <style type="text/css">
+.navbar-brand,
+.navbar-nav li a {
+    line-height: 60px;
+    height: 60px;
+    padding-top: 0;
+}
+
+
+.navbar {
+    border-radius: 0;
+}
+
+.navbar-new {
+    background-color: #E0EEEF;
+    border-color: #5AB2B0;
+}
+
+.navbar-new .navbar-brand,
+.navbar-new .navbar-brand:hover,
+.navbar-new .navbar-brand:focus {
+    color: #FFF;
+}
+
+.navbar-new .navbar-brand.username{
+    color: #5AB2B0;
+}
+
+.navbar-new .navbar-nav > li > a {
+    color: #5AB2B0;
+}
+
+
+.navbar-new .navbar-nav > li > a:hover,
+.navbar-new .navbar-nav > li > a:focus {
+    background-color: #5AB2B0;
+}
+
+.navbar-new .navbar-nav > .active > a,
+.navbar-new .navbar-nav > .active > a:hover,
+.navbar-new .navbar-nav > .active > a:focus {
+    color: #FFF;
+    background-color: #5AB2B0;
+}
+
+.navbar-new .navbar-text {
+    color: #5AB2B0;
+}
+
+.navbar-new .navbar-toggle {
+    border-color: #5AB2B0;
+}
+
+.navbar-new .navbar-toggle:hover,
+.navbar-new .navbar-toggle:focus {
+    background-color: #5AB2B0;
+}
+
+.navbar-new .navbar-toggle .icon-bar {
+    background-color: #FFF;
+}
+
+.jumbotron {
+    background-color: #F3F8F9;
+}
+
+.nav-tabs
+ {
+   border-color:#E0EEEF;
+   width:100%;
+ }
+
+.nav-tabs > li a { 
+    border: 1px solid #E0EEEF;
+    background-color:#E0EEEF; 
+    color:#5AB2B0;
+    }
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover{
+    background-color:#F3F8F9;
+    color:#000;
+    border: 1px solid #E0EEEF;
+    border-bottom-color: transparent;
+    }
+
+.nav-tabs > li > a:hover{
+  background-color: #F3F8F9 !important;
+    border-radius: 5px;
+    color:#000;
+
+} 
+
+.tab-pane-new {
+    border:solid 1px #E0EEEF;
+    border-top: 0; 
+    width:100%;
+    background-color:#F3F8F9;
+    padding:5px;
+    padding-top:25px;
+}
+
+.tab-pane-new .btn-right{
+    display:block;
+    width:100%;
+    text-align:right;
+    padding-bottom:1rem;
+}
+
+.tab-pane-new .btn-left{
+    display:block;
+    text-align:left;
+    padding-bottom:1rem;
+    color: #337ab7;
+    cursor:pointer;
+}
+
+.carousel-caption {
+      right: 12;
+    left: auto;
+}
+.carousel-caption h2 {
+color:          #F8A71A !important;
+text-shadow: none;
+}
+
+.carousel-indicators li {
+  background-color: #999;
+  background-color: rgba(70,70,70,.25);
+}
+
+.carousel-indicators .active {
+  background-color: #ffe159;
+}
+
+.carousel-control.left {
+    background-image: linear-gradient(to right, rgba(184, 241, 245, 1.0) 0%, rgba(184, 241, 245, 0.0001) 100%);
+}
+
+.carousel-control.right {
+    background-image: linear-gradient(to right, rgba(184, 241, 245, 0.0001) 0%, rgba(184, 241, 245, 1.0) 100%);
+}
+
+.custom_text-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-icon {
+    height: 16px;
+    width: 16px;
+}
+
+.modal {
+    display: block;
+    background-color: #fefefe;
+    margin: 1% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 800px; /* Could be more or less, depending on screen size */
+    height: 600px; /* Could be more or less, depending on screen size */
+    text-align: center;
+}
+
+.modal img{
+    margin: auto;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #print-content * {
+        visibility: visible;
+    }
+    .modal{
+        position: absolute;
+    }
+}
+    </style>
+</head>
+<body>
+	
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-new">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/"><img src="images/logo.png" height="50" width="100"></a>
+          <!-- <a class="navbar-brand username" href="javascript:;" ng-bind="$root.curusername"></a> -->
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li ng-click="go('/login', $event)"><a href="javascript:;">健康中心</a></li>
+            <li ng-click="go('/', $event)"><a href="javascript:;">爱目产品</a></li>
+            <li ng-click="go('/', $event)"><a href="javascript:;">关于我们</a></li>
+            <li  ng-if="$root.curusername"><a href="javascript:;"ng-bind="$root.curusername"></a></li>
+            <li ng-if="$root.curusername" ng-click="logout($event)"><a href="javascript:;">退出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid" style="width: 100%;padding-top: 10rem;" >
+        <div ng-view></div>
+    </div>
+
+
+
+
+
+
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="js/lib/bootstrap-datetimepicker.min.js"></script>
+<script src="js/lib/bootstrap-datetimepicker.zh-CN.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="js/asset/ie10-viewport-bug-workaround.js"></script>
+<!-- self -->
+<script data-main="js/app" src="bower_components/requirejs/require.js?v=13"></script>
+<script src="js/asset/qrcode.js"></script>
+</body>
+</html>

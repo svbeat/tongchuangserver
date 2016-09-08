@@ -1,0 +1,504 @@
+<div class="container navbar">
+    <ul class="nav nav-tabs">
+        <li ng-class="{'active':activeTab==='tab1'}" ng-click="activeTab='tab1';innerTab='tab1';footprint('tab1')"><a href="javascript:;">首页</a></li>
+        <li ng-class="{'active':activeTab==='tab2'}" ng-click="activeTab='tab2';innerTab='tab2';footprint('tab2')"><a href="javascript:;">病人</a></li>
+        <li ng-class="{'active':activeTab==='tab3'}" ng-click="activeTab='tab3';innerTab='tab3';footprint('tab3')"><a href="javascript:;">医生</a></li>
+        <li ng-class="{'active':activeTab==='tab4'}" ng-click="activeTab='tab4';innerTab='tab4';footprint('tab4')"><a href="javascript:;">测试仪器</a></li>
+    </ul>
+    <div class="tab-content" ng-init="activeRegTab='hide'">
+        <!-- 注册修改新病人 ;regpatient($event)-->
+        <div class="tab-pane-new" ng-show="innerTab==='tab2-reg'||innerTab==='tab2-mod'">
+            <div class="well well-lg">
+                <form role="form" ng-submit="">
+                    <div class="form-group">
+                        <label for="name">姓名:</label>
+                        <input type="text" class="form-control" ng-model="pat.name">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">性别：</label>
+                        <input value="MALE" ng-model="pat.gender" type="radio">&nbsp;&nbsp;男&nbsp;&nbsp;
+                        <input value="FAMALE" ng-model="pat.gender" type="radio">&nbsp;&nbsp;女
+                    </div>
+                    <div class="form-group">
+                        <label for="birthdate">出生日期:</label>
+                        <input type="text" readonly size="16" value="1990-01-01" class="form-control myform_datetime" ng-model="pat.birthdate">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">地址:</label>
+                        <input type="text" class="form-control" ng-model="pat.address">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">邮件:</label>
+                        <input type="email" class="form-control" ng-model="pat.email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">联系电话:</label>
+                        <input type="text" class="form-control" ng-model="pat.phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">登录用户名:</label>
+                        <input type="text" class="form-control" ng-model="pat.userName">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">登录密码:</label>
+                        <input type="password" class="form-control" ng-model="pat.password">
+                    </div>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab2-reg'?regpatient($event,'add'):regpatient($event,'mod');innerTab='tab2';">保存</button>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab='tab2';cancelSave()">取消</button>
+                </form>
+            </div>
+        </div>
+        <!-- 注册新医生 ;regdoctor($event)-->
+        <div class="tab-pane-new" ng-show="innerTab==='tab3-reg'||innerTab==='tab3-mod'">
+            <div class="well well-lg">
+                <form role="form" ng-submit="">
+                    <div class="form-group">
+                        <label for="name">姓名:</label>
+                        <input type="text" class="form-control" ng-model="doc.name">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">性别：</label>
+                        <input value="MALE" ng-model="doc.gender" type="radio">&nbsp;&nbsp;男&nbsp;&nbsp;
+                        <input value="FAMALE" ng-model="doc.gender" type="radio">&nbsp;&nbsp;女
+                    </div>
+                    <div class="form-group">
+                        <label for="hospital">医院:</label>
+                        <select class="form-control" ng-model="doc.hospitalId">
+                            <option value="" ng-bind="'--请选择--'"></option>
+                            <option ng-repeat="v in allhospitals" value="{{v.hospitalId}}" ng-bind="v.name"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">专长:</label>
+                        <input type="text" class="form-control" ng-model="doc.description">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">联系电话:</label>
+                        <input type="text" class="form-control" ng-model="doc.phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">邮件:</label>
+                        <input type="email" class="form-control" ng-model="doc.email">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">登录用户名:</label>
+                        <input type="text" class="form-control" ng-model="doc.userName">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">登录密码:</label>
+                        <input type="password" class="form-control" ng-model="doc.password">
+                    </div>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab3-reg'?regdoctor($event,'add'):regdoctor($event,'mod');innerTab='tab3'">保存</button>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab='tab3';cancelSave()">取消</button>
+                </form>
+            </div>
+        </div>
+        <!-- 注册新仪器 ;regdevice($event)-->
+        <div class="tab-pane-new" ng-show="innerTab==='tab4-reg'||innerTab==='tab4-mod'">
+            <div class="well well-lg">
+                <form ng-submit=";">
+                    <div class="form-group">
+                        <label for="username">序列号:</label>
+                        <input type="text" class="form-control" ng-model="dev.deviceId">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">类别:</label>
+                        <input type="text" class="form-control" ng-model="dev.deviceType">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">校准参数:</label>
+                        <textarea rows="6" cols="20" class="form-control" ng-model="dev.deviceSettings"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab4-reg'?regdevice($event,'add'):regdevice($event,'mod');innerTab='tab4';">保存</button>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab='tab4';cancelSave()">取消</button>
+                </form>
+            </div>
+        </div>
+        <!-- 病人详情 -->
+        <div class="tab-pane-new" ng-show="innerTab==='tab2-det'">
+            <div class="btn-left" ng-click="innerTab='tab2'">
+                <<返回病人列表 
+            </div>
+            <div class="well well-lg">
+              <h1 ng-bind="patientTmp.name"></h1>
+              <h4 style="margin-top:25px">
+                <div class="row">
+                  <div class="col-md-4 col-xs-6">
+                    <span>出生日期：</span>
+                    <span ng-bind="patientTmp.birthdate|date:'yyyy/MM/dd'">1950/05/01</span>
+                  </div>
+                  <div class="col-md-8 col-xs-6">
+                    <span>性别：</span>
+                    <span ng-bind="patientTmp.gender|sex">女</span>
+                  </div>
+                </div>
+              </h4>
+              <h4>
+                <div class="row">
+                  <div class="col-md-4 col-xs-6">
+                    <span>联系电话：</span>
+                    <span ng-bind="patientTmp.phone">123-456-7890</span>
+                  </div>
+                  <div class="col-md-8 col-xs-6">
+                    <span>地址：</span>
+                    <span ng-bind="patientTmp.address">浙江省杭州西湖区</span>
+                  </div>
+                </div>
+              </h4>
+            </div>
+            <ul class="nav nav-tabs">
+                <li ng-class="{'active':detailTab==='tab1'}" ng-click="detailTab='tab1'"><a href="javascript:;">测试结果</a></li>
+                <li ng-class="{'active':detailTab==='tab2'}" ng-click="detailTab='tab2'"><a href="javascript:;">指定医生</a></li>
+                <li ng-class="{'active':detailTab==='tab3'}" ng-click="detailTab='tab3'"><a href="javascript:;">测试预测</a></li>
+                <li ng-class="{'active':detailTab==='tab4'}" ng-click="detailTab='tab4'"><a href="javascript:;">测试分析</a></li>
+                <li ng-class="{'active':detailTab==='tab5'}" ng-click="detailTab='tab5'"><a href="javascript:;">看医笔记</a></li>
+                <li ng-class="{'active':detailTab==='tab6'}" ng-click="detailTab='tab6'"><a href="javascript:;">其他信息</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane-new" ng-show="detailTab==='tab1'">
+                <div class="well well-lg">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>测试名称</th>
+                                <th>测试日期</th>
+                                <th>结果</th>
+                                <th>报告</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="test in patientTests" d-id="{{test.testId}}">
+                                <td ng-bind="test.type"></td>
+                                <td ng-bind="test.testDateDisplay"></td>
+                                <td ng-bind="test.status"></td>
+                                <td ng-click=";"><i class="icon-search"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+              <div class="tab-pane-new" ng-show="detailTab==='tab2'">
+                <div class="btn-right">
+                    <button class="btn btn-info" ng-click="getDoctorForPatient()">
+                        指定新医生
+                    </button>
+                </div>
+                <div class="well well-lg">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>医院</th>
+                                <th>专长</th>
+                                <th>电话</th>
+                                <th>删除</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="doctor in pdoctors" d-id="{{doctor.doctorId}}">
+                                <td ng-bind="doctor.name"></td>
+                                <td ng-bind="doctor.hospitalName"></td>
+                                <td ng-bind="doctor.description"></td>
+                                <td ng-bind="doctor.phone"></td>
+                                <td ng-click="delRelationship( doctor.doctorId)"><i class="icon-minus"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- 医生详情 -->
+        <div class="tab-pane-new" ng-show="innerTab==='tab3-det'">
+            <div class="btn-left" ng-click="innerTab='tab3'">
+                <<返回医生列表 
+            </div>
+            <div class="well well-lg">
+                <h1 ng-bind="doctorTmp.name">姓名</h1>
+                <h4 style="margin-top:25px">
+                <div class="row">
+                  <div class="col-md-4 col-xs-6">
+                    <span>医院：</span>
+                    <span ng-bind="doctorTmp.hospitalName">第二人民医院</span>
+                  </div>
+                  <div class="col-md-8 col-xs-6">
+                    <span>职称：</span>
+                    <span>主治医师</span>
+                  </div>
+                </div>
+              </h4>
+              <h4>
+                <div class="row">
+                  <div class="col-md-4 col-xs-6">
+                    <span>联系电话：</span>
+                    <span ng-bind="doctorTmp.phone">123-456-7890</span>
+                  </div>
+                  <div class="col-md-8 col-xs-6">
+                    <span>专长：</span>
+                    <span ng-bind="doctorTmp.description">青光眼</span>
+                  </div>
+                </div>
+              </h4>
+            </div>
+            <ul class="nav nav-tabs">
+                <li ng-class="{'active':detailTab==='tab2'}" ng-click="detailTab='tab2'"><a href="javascript:;">问诊病人</a></li>
+                <li ng-click="detailTab='tab2'"><a href="javascript:;">看医笔记</a></li>
+                <li ng-click="detailTab='tab2'"><a href="javascript:;">其他信息</a></li>
+            </ul>
+            <div class="btn-right">
+                <button class="btn btn-info" ng-click="getPatientForDoctor()">
+                    问诊新病人
+                </button>
+            </div>
+            <div class="well well-lg">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>年龄</th>
+                            <th>地址</th>
+                            <th>电话</th>
+                            <th>删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="patient in dpatients" p-id="{{patient.patientId}}">
+                            <td ng-bind="patient.name"></td>
+                            <td ng-bind="patient.gender|sex"></td>
+                            <td ng-bind="patient.birthdate|age"></td>
+                            <td ng-bind="patient.address"></td>
+                            <td ng-bind="patient.phone"></td>
+                            <td ng-click="delPatient($event, patient.patientId)"><i class="icon-minus"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 仪器详情 -->
+        <div class="tab-pane-new" ng-show="innerTab==='tab4-det'">
+            <div class="btn-left" ng-click="innerTab='tab4'">
+                <<返回仪器列表 
+            </div>
+            <div class="well well-lg">
+                <h4>序列号：<span ng-bind="deviceTmp.deviceId"></span></h4>
+                <h4>名称：<span ng-bind="deviceTmp.deviceType">视野仪</span></h4>
+                <h4>所属医院：<span>第xxx医院</span></h4>
+                <h4>校准参数：<span>OOOOOO</span></h4>
+                <h4>校准有效期：<span>xxx年</span></h4>
+            </div>
+        </div>
+        <!-- 首页 -->
+        <div class="tab-pane-new" ng-show="activeTab==='tab1'&&innerTab==='tab1'">
+            <p>这是首页部分1</p>
+            <p>这是首页部分</p>
+            <p>这是首页部分</p>
+        </div>
+        <div class="tab-pane-new" ng-show="activeTab==='tab2'&&innerTab==='tab2'">
+            <div class="btn-right">
+                <button class="btn btn-info" ng-click="cancelSave();innerTab='tab2-reg'">
+                    注册新病人
+                </button>
+            </div>
+            <div class="well well-lg">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>年龄</th>
+                            <th>地址</th>
+                            <th>电话</th>
+                            <th>QR码</th>
+                            <th>删除</th>
+                            <th>修改</th>
+                            <th>详情</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="patient in allpatients" p-id="{{patient.patientId}}">
+                            <td ng-bind="patient.name"></td>
+                            <td ng-bind="patient.gender|sex"></td>
+                            <td ng-bind="patient.birthdate|age"></td>
+                            <td ng-bind="patient.address"></td>
+                            <td ng-bind="patient.phone"></td>
+                            <td ng-click="getQR('patient:'+patient.patientId)"><i class="icon-qrcode"></i></td>
+                            <td ng-click="delPatient($event, patient.patientId)"><i class="icon-minus"></i></td>
+                            <td ng-click="mod('patient',patient)"><i class="icon-edit"></i></td>
+                            <td ng-click="detail('patient',patient)"><i class="icon-search"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <tm-pagination conf="patientConf"></tm-pagination>
+            </div>
+        </div>
+        <div class="tab-pane-new" ng-show="activeTab==='tab3'&&innerTab==='tab3'">
+            <div class="btn-right">
+                <button class="btn btn-info" ng-click="cancelSave();innerTab='tab3-reg'">
+                    注册新医生
+                </button>
+            </div>
+            <div class="well well-lg">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>医院</th>
+                            <th>专长</th>
+                            <th>电话</th>
+                            <th>删除</th>
+                            <th>修改</th>
+                            <th>详情</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="doctor in alldoctors" d-id="{{doctor.doctorId}}">
+                            <td ng-bind="doctor.name"></td>
+                            <td ng-bind="doctor.hospitalName"></td>
+                            <td ng-bind="doctor.description"></td>
+                            <td ng-bind="doctor.phone"></td>
+                            <td ng-click="delDoctor($event, doctor.doctorId)"><i class="icon-minus"></i></td>
+                            <td ng-click="mod('doctor',doctor)"><i class="icon-edit"></i></td>
+                            <td ng-click="detail('doctor',doctor)"><i class="icon-search"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <tm-pagination conf="doctorConf"></tm-pagination>
+            </div>
+        </div>
+        <div class="tab-pane-new" ng-show="activeTab==='tab4'&&innerTab==='tab4'">
+            <div class="btn-right">
+                <button class="btn btn-info" ng-click="cancelSave();innerTab='tab4-reg'">
+                    注册新仪器
+                </button>
+            </div>
+            <div class="well well-lg">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>序列号</th>
+                            <th>类型</th>
+                            <th>校准参数</th>
+                            <th>删除</th>
+                            <th>修改</th>
+                            <th>详情</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="device in alldevices" d-id="{{device.deviceId}}">
+                            <td ng-bind="device.deviceId"></td>
+                            <td ng-bind="device.deviceType"></td>
+                            <td ng-click="getParam(device.deviceSettings)"><i class="icon-search"></td>
+                            <td ng-click="delDevice($event, device.deviceId)"><i class="icon-minus"></i></td>
+                            <td ng-click="mod('device',device)"><i class="icon-edit"></i></td>
+                            <td ng-click="detail('device',device)"><i class="icon-search"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <tm-pagination conf="deviceConf"></tm-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QR-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin:auto;display:none">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title"></h4>
+    </div>
+    <div class="modal-body" style="height:400px;text-align:center" id="myModalLabel"></div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+    </div>
+</div>
+<!-- 指定医生 -->
+<div class="modal fade" id="searchDoctor" tabindex="-1" role="dialog" aria-labelledby="searchDoctorLabel" aria-hidden="true" style="margin:auto;display:none">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">指定新医生</h4>
+    </div>
+    <div class="modal-body" style="height:400px;text-align:center" id="searchDoctorLabel">
+        <div class="well well-lg">
+            <h4 class="modal-title">
+              <input type="text" name=""  ng-model="querydoctor"> 
+              <button ng-click="searchDoctor($event)" type="button" class="btn btn-default">搜索</button>
+            </h4>
+        </div>
+        <div class="well well-lg" style="height: 200px;overflow: scroll;">
+            <table class="table table-bordered table-striped form-group">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>医院</th>
+                        <th>专长</th>
+                        <th>电话</th>
+                        <th>增加</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="doctor in sdoctors" d-id="{{doctor.doctorId}}">
+                        <td ng-bind="doctor.name"></td>
+                        <td ng-bind="doctor.hospitalName"></td>
+                        <td ng-bind="doctor.description"></td>
+                        <td ng-bind="doctor.phone"></td>
+                        <td>
+                            <input value="{{doctor.doctorId}}" name="sdoctorid" ng-model="doctorPatient.sdoctorid" type="radio">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="saveRelationship(doctorPatient.sdoctorid,patientTmp.patientId,1)">保存</button>
+    </div>
+</div>
+<!-- 问诊新病人 -->
+<div class="modal fade" id="searchPatient" tabindex="-1" role="dialog" aria-labelledby="searchPatientLabel" aria-hidden="true" style="margin:auto;display:none">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+        </button>
+        <h4 class="modal-title">问诊新病人</h4>
+    </div>
+    <div class="modal-body" style="height:400px;text-align:center" id="searchPatientLabel">
+        <div class="well well-lg">
+            <h4 class="modal-title">
+              <input type="text" name=""  ng-model="querypatient"> 
+              <button type="button" ng-click="searchPatient($event)" class="btn btn-default">搜索</button>
+            </h4>
+        </div>
+        <div class="well well-lg" style="height: 200px;overflow: scroll;">
+            <table class="table table-bordered table-striped form-group">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>地址</th>
+                        <th>电话</th>
+                        <th>增加</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="patient in spatients" d-id="{{patient.patientId}}">
+                        <td ng-bind="patient.name"></td>
+                        <td ng-bind="patient.gender|sex"></td>
+                        <td ng-bind="patient.birthdate|age"></td>
+                        <td ng-bind="patient.address"></td>
+                        <td ng-bind="patient.phone"></td>
+                        <td>
+                            <input value="{{patient.patientId}}" name="spatientid" ng-model="doctorPatient.spatientid" type="radio">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="saveRelationship(doctorTmp.doctorId, doctorPatient.spatientid,2)">保存</button>
+    </div>
+</div>

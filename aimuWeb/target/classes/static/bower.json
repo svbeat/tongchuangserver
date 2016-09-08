@@ -1,0 +1,17 @@
+{
+  "name": "for-outer",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "bitores <773155801@qq.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,72 @@
+<div class="container navbar">
+  <ul class="nav nav-tabs">
+      <li ng-class="{'active':activeTab==='tab1'}" ng-click="activeTab='tab1';footprint('tab1')"><a href="javascript:;">首页</a></li>
+      <li ng-class="{'active':activeTab==='tab2'}" ng-click="activeTab='tab2';footprint('tab2')"><a href="javascript:;">通知栏</a></li>
+      <li ng-class="{'active':activeTab==='tab3'}" ng-click="activeTab='tab3';footprint('tab3')"><a href="javascript:;">测试记录</a></li>
+      <li ng-class="{'active':activeTab==='tab4'}" ng-click="activeTab='tab4';footprint('tab4')"><a href="javascript:;">我的医生</a></li>
+      <li ng-class="{'active':activeTab==='tab5'}" ng-click="activeTab='tab5';footprint('tab5')"><a href="javascript:;">检测有约</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane-new" ng-show="activeTab==='tab1'">
+      <p>这是首页部分1</p>
+      <p>这是首页部分</p>
+      <p>这是首页部分</p>
+    </div>
+    <div class="tab-pane-new"  ng-show="activeTab==='tab2'">
+      <p>这是首页部分2</p>
+      <p>这是首页部分</p>
+      <p>这是首页部分</p>
+    </div>
+    <div class="tab-pane-new" ng-show="activeTab==='tab3'">
+          <div class="well well-lg">
+              <table class="table table-bordered table-striped">
+                  <thead>
+                      <tr>
+                          <th>测试名称</th>
+                          <th>测试日期</th>
+                          <th>结果</th>
+                          <th>报告</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat="test in patientTests" d-id="{{test.testId}}">
+                          <td ng-bind="test.type"></td>
+                          <td ng-bind="test.testDateDisplay"></td>
+                          <td ng-bind="test.status"></td>
+                          <td ng-click=";"><i class="icon-search"></i></td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+    </div>
+    <div class="tab-pane-new" ng-show="activeTab==='tab4'">
+      <div class="well well-lg">
+          <table class="table table-bordered table-striped">
+              <thead>
+                  <tr>
+                      <th>姓名</th>
+                      <th>医院</th>
+                      <th>专长</th>
+                      <th>电话</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="doctor in pdoctors" d-id="{{doctor.doctorId}}">
+                      <td ng-bind="doctor.name"></td>
+                      <td ng-bind="doctor.hospitalName"></td>
+                      <td ng-bind="doctor.description"></td>
+                      <td ng-bind="doctor.phone"></td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+    </div>
+    <div class="tab-pane-new" ng-show="activeTab==='tab5'">
+      <p>这是首页部分5</p>
+      <p>这是首页部分</p>
+      <p>这是首页部分</p>
+    </div>
+  </div>
+</div>
+
