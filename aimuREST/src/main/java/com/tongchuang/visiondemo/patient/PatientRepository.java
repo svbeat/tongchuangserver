@@ -12,8 +12,8 @@ import com.tongchuang.visiondemo.patient.entity.PatientExamSettings;
 
 public interface PatientRepository extends CrudRepository<Patient, String> {
 	
-	 @Query("SELECT p FROM Patient p where p.status<>'DELETED'")
-	 public List<Patient> getPatients(Pageable pageable);
+	 @Query("SELECT p FROM Patient p where p.status<>'DELETED' and p.name like :filter")
+	 public List<Patient> getPatients(@Param("filter")String filter, Pageable pageable);
 	 
 	 @Query("SELECT p FROM Patient p, Relationship r where r.relationshipType='DOCTOR_PATIENT' "
 	 		+ "and IFNULL(r.deleted, 'N')<>'Y' and r.subjectId=:doctorid "
@@ -26,6 +26,6 @@ public interface PatientRepository extends CrudRepository<Patient, String> {
 		 		+ "and r.objectId=p.patientId and p.status<>'DELETED'")
 	public Integer getTotalCountByDoctorId(@Param("doctorid") String doctorId);
 	 
-    @Query("SELECT count(1) FROM Patient p where p.status<>'DELETED'") 
-    public Integer getTotalCount();
+    @Query("SELECT count(1) FROM Patient p where p.status<>'DELETED' and p.name like :filter") 
+    public Integer getTotalCount(@Param("filter") String filter);
 }

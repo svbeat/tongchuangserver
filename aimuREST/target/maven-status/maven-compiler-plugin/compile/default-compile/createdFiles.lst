@@ -12,6 +12,7 @@ com/tongchuang/visiondemo/device/DeviceController.class
 com/tongchuang/visiondemo/relationship/RelationshipRepository.class
 com/tongchuang/visiondemo/patient/PatientConstants$Gender.class
 com/tongchuang/visiondemo/notification/Notification.class
+com/tongchuang/visiondemo/patient/DoctorDTOMapper.class
 com/tongchuang/visiondemo/user/dto/UserInfo.class
 com/tongchuang/visiondemo/device/dto/DeviceSettings.class
 com/tongchuang/visiondemo/patient/entity/Patient.class
@@ -55,6 +56,7 @@ com/tongchuang/visiondemo/notification/NotificationRepository.class
 com/tongchuang/visiondemo/patient/dto/PatientSettings$PatternType.class
 com/tongchuang/visiondemo/patient/PatientController.class
 com/tongchuang/visiondemo/patient/entity/PatientExamSettings.class
+com/tongchuang/visiondemo/doctor/PatientDTOMapper.class
 com/tongchuang/visiondemo/device/Calibration.class
 com/tongchuang/visiondemo/job/JobConstants.class
 com/tongchuang/visiondemo/common/SortBy.class

@@ -98,7 +98,12 @@ public class DoctorController {
 			return new ResponseEntity<ResponseList<DoctorDTO>>(HttpStatus.UNAUTHORIZED);
 		}
 		logger.info("getDoctors: filter="+filter+"; pageno="+pageno+"; pagesize="+pagesize);
-		List<Doctor> doctors = doctorRepository.getDoctors(new PageRequest(pageno, pagesize));
+		
+		String f = "%";
+		if (filter != null) {
+			f = f+filter+f;
+		}
+		List<Doctor> doctors = doctorRepository.getDoctors(f, new PageRequest(pageno, pagesize));
 		
 		List<DoctorDTO> doctorsDTO = new ArrayList<DoctorDTO>();
 		for (Doctor d : doctors) {
@@ -111,7 +116,7 @@ public class DoctorController {
 		ResponseList<DoctorDTO> result = new ResponseList<DoctorDTO>(doctorsDTO);
 		Integer total = null;
 		if (returnTotal) {
-			total = doctorRepository.getTotalCount();
+			total = doctorRepository.getTotalCount(f);
 			result.setTotalCounts(total);
 		}
 		return new ResponseEntity<ResponseList<DoctorDTO>>(result, HttpStatus.OK);
@@ -123,6 +128,8 @@ public class DoctorController {
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
 			return new ResponseEntity<DoctorDTO>(HttpStatus.UNAUTHORIZED);
 		}
+		
+		logger.info("doctor name;"+doctor.getName());
 		
 		DoctorDTO newDoctor = null;
 		
@@ -145,13 +152,13 @@ public class DoctorController {
 		logger.info("updateDoctor: doctorId="+doctorId);
 
 		
-		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)
-				||!doctorId.equals(doctorDTO.getDoctorId())) {
+		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
 			return new ResponseEntity<DoctorDTO>(HttpStatus.UNAUTHORIZED);
 		}
 		
 		DoctorDTO newDoctor = null;
 		
+		doctorDTO.setDoctorId(doctorId);
 		try {
 			newDoctor = doctorService.doUpdateDoctor(doctorDTO);
 		} catch (Exception e) {
@@ -203,7 +210,7 @@ public class DoctorController {
 	}
 	
 	@RequestMapping(value = "/doctors/{doctorId}/patients", method = RequestMethod.GET)
-	public ResponseEntity<ResponseList<Patient>> getPatientsByDoctor(@PathVariable("doctorId")Integer doctorId, 
+	public ResponseEntity<ResponseList<PatientDTO>> getPatientsByDoctor(@PathVariable("doctorId")Integer doctorId, 
 			@RequestParam(value = "filter", required=false) String filter,
 			@RequestParam(value = "returnTotal", required=false, defaultValue = "false") boolean returnTotal,
 			@RequestParam(value = "orderBy", required=false) String orderBy,
@@ -211,18 +218,19 @@ public class DoctorController {
 			@RequestParam(value = "pagesize", required=false, defaultValue = "10") int pagesize,
 			@RequestParam("apiKey") String apiKey) {
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<ResponseList<Patient>>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<ResponseList<PatientDTO>>(HttpStatus.UNAUTHORIZED);
 		}
-		List<Patient> patients = patientRepository.getPatientsByDoctorId(doctorId.toString(), new PageRequest(pageno, pagesize));
+		List<PatientDTO> patients = doctorService.getPatientsByDoctorId(doctorId, 
+									pageno*pagesize, pagesize);
 
-		ResponseList<Patient> result = new ResponseList<Patient>(patients);
+		ResponseList<PatientDTO> result = new ResponseList<PatientDTO>(patients);
 		Integer total = null;
 		if (returnTotal) {
 			total = patientRepository.getTotalCountByDoctorId(doctorId.toString());
 			result.setTotalCounts(total);
 		}
 		
-		return new ResponseEntity<ResponseList<Patient>>(result, HttpStatus.OK);
+		return new ResponseEntity<ResponseList<PatientDTO>>(result, HttpStatus.OK);
 	}
 	
 	

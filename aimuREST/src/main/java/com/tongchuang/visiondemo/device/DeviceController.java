@@ -99,8 +99,7 @@ public class DeviceController {
 		logger.info("updateDevice: deviceId="+deviceId);
 
 		
-		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)
-				||!deviceId.equals(device.getDeviceId())) {
+		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
 			return new ResponseEntity<Device>(HttpStatus.UNAUTHORIZED);
 		}
 		
@@ -108,6 +107,7 @@ public class DeviceController {
 		if (origDevice == null) {
 			return new ResponseEntity<Device>(HttpStatus.NOT_FOUND); 
 		}
+		device.setDeviceId(deviceId);
 		deviceRepository.save(device);
 		device = deviceRepository.findOne(deviceId);
 		return new ResponseEntity<Device>(device, HttpStatus.OK);

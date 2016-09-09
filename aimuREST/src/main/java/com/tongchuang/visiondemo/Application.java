@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -33,7 +34,7 @@ public class Application {
           //.paths(PathSelectors.any())
           .build();                                           
     }
-	
+
 /*
 	@Bean
 	public CommandLineRunner demo(final PerimetryExamRepository repository) {

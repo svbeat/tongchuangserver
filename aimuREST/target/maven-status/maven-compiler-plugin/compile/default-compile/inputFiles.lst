@@ -3,6 +3,7 @@
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/relationship/RelationshipRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/hospital/HospitalRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/entity/PatientExamSettingsLog.java
+/Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/doctor/dto/DoctorDTO.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/device/DeviceRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/dto/PatientDTO.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/entity/PatientExamSettingsCompositePK.java
@@ -15,6 +16,7 @@
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/notification/NotificationRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/device/Calibration.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/perimetry/PerimetryTestService.java
+/Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/PatientService.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/entity/PatientExamSettings.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/user/dto/UserRole.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/PatientController.java
@@ -24,6 +26,7 @@
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/job/PerimetryPendingDetails.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/dto/PatientSettings.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/user/UserController.java
+/Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/doctor/DoctorService.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/entity/Patient.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/user/UserRoleRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/device/DeviceController.java

@@ -8,6 +8,7 @@ public class DoctorDTO {
 	private Doctor		doctorEntity;
 	private User		user;
 	private String		hospitalName;
+	private Integer		dpRelationshipId;
 	
 	public DoctorDTO() {
 		doctorEntity = new Doctor();
@@ -128,6 +129,16 @@ public class DoctorDTO {
 	}
 	public void setPassword(String password) {
 		user.setPassword(password);
+	}
+
+
+	public Integer getDpRelationshipId() {
+		return dpRelationshipId;
+	}
+
+
+	public void setDpRelationshipId(Integer dpRelationshipId) {
+		this.dpRelationshipId = dpRelationshipId;
 	}
 	
 	

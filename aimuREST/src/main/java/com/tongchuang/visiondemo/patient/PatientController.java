@@ -25,6 +25,7 @@ import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
 import com.tongchuang.visiondemo.common.ResponseList;
 import com.tongchuang.visiondemo.device.Calibration;
 import com.tongchuang.visiondemo.doctor.DoctorRepository;
+import com.tongchuang.visiondemo.doctor.dto.DoctorDTO;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
 import com.tongchuang.visiondemo.patient.dto.PatientDTO;
 import com.tongchuang.visiondemo.patient.entity.Patient;
@@ -82,11 +83,15 @@ public class PatientController {
 			return new ResponseEntity<ResponseList<Patient>>(HttpStatus.UNAUTHORIZED);
 		}
 		logger.info("getPatients: filter="+filter+"; pageno="+pageno+"; pagesize="+pagesize);
-		List<Patient> patients = patientRepository.getPatients(new PageRequest(pageno, pagesize));
+		String f = "%";
+		if (filter != null) {
+			f = f+filter+f;
+		}
+		List<Patient> patients = patientRepository.getPatients(f, new PageRequest(pageno, pagesize));
 		ResponseList<Patient> result = new ResponseList<Patient>(patients);
 		Integer total = null;
 		if (returnTotal) {
-			total = patientRepository.getTotalCount();
+			total = patientRepository.getTotalCount(f);
 			result.setTotalCounts(total);
 		}
 		return new ResponseEntity<ResponseList<Patient>>(result, HttpStatus.OK);
@@ -122,13 +127,12 @@ public class PatientController {
 		logger.info("updatePatient: patientId="+patientId);
 
 		
-		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)
-				||!patientId.equals(patientDTO.getPatientId())) {
+		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
 			return new ResponseEntity<PatientDTO>(HttpStatus.UNAUTHORIZED);
 		}
 		
 		PatientDTO newPatient = null;
-		
+		patientDTO.setPatientId(patientId);
 		try {
 			newPatient = patientService.doUpdatePatient(patientDTO);
 		} catch (Exception e) {
@@ -175,16 +179,16 @@ public class PatientController {
 	}
 	
 	@RequestMapping(value = "/patients/{patientId}/doctors", method = RequestMethod.GET)
-	public ResponseEntity<ResponseList<Doctor>> getDoctorsByPatient(@PathVariable("patientId")String patientId,
+	public ResponseEntity<ResponseList<DoctorDTO>> getDoctorsByPatient(@PathVariable("patientId")String patientId,
 			@RequestParam("apiKey") String apiKey) {
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<ResponseList<Doctor>>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<ResponseList<DoctorDTO>>(HttpStatus.UNAUTHORIZED);
 		}
-		List<Doctor> doctors = doctorRespository.getDoctorsByPatientId(patientId);
+		List<DoctorDTO> doctors = patientService.getDoctorsByPatientId(patientId);
 
-		ResponseList<Doctor> result = new ResponseList<Doctor>(doctors);
+		ResponseList<DoctorDTO> result = new ResponseList<DoctorDTO>(doctors);
 		
-		return new ResponseEntity<ResponseList<Doctor>>(result, HttpStatus.OK);
+		return new ResponseEntity<ResponseList<DoctorDTO>>(result, HttpStatus.OK);
 	}
 	
 	

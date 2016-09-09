@@ -49,7 +49,7 @@ public class Relationship {
     private String		objectId;
     
     @Enumerated(EnumType.STRING)
-    private EntityDeleted	deleted;
+    private EntityDeleted	deleted = EntityDeleted.N;
 
 	public int getRelationshipId() {
 		return relationshipId;

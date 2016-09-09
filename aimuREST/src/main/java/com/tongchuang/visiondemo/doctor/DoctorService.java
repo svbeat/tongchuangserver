@@ -1,14 +1,23 @@
 package com.tongchuang.visiondemo.doctor;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tongchuang.visiondemo.common.ResponseList;
 import com.tongchuang.visiondemo.doctor.DoctorRepository;
 import com.tongchuang.visiondemo.doctor.dto.DoctorDTO;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
+import com.tongchuang.visiondemo.patient.dto.PatientDTO;
+import com.tongchuang.visiondemo.patient.entity.Patient;
 import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
 import com.tongchuang.visiondemo.user.UserRepository;
 import com.tongchuang.visiondemo.user.UserRoleRepository;
@@ -23,13 +32,16 @@ public class DoctorService {
 	private DoctorRepository 		doctorRepository;
 	private UserRepository			userRepository;
 	private UserRoleRepository		userRoleRepository;
+	private NamedParameterJdbcTemplate visionDBTemplate;
 	
 	@Autowired
 	public DoctorService(DoctorRepository doctorRepository, UserRepository userRepository,
-							UserRoleRepository userRoleRepository) {
+							UserRoleRepository userRoleRepository,
+							NamedParameterJdbcTemplate visionDBTemplate) {
 		this.doctorRepository = doctorRepository;
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
+		this.visionDBTemplate = visionDBTemplate;
 	}
 	
 
@@ -107,5 +119,22 @@ public class DoctorService {
 		
 		DoctorDTO newDoctor = new DoctorDTO(doctor, user);
 		return newDoctor;
+	}
+	
+	public List<PatientDTO>  getPatientsByDoctorId(Integer doctorId, Integer offset, Integer rowCount) {
+		String SQL = " SELECT p.*, r.relationship_id FROM patient p, relationship r "
+					+ "where r.relationship_type='DOCTOR_PATIENT' "
+					+ "and IFNULL(r.deleted, 'N')<>'Y' and r.subject_id=:doctorId "
+					+ "and r.object_id=p.patient_id and p.status<>'DELETED' "
+					+ "limit :offset, :rowCount";
+
+		SqlParameterSource namedParameters = new MapSqlParameterSource("doctorId", doctorId)
+												.addValue("offset", offset)
+												.addValue("rowCount", rowCount);
+		
+		List<PatientDTO> patients = (List<PatientDTO>)visionDBTemplate.query(SQL, namedParameters, 
+										new PatientDTOMapper());
+		
+		return patients;
 	}
 }

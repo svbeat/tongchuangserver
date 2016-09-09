@@ -47,6 +47,7 @@ public class Doctor {
     
     private Integer		hospitalId;
     private String		name;
+    @Enumerated(EnumType.STRING)
     private Gender		gender;
     private String		phone;
     private String		email;
