@@ -1,11 +1,11 @@
 define(["angular"], function(angular) {
     function Http($http, $q) {
-        var API_ADDRESS = "http://121.40.177.67:8190/";
+        var API_ADDRESS = "http://121.40.177.67:8190";
         // var API_ADDRESS = "http://outer.api/api.php";
-        // var HOST_ADDRESS = "http://121.40.177.67:8190";
+        var HOST_ADDRESS = "http://121.40.177.67:8190";
 
         function request(method, url, data){
-            url += (url.indexOf("?")!==-1 ? "&apiKey=rock2016" : "?apiKey=rock2016");
+        	url += (url.indexOf("?")!==-1 ? "&apiKey=rock2016" : "?apiKey=rock2016");
             return $http({
                 method: method,
                 headers: {'Content-Type': 'application/json'},

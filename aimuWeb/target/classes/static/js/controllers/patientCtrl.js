@@ -1,7 +1,6 @@
 define(["angular"], function(angular) {
 	return function($scope, API){
-		var userid = API.getCookies('k_userid');
-		var patientid = API.getCookies('k_subjectid')
+		var patientid = API.getCookies('k_userid');
 		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab1';
 
 		// 测试demo

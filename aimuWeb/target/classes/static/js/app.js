@@ -142,7 +142,7 @@ app.config(['$routeProvider', '$locationProvider', "$httpProvider",function ($ro
 
         .when('/doctor', {
             templateUrl: 'views/tpl/doctor.html', 
-            controller: 'doctorCtrl'
+            controller: 'adminCtrl'
         })
         .when('/patient', {
             templateUrl: 'views/tpl/patient.html', 

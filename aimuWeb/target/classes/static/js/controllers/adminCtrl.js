@@ -1,65 +1,9 @@
 define(["angular"], function(angular) {
 	return function($scope,$filter, API){
+		var role = API.getCookies("k_role");
 		var userid = API.getCookies('k_userid');
 		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab1';
 		$scope.innerTab = $scope.activeTab;
-
-
-
-		// 病人 分页配置
-        $scope.patientConf = {
-            currentPage: 0,
-            itemsPerPage: 5
-        };
-
-        $scope.$watch('patientConf.currentPage + patientConf.itemsPerPage', function(){
-        	// console.log($scope.patientConf.currentPage, $scope.patientConf.itemsPerPage)
-        	var currentPage = $scope.patientConf.currentPage;
-        	var itemsPerPage = $scope.patientConf.itemsPerPage;
-
-        	$scope.allpatients = $scope.patientConf.data&&$scope.patientConf.data.slice(currentPage-1,itemsPerPage)
-        });
-
-        // 医生 分页配置
-        $scope.doctorConf = {
-            currentPage: 0,
-            itemsPerPage: 5
-        };
-
-        $scope.$watch('doctorConf.currentPage + doctorConf.itemsPerPage', function(){
-        	var currentPage = $scope.doctorConf.currentPage;
-        	var itemsPerPage = $scope.doctorConf.itemsPerPage;
-
-        	$scope.allpatients = $scope.doctorConf.data&&$scope.doctorConf.data.slice(currentPage-1,itemsPerPage)
-        });
-
-        // 医生 分页配置
-        $scope.deviceConf = {
-            currentPage: 0,
-            itemsPerPage: 5
-        };
-
-        $scope.$watch('deviceConf.currentPage + deviceConf.itemsPerPage', function(){
-        	var currentPage = $scope.deviceConf.currentPage;
-        	var itemsPerPage = $scope.deviceConf.itemsPerPage;
-
-        	$scope.allpatients = $scope.deviceConf.data&&$scope.deviceConf.data.slice(currentPage-1,itemsPerPage)
-        });
-
-
-
-		$(".myform_datetime").datetimepicker({
-			format: 'yyyy-mm-dd',
-			language:  'zh-CN', 
-			minView: 2,   //时间选择器最小可以选择的范围：0分钟、1小时、2天
-			weekStart: 1,
-			todayBtn:  1,
-			autoclose: 1,
-			todayHighlight: 1,
-			startView: 2,
-			forceParse: 0,
-			showMeridian: 1
-		});
 
 		$scope.pat = {};
 		$scope.doc = {};
@@ -106,7 +50,8 @@ define(["angular"], function(angular) {
 
 		$scope.searchDoctor = function(e){
 			e.stopPropagation();
-			$scope.sdoctors = $filter('filter')($scope.alldoctors,{name:$scope.querydoctor});
+			$scope.sdoctors = $filter('filter')($scope.alldoctors,{name:$scope.querydoctor}).slice(0,5);
+
 		}
 
 		$scope.searchPatient = function(e){
@@ -185,7 +130,7 @@ define(["angular"], function(angular) {
 				case 'patient':{
 					$scope.innerTab = 'tab2-mod';
 					$scope.pat = des;
-					$scope.pat.birthdate = $filter('date')(des.birthdate,'yyyy-mm-dd');
+					$scope.pat.birthdate = $filter('date')(des.birthdate,'yyyy-MM-dd');
 				}
 				break;
 				case 'doctor':{
@@ -202,13 +147,25 @@ define(["angular"], function(angular) {
 		}
 
 		function updatePatients(){
-			API.getAllPatients().then(function(res){
-				if(!!res){
-					$scope.patientConf.data = res.items;
-					$scope.patientConf.totalItems = res.items.length;
-					$scope.allpatients = res.items.slice(0,$scope.patientConf.itemsPerPage)
-				}
-			})
+
+			if(role === "ADMIN"){
+				API.getAllPatients().then(function(res){
+					if(!!res){
+						$scope.patientConf.data = res.items;
+						$scope.patientConf.totalItems = res.items.length;
+						$scope.allpatients = res.items.slice(0,$scope.patientConf.itemsPerPage)
+					}
+				})
+			} else if(role === "DOCTOR") {
+				API.getPatientsOfDoctor(userid).then(function(res){
+					if(!!res){
+						$scope.patientConf.data = res.items;
+						$scope.patientConf.totalItems = res.items.length;
+						$scope.allpatients = res.items.slice(0,$scope.patientConf.itemsPerPage)
+					}
+				})
+			}
+			
 		}
 
 		function updateDoctors(){
@@ -241,10 +198,6 @@ define(["angular"], function(angular) {
 			})
 		}
 
-		updatePatients();
-		updateDoctors();
-		updateDevices();
-		updateHospitals();
 
 
 		$scope.regpatient = function(e, type){
@@ -257,7 +210,7 @@ define(["angular"], function(angular) {
 			  "name": $scope.pat.name,
 			  "password": $scope.pat.password,
 			  "phone": $scope.pat.phone,
-			  "username": $scope.pat.userName
+			  "username": $scope.pat.username
 			};
 
 		 	if(type === "add") {
@@ -284,7 +237,7 @@ define(["angular"], function(angular) {
 				"name": $scope.doc.name,
 				"password": $scope.doc.password,
 				"phone": $scope.doc.phone,
-				"username": $scope.doc.userName
+				"username": $scope.doc.username
 			};
 
 			if(type === "add"){
@@ -354,8 +307,8 @@ define(["angular"], function(angular) {
 				}
 				break;
 				case 2:{
-					API.getPatient(userid).then(function(res){
-						// $scope.mineInfo = 
+					API.getDoctor(userid).then(function(res){
+						$scope.mineInfo = res;
 					})
 				}
 				break;
@@ -367,5 +320,87 @@ define(["angular"], function(angular) {
 				break;
 			}
 		}
+
+
+
+
+
+		// 病人 分页配置
+        $scope.patientConf = {
+            currentPage: 0,
+            itemsPerPage: 5
+        };
+
+        $scope.$watch('patientConf.currentPage + patientConf.itemsPerPage', function(){
+        	// console.log($scope.patientConf.currentPage, $scope.patientConf.itemsPerPage)
+        	var currentPage = $scope.patientConf.currentPage;
+        	var itemsPerPage = $scope.patientConf.itemsPerPage;
+        	var currentIndex = (currentPage-1)*itemsPerPage
+
+        	$scope.allpatients = $scope.patientConf.data&&$scope.patientConf.data.slice(currentIndex,currentIndex+5)
+        });
+
+        
+        updatePatients();
+
+		$(".myform_datetime").datetimepicker({
+			format: 'yyyy-mm-dd',
+			// language:  'zh-CN', 
+			minView: 2,   //时间选择器最小可以选择的范围：0分钟、1小时、2天
+			weekStart: 1,
+			todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			forceParse: 0,
+			showMeridian: 1
+		});
+
+		
+
+		if(role === "ADMIN"){
+			
+
+			// 医生 分页配置
+	        $scope.doctorConf = {
+	            currentPage: 0,
+	            itemsPerPage: 5
+	        };
+
+	        $scope.$watch('doctorConf.currentPage + doctorConf.itemsPerPage', function(){
+	        	var currentPage = $scope.doctorConf.currentPage;
+	        	var itemsPerPage = $scope.doctorConf.itemsPerPage;
+	        	var currentIndex = (currentPage-1)*itemsPerPage
+
+	        	$scope.alldoctors = $scope.doctorConf.data&&$scope.doctorConf.data.slice(currentIndex,currentIndex+5)
+	        });
+
+	        // 医生 分页配置
+	        $scope.deviceConf = {
+	            currentPage: 0,
+	            itemsPerPage: 5
+	        };
+
+	        $scope.$watch('deviceConf.currentPage + deviceConf.itemsPerPage', function(){
+	        	var currentPage = $scope.deviceConf.currentPage;
+	        	var itemsPerPage = $scope.deviceConf.itemsPerPage;
+	        	var currentIndex = (currentPage-1)*itemsPerPage
+
+	        	$scope.alldevices = $scope.deviceConf.data&&$scope.deviceConf.data.slice(currentIndex,currentIndex+5)
+	        });
+
+
+	        //admin
+	        
+			updateDoctors();
+			updateDevices();
+			updateHospitals();
+		} else if(role === "DOCTOR") {
+			// doctor
+			$scope.getMineInfo(2);
+		}
+		
+		
+		
 	}
 });

@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     <label for="username">登录用户名:</label>
-                    <input type="text" class="form-control" ng-model="pat.userName">
+                    <input type="text" class="form-control" ng-model="pat.username">
                 </div>
                 <div class="form-group">
                     <label for="password">登录密码:</label>
@@ -55,6 +55,11 @@
     <div class="tab-pane-new" ng-show="innerTab==='tab2-det'">
         <div class="btn-left" ng-click="innerTab='tab2'">
             <<返回病人列表 
+        </div>
+        <div class="btn-right">
+            <button class="btn btn-info" ng-click="mod('patient',patientTmp)">
+                修改
+            </button>
         </div>
         <div class="well well-lg">
           <h1 ng-bind="patientTmp.name"></h1>
@@ -134,10 +139,10 @@
                     <tbody>
                         <tr ng-repeat="doctor in pdoctors" d-id="{{doctor.doctorId}}">
                             <td ng-bind="doctor.name"></td>
-                            <td ng-bind="doctor.hospitalId"></td>
+                            <td ng-bind="doctor.hospitalName"></td>
                             <td ng-bind="doctor.description"></td>
                             <td ng-bind="doctor.phone"></td>
-                            <td ng-click="delDoctor($event, doctor.doctorId)"><i class="icon-minus"></i></td>
+                            <td ng-click="delRelationship($event, doctor.relationshipId)"><i class="icon-minus"></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -169,12 +174,11 @@
                         <th>QR码</th>
                         <th>删除</th>
                         <th>修改</th>
-                        <th>详情</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="patient in allpatients" p-id="{{patient.patientId}}">
-                        <td ng-bind="patient.name"></td>
+                        <td ng-click="detail('patient',patient)" ng-bind="patient.name"></td>
                         <td ng-bind="patient.gender|sex"></td>
                         <td ng-bind="patient.birthdate|age"></td>
                         <td ng-bind="patient.address"></td>
@@ -182,7 +186,6 @@
                         <td ng-click="getQR('patient:'+patient.patientId)"><i class="icon-qrcode"></i></td>
                         <td ng-click="delPatient($event, patient.patientId)"><i class="icon-minus"></i></td>
                         <td ng-click="mod('patient',patient)"><i class="icon-edit"></i></td>
-                        <td ng-click="detail('patient',patient)"><i class="icon-search"></i></td>
                     </tr>
                 </tbody>
             </table>

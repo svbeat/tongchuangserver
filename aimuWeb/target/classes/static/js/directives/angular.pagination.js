@@ -18,7 +18,7 @@ define(["angular"], function(angular) {
                 '每页<select ng-model="conf.itemsPerPage" ng-options="option for option in conf.perPageOptions " ng-change="changeItemsPerPage()"></select>' +
                 '/共<strong>{{ conf.totalItems }}</strong>条' +
                 '</div>' +
-                '<div class="no-items" ng-show="conf.totalItems <= 0">暂无数据</div>' +
+                '<div class="no-items" ng-show="conf.totalItems <= 0"></div>' +
                 '</div>',
             replace: true,
             scope: {
