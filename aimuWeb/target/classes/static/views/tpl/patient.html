@@ -41,6 +41,11 @@
           </div>
     </div>
     <div class="tab-pane-new" ng-show="activeTab==='tab4'">
+      <div class="btn-right">
+          <button class="btn btn-info" ng-click="getDoctorForPatient()">
+              指定新医生
+          </button>
+      </div>
       <div class="well well-lg">
           <table class="table table-bordered table-striped">
               <thead>
@@ -68,5 +73,48 @@
       <p>这是首页部分</p>
     </div>
   </div>
+</div>
+<!-- 指定医生 -->
+<div class="modal fade" id="searchDoctor" tabindex="-1" role="dialog" aria-labelledby="searchDoctorLabel" aria-hidden="true" style="margin:auto;display:none">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">指定新医生</h4>
+    </div>
+    <div class="modal-body" style="height:400px;text-align:center" id="searchDoctorLabel">
+        <div class="well well-lg">
+            <h4 class="modal-title">
+              <input type="text" name=""  ng-model="querydoctor"> 
+              <button ng-click="searchDoctor($event)" type="button" class="btn btn-default">搜索</button>
+            </h4>
+        </div>
+        <div class="well well-lg" style="height:250px;overflow:scroll">
+            <table class="table table-bordered table-striped form-group">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>医院</th>
+                        <th>专长</th>
+                        <th>电话</th>
+                        <th>增加</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="doctor in sdoctors" d-id="{{doctor.doctorId}}">
+                        <td ng-bind="doctor.name"></td>
+                        <td ng-bind="doctor.hospitalName"></td>
+                        <td ng-bind="doctor.description"></td>
+                        <td ng-bind="doctor.phone"></td>
+                        <td>
+                            <input value="{{doctor.doctorId}}" name="sdoctorid" ng-model="doctorPatient.sdoctorid" type="radio">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="saveRelationship(doctorPatient.sdoctorid,0,1)">保存</button>
+    </div>
 </div>
 

@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group">
                     <label for="password">登录密码:</label>
-                    <input type="password" class="form-control" ng-model="pat.password">
+                    <input type="text" class="form-control" ng-model="pat.password">
                 </div>
                 <button type="submit" class="btn btn-success" ng-click="innerTab==='tab2-reg'?regpatient($event,'add'):regpatient($event,'mod');innerTab='tab2';">保存</button>
                 <button type="submit" class="btn btn-success" ng-click="innerTab='tab2';cancelSave()">取消</button>
@@ -67,7 +67,7 @@
             <div class="row">
               <div class="col-md-4 col-xs-6">
                 <span>出生日期：</span>
-                <span ng-bind="patientTmp.birthdate|date:'yyyy/MM/dd'">1950/05/01</span>
+                <span ng-bind="patientTmp.birthdate|date:'yyyy/MM/dd'"></span>
               </div>
               <div class="col-md-8 col-xs-6">
                 <span>性别：</span>
@@ -79,11 +79,11 @@
             <div class="row">
               <div class="col-md-4 col-xs-6">
                 <span>联系电话：</span>
-                <span ng-bind="patientTmp.phone">123-456-7890</span>
+                <span ng-bind="patientTmp.phone"></span>
               </div>
               <div class="col-md-8 col-xs-6">
                 <span>地址：</span>
-                <span ng-bind="patientTmp.address">浙江省杭州西湖区</span>
+                <span ng-bind="patientTmp.address"></span>
               </div>
             </div>
           </h4>
@@ -94,7 +94,7 @@
             <li ng-class="{'active':detailTab==='tab3'}" ng-click="detailTab='tab3'"><a href="javascript:;">测试预测</a></li>
             <li ng-class="{'active':detailTab==='tab4'}" ng-click="detailTab='tab4'"><a href="javascript:;">测试分析</a></li>
             <li ng-class="{'active':detailTab==='tab5'}" ng-click="detailTab='tab5'"><a href="javascript:;">看医笔记</a></li>
-            <li ng-class="{'active':detailTab==='tab6'}" ng-click="detailTab='tab6'"><a href="javascript:;">其他信息</a></li>
+            <li ng-class="{'active':detailTab==='tab6'}" ng-click="detailTab='tab6'"><a href="javascript:;">其它信息</a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane-new" ng-show="detailTab==='tab1'">
@@ -178,7 +178,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="patient in allpatients" p-id="{{patient.patientId}}">
-                        <td ng-click="detail('patient',patient)" ng-bind="patient.name"></td>
+                        <td class="under-line-des" ng-click="detail('patient',patient)" ng-bind="patient.name"></td>
                         <td ng-bind="patient.gender|sex"></td>
                         <td ng-bind="patient.birthdate|age"></td>
                         <td ng-bind="patient.address"></td>

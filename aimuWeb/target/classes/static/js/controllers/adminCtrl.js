@@ -1,13 +1,19 @@
 define(["angular"], function(angular) {
 	return function($scope,$filter, API){
 		var role = API.getCookies("k_role");
-		var userid = API.getCookies('k_userid');
+		var userid = API.getCookies('k_subjectid');
 		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab1';
 		$scope.innerTab = $scope.activeTab;
 
 		$scope.pat = {};
 		$scope.doc = {};
 		$scope.dev = {};
+
+
+		function showMessage(msg){
+			$("#myModalLabel").html(msg);
+			$('#myModal').modal('toggle')
+		}
 
 		$scope.detail = function(flag, des){
 			console.log(flag,des)
@@ -50,13 +56,13 @@ define(["angular"], function(angular) {
 
 		$scope.searchDoctor = function(e){
 			e.stopPropagation();
-			$scope.sdoctors = $filter('filter')($scope.alldoctors,{name:$scope.querydoctor}).slice(0,5);
+			$scope.sdoctors = $filter('filter')($scope.doctorConf.data,{name:$scope.querydoctor});
 
 		}
 
 		$scope.searchPatient = function(e){
 			e.stopPropagation();
-			$scope.spatients = $filter('filter')($scope.allpatients,{name:$scope.querypatient});
+			$scope.spatients = $filter('filter')($scope.patientConf.data,{name:$scope.querypatient});
 		}
 
 		$scope.cancelSave = function(){
@@ -215,12 +221,19 @@ define(["angular"], function(angular) {
 
 		 	if(type === "add") {
 				API.addPatient(obj).then(function(res){
-					console.log(res)
+					if(res.status == 400){
+						showMessage(res.message);
+					}
 					updatePatients();
+				},
+				function(res){
+					showMessage(res.message);
 				})
 		 	} else {
 		 		API.modPatient($scope.pat.patientId,obj).then(function(res){
-					console.log(res)
+					if(res.status == 400){
+						showMessage(res.message);
+					}
 					updatePatients();
 				})
 		 	}
@@ -242,12 +255,18 @@ define(["angular"], function(angular) {
 
 			if(type === "add"){
 				API.addDoctor(obj).then(function(res){
-					console.log(res)
+					if(res.status == 400){
+						showMessage(res.message);
+					}
+					// console.log(res)
 					updateDoctors();
 				})
 			} else {
 				API.modDoctor($scope.doc.doctorId,obj).then(function(res){
-					console.log(res)
+					if(res.status == 400){
+						showMessage(res.message);
+					}
+					// console.log(res)
 					updateDoctors();
 				})
 			}
@@ -265,12 +284,16 @@ define(["angular"], function(angular) {
 
 			if(type === "add"){
 				API.addDevice(obj).then(function(res){
-					console.log(res)
+					if(res.status == 400){
+						showMessage(res.message);
+					}
 					updateDevices();
 				})
 			} else {
 				API.modDevice($scope.dev.deviceId,obj).then(function(res){
-					console.log(res)
+					if(res.status == 400){
+						showMessage(res.message);
+					}
 					updateDevices();
 				})
 			}
