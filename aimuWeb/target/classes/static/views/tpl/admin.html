@@ -43,8 +43,8 @@
                         <label for="password">登录密码:</label>
                         <input type="text" class="form-control" ng-model="pat.password">
                     </div>
-                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab2-reg'?regpatient($event,'add'):regpatient($event,'mod');innerTab='tab2';">保存</button>
-                    <button type="submit" class="btn btn-success" ng-click="innerTab='tab2';cancelSave()">取消</button>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab2-reg'?regpatient($event,'add'):regpatient($event,'mod');">保存</button>
+                    <button type="submit" class="btn btn-success" ng-click="cancelSave()">取消</button>
                 </form>
             </div>
         </div>
@@ -88,8 +88,8 @@
                         <label for="password">登录密码:</label>
                         <input type="text" class="form-control" ng-model="doc.password">
                     </div>
-                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab3-reg'?regdoctor($event,'add'):regdoctor($event,'mod');innerTab='tab3'">保存</button>
-                    <button type="submit" class="btn btn-success" ng-click="innerTab='tab3';cancelSave()">取消</button>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab3-reg'?regdoctor($event,'add'):regdoctor($event,'mod');">保存</button>
+                    <button type="submit" class="btn btn-success" ng-click="cancelSave()">取消</button>
                 </form>
             </div>
         </div>
@@ -109,8 +109,8 @@
                         <label for="username">校准参数:</label>
                         <textarea rows="6" cols="20" class="form-control" ng-model="dev.deviceSettings"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab4-reg'?regdevice($event,'add'):regdevice($event,'mod');innerTab='tab4';">保存</button>
-                    <button type="submit" class="btn btn-success" ng-click="innerTab='tab4';cancelSave()">取消</button>
+                    <button type="submit" class="btn btn-success" ng-click="innerTab==='tab4-reg'?regdevice($event,'add'):regdevice($event,'mod');">保存</button>
+                    <button type="submit" class="btn btn-success" ng-click="cancelSave()">取消</button>
                 </form>
             </div>
         </div>
@@ -160,6 +160,7 @@
                 <li ng-class="{'active':detailTab==='tab6'}" ng-click="detailTab='tab6'"><a href="javascript:;">其它信息</a></li>
             </ul>
             <div class="tab-content">
+
               <div class="tab-pane-new" ng-show="detailTab==='tab1'">
                 <div class="well well-lg">
                     <table class="table table-bordered table-striped">
@@ -182,6 +183,7 @@
                     </table>
                 </div>
               </div>
+
               <div class="tab-pane-new" ng-show="detailTab==='tab2'">
                 <div class="btn-right">
                     <button class="btn btn-info" ng-click="getDoctorForPatient()">
@@ -209,9 +211,28 @@
                             </tr>
                         </tbody>
                     </table>
-
                 </div>
               </div>
+
+              <div class="tab-pane-new" ng-show="detailTab==='tab6'">
+                <div class="well well-lg">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>邮件</th>
+                                <th>用户名</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td ng-bind="patientTmp.email"></td>
+                                <td ng-bind="patientTmp.username"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+
             </div>
         </div>
         <!-- 医生详情 -->
@@ -312,7 +333,7 @@
         </div>
         <div class="tab-pane-new" ng-show="activeTab==='tab2'&&innerTab==='tab2'">
             <div class="btn-right">
-                <button class="btn btn-info" ng-click="cancelSave();innerTab='tab2-reg'">
+                <button class="btn btn-info" ng-click="regStart('tab2');innerTab='tab2-reg'">
                     注册新病人
                 </button>
             </div>
@@ -348,7 +369,7 @@
         </div>
         <div class="tab-pane-new" ng-show="activeTab==='tab3'&&innerTab==='tab3'">
             <div class="btn-right">
-                <button class="btn btn-info" ng-click="cancelSave();innerTab='tab3-reg'">
+                <button class="btn btn-info" ng-click="regStart('tab3');innerTab='tab3-reg'">
                     注册新医生
                 </button>
             </div>
@@ -380,7 +401,7 @@
         </div>
         <div class="tab-pane-new" ng-show="activeTab==='tab4'&&innerTab==='tab4'">
             <div class="btn-right">
-                <button class="btn btn-info" ng-click="cancelSave();innerTab='tab4-reg'">
+                <button class="btn btn-info" ng-click="regStart('tab4');innerTab='tab4-reg'">
                     注册新仪器
                 </button>
             </div>

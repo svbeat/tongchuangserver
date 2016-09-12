@@ -41,8 +41,6 @@ define(["angular"], function(angular) {
 					$scope.loginerror = true;
 				}
 				
-			},function(res) {
-				$scope.loginerror = true;
 			})
 
 			

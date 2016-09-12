@@ -22,7 +22,10 @@ define(["angular"], function(angular) {
 				case 'patient':{
 					// $scope.activeTab = "hide";
 					$scope.innerTab='tab2-det';
-					$scope.patientTmp = des;
+					// $scope.patientTmp = des;
+					API.getPatient(des.patientId).then(function(res){
+						$scope.patientTmp = res;
+					});
 					// $scope.spatientid = des.patientId;
 					API.getDoctorsOfPatient(des.patientId).then(function(res){
 						$scope.pdoctors = res.items;
@@ -38,7 +41,11 @@ define(["angular"], function(angular) {
 				case 'doctor':{
 					// $scope.activeTab = "hide";
 					$scope.innerTab = 'tab3-det';
-					$scope.doctorTmp = des;
+					// $scope.doctorTmp = des;
+					API.getDoctor(des.doctorId).then(function(res){
+						$scope.doctorTmp = res;
+					});
+
 					// $scope.sdoctorid = dex.doctorId;
 					API.getPatientsOfDoctor(des.doctorId).then(function(res){
 						$scope.dpatients = res.items;
@@ -69,6 +76,8 @@ define(["angular"], function(angular) {
 			$scope.pat = {gender: "MALE"};
 			$scope.doc = {gender: "MALE"};
 			$scope.dev = {};
+
+			$scope.innerTab = $scope.backInnerTab;
 		}
 
 		$scope.getQR = function(str){
@@ -96,7 +105,7 @@ define(["angular"], function(angular) {
 					objectId: patid,
 					subjectId: docid,
 					"relationshipType": "DOCTOR_PATIENT"
-				}).then(function(res){
+				}).then(function(){
 
 					switch(switchtype){
 						case 1:{
@@ -118,9 +127,22 @@ define(["angular"], function(angular) {
 			
 		}
 
-		$scope.delRelationship = function(id){
+		$scope.delRelationship = function(id, switchtype){
 			API.delRelationShips(id).then(function(res){
-
+				switch(switchtype){
+					case 1:{
+						API.getDoctorsOfPatient(patid).then(function(res){
+							$scope.pdoctors = res.items;
+						});
+					}
+					break;
+					case 2:{
+						API.getPatientsOfDoctor(docid).then(function(res){
+							$scope.dpatients = res.items;
+						});
+					}
+					break;
+				}
 			})
 		}
 
@@ -132,16 +154,26 @@ define(["angular"], function(angular) {
 
 		$scope.mod = function(flag, des){
 			console.log(flag,des)
+			$scope.backInnerTab = $scope.innerTab;
 			switch(flag){
 				case 'patient':{
 					$scope.innerTab = 'tab2-mod';
-					$scope.pat = des;
-					$scope.pat.birthdate = $filter('date')(des.birthdate,'yyyy-MM-dd');
+					
+					// $scope.pat = des;
+					API.getPatient(des.patientId).then(function(res){
+						$scope.pat = res;
+						$scope.pat.birthdate = $filter('date')(des.birthdate,'yyyy-MM-dd');
+					})
+					
 				}
 				break;
 				case 'doctor':{
 					$scope.innerTab = 'tab3-mod';
-					$scope.doc = des;
+					// $scope.doc = des;
+
+					API.getDoctor(des.doctorId).then(function(res){
+						$scope.doc = res;
+					})
 				}
 				break;
 				case 'device':{
@@ -205,6 +237,13 @@ define(["angular"], function(angular) {
 		}
 
 
+		$scope.regStart = function(tab){
+			$scope.pat = {gender: "MALE"};
+			$scope.doc = {gender: "MALE"};
+			$scope.dev = {};
+
+			$scope.backInnerTab = tab;
+		}
 
 		$scope.regpatient = function(e, type){
 		 	e.stopPropagation();
@@ -225,9 +264,6 @@ define(["angular"], function(angular) {
 						showMessage(res.message);
 					}
 					updatePatients();
-				},
-				function(res){
-					showMessage(res.message);
 				})
 		 	} else {
 		 		API.modPatient($scope.pat.patientId,obj).then(function(res){
@@ -237,6 +273,8 @@ define(["angular"], function(angular) {
 					updatePatients();
 				})
 		 	}
+
+		 	$scope.innerTab = $scope.backInnerTab;
 		 	
 		}
 
@@ -270,7 +308,7 @@ define(["angular"], function(angular) {
 					updateDoctors();
 				})
 			}
-			
+			$scope.innerTab = $scope.backInnerTab;
 		}
 
 		$scope.regdevice = function(e, type){
@@ -297,7 +335,7 @@ define(["angular"], function(angular) {
 					updateDevices();
 				})
 			}
-			
+			$scope.innerTab = $scope.backInnerTab;
 		}
 
 
@@ -358,9 +396,9 @@ define(["angular"], function(angular) {
         	// console.log($scope.patientConf.currentPage, $scope.patientConf.itemsPerPage)
         	var currentPage = $scope.patientConf.currentPage;
         	var itemsPerPage = $scope.patientConf.itemsPerPage;
-        	var currentIndex = (currentPage-1)*itemsPerPage
+        	var currentIndex = (currentPage-1)*itemsPerPage;
 
-        	$scope.allpatients = $scope.patientConf.data&&$scope.patientConf.data.slice(currentIndex,currentIndex+5)
+        	$scope.allpatients = $scope.patientConf.data&&$scope.patientConf.data.slice(currentIndex,currentIndex+itemsPerPage)
         });
 
         
@@ -395,7 +433,7 @@ define(["angular"], function(angular) {
 	        	var itemsPerPage = $scope.doctorConf.itemsPerPage;
 	        	var currentIndex = (currentPage-1)*itemsPerPage
 
-	        	$scope.alldoctors = $scope.doctorConf.data&&$scope.doctorConf.data.slice(currentIndex,currentIndex+5)
+	        	$scope.alldoctors = $scope.doctorConf.data&&$scope.doctorConf.data.slice(currentIndex,currentIndex+itemsPerPage)
 	        });
 
 	        // 医生 分页配置
@@ -409,7 +447,7 @@ define(["angular"], function(angular) {
 	        	var itemsPerPage = $scope.deviceConf.itemsPerPage;
 	        	var currentIndex = (currentPage-1)*itemsPerPage
 
-	        	$scope.alldevices = $scope.deviceConf.data&&$scope.deviceConf.data.slice(currentIndex,currentIndex+5)
+	        	$scope.alldevices = $scope.deviceConf.data&&$scope.deviceConf.data.slice(currentIndex,currentIndex+itemsPerPage)
 	        });
 
 

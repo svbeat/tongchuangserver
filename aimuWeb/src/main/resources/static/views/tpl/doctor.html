@@ -45,8 +45,8 @@
                     <label for="password">登录密码:</label>
                     <input type="text" class="form-control" ng-model="pat.password">
                 </div>
-                <button type="submit" class="btn btn-success" ng-click="innerTab==='tab2-reg'?regpatient($event,'add'):regpatient($event,'mod');innerTab='tab2';">保存</button>
-                <button type="submit" class="btn btn-success" ng-click="innerTab='tab2';cancelSave()">取消</button>
+                <button type="submit" class="btn btn-success" ng-click="innerTab==='tab2-reg'?regpatient($event,'add'):regpatient($event,'mod');">保存</button>
+                <button type="submit" class="btn btn-success" ng-click="cancelSave()">取消</button>
             </form>
         </div>
     </div>
@@ -158,7 +158,7 @@
     </div>
     <div class="tab-pane-new" ng-show="activeTab==='tab2'&&innerTab==='tab2'">
         <div class="btn-right">
-            <button class="btn btn-info" ng-click="cancelSave();innerTab='tab2-reg'">
+            <button class="btn btn-info" ng-click="regStart('tab2');innerTab='tab2-reg'">
                 注册新病人
             </button>
         </div>
