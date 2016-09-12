@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.tongchuang.visiondemo.ApiError;
 import com.tongchuang.visiondemo.ApplicationConstants;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
 import com.tongchuang.visiondemo.common.ResponseList;
@@ -110,9 +111,10 @@ public class PatientController {
 		try {
 			newPatient = patientService.doCreatePatient(patient);
 		} catch (Exception e) {
-			return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(e.getMessage());
+			ApiError apiError = new ApiError(Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+					Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+					ApplicationConstants.API_ERROR, e.getMessage());
+			return new ResponseEntity<ApiError>(apiError, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<PatientDTO>(newPatient, HttpStatus.CREATED);
@@ -136,9 +138,10 @@ public class PatientController {
 		try {
 			newPatient = patientService.doUpdatePatient(patientDTO);
 		} catch (Exception e) {
-			return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(e.getMessage());
+			ApiError apiError = new ApiError(Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+					Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+					ApplicationConstants.API_ERROR, e.getMessage());
+			return new ResponseEntity<ApiError>(apiError, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<PatientDTO>(newPatient, HttpStatus.OK);
@@ -185,7 +188,6 @@ public class PatientController {
 			return new ResponseEntity<ResponseList<DoctorDTO>>(HttpStatus.UNAUTHORIZED);
 		}
 		List<DoctorDTO> doctors = patientService.getDoctorsByPatientId(patientId);
-
 		ResponseList<DoctorDTO> result = new ResponseList<DoctorDTO>(doctors);
 		
 		return new ResponseEntity<ResponseList<DoctorDTO>>(result, HttpStatus.OK);

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.tongchuang.visiondemo.ApiError;
 import com.tongchuang.visiondemo.ApplicationConstants;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityDeleted;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
@@ -135,10 +136,11 @@ public class DoctorController {
 		
 		try {
 			newDoctor = doctorService.doCreateDoctor(doctor);
-		} catch (Exception e) {
-			return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(e.getMessage());
+		} catch (Exception e) {			
+			ApiError apiError = new ApiError(Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+					Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+					ApplicationConstants.API_ERROR, e.getMessage());
+			return new ResponseEntity<ApiError>(apiError, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<DoctorDTO>(newDoctor, HttpStatus.CREATED);
@@ -153,7 +155,10 @@ public class DoctorController {
 
 		
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<DoctorDTO>(HttpStatus.UNAUTHORIZED);
+			ApiError apiError = new ApiError(Integer.toString(HttpStatus.UNAUTHORIZED.value()), 
+					Integer.toString(HttpStatus.UNAUTHORIZED.value()), 
+					ApplicationConstants.API_KEY_MISSING, ApplicationConstants.API_KEY_MISSING);
+			return new ResponseEntity<ApiError>(apiError, HttpStatus.OK);
 		}
 		
 		DoctorDTO newDoctor = null;
@@ -162,9 +167,10 @@ public class DoctorController {
 		try {
 			newDoctor = doctorService.doUpdateDoctor(doctorDTO);
 		} catch (Exception e) {
-			return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(e.getMessage());
+			ApiError apiError = new ApiError(Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+					Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+					ApplicationConstants.API_ERROR, e.getMessage());
+			return new ResponseEntity<ApiError>(apiError, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<DoctorDTO>(newDoctor, HttpStatus.OK);

@@ -138,7 +138,7 @@ public class PatientService {
 	
 	
 	public List<DoctorDTO>  getDoctorsByPatientId(String patientId) {
-		String SQL =  "SELECT d.*, r.relationship_id FROM Doctor d, Relationship r "
+		String SQL =  "SELECT d.*, r.relationship_id FROM doctor d, relationship r "
 					+ "where r.relationship_type='DOCTOR_PATIENT' "
 					+ "and IFNULL(r.deleted, 'N')<>'Y' and r.subject_id=d.doctor_id "
 					+ "and r.object_id=:patientid and IFNULL(d.deleted, 'N')<>'Y' ";

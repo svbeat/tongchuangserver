@@ -26,7 +26,7 @@ public class PatientDTOMapper implements RowMapper {
 
 		
 		PatientDTO result = new PatientDTO(patient, null);
-		result.setDpRelationshipId(rs.getInt("relationship_id"));
+		result.setRelationshipId(rs.getInt("relationship_id"));
 		
 		return result;
 	}

@@ -44,6 +44,7 @@ com/tongchuang/visiondemo/security/JwtUtil.class
 com/tongchuang/visiondemo/security/SecurityController.class
 com/tongchuang/visiondemo/device/entity/Device.class
 com/tongchuang/visiondemo/doctor/DoctorService.class
+com/tongchuang/visiondemo/ApiError.class
 com/tongchuang/visiondemo/patient/PatientService.class
 com/tongchuang/visiondemo/common/Point.class
 com/tongchuang/visiondemo/util/ApplicationUtil.class

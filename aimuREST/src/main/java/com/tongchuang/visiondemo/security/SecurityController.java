@@ -40,7 +40,7 @@ public class SecurityController {
 		
 		User user = userRepository.getUser(authRequest.getUserName(), authRequest.getPassword());
 		if (user == null) {
-			return new ResponseEntity<AuthResponse>(HttpStatus.UNAUTHORIZED); 
+			return new ResponseEntity<AuthResponse>(HttpStatus.OK); 
 		}
 		
 		AuthResponse response = new AuthResponse();

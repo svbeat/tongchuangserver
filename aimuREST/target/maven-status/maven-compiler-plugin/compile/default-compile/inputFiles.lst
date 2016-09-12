@@ -31,6 +31,7 @@
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/user/UserRoleRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/device/DeviceController.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/ApplicationConstants.java
+/Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/doctor/PatientDTOMapper.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/util/ExamUtil.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/PatientExamSettingsLogRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/common/ResponseList.java
@@ -48,6 +49,7 @@
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/job/entity/JobPending.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/PatientRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/device/entity/Device.java
+/Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/DoctorDTOMapper.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/perimetry/PerimetryTestRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/security/SecurityController.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/device/dto/DeviceSettings.java

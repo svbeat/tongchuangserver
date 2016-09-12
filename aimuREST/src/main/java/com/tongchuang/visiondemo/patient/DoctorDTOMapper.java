@@ -27,7 +27,7 @@ public class DoctorDTOMapper implements RowMapper {
 		doctor.setPhone(rs.getString("phone"));
 
 		DoctorDTO result = new DoctorDTO(doctor, null);
-		result.setDpRelationshipId(rs.getInt("relationship_id"));
+		result.setRelationshipId(rs.getInt("relationship_id"));
 		
 		return result;
 		

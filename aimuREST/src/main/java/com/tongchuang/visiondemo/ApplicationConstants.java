@@ -10,4 +10,7 @@ public class ApplicationConstants {
 	public enum RelationshipType {DOCTOR_PATIENT};
 	
 	public enum ExamCode {PERIMETRY};
+	
+	public final static String API_KEY_MISSING = "missing API key";
+	public final static String API_ERROR = "error";
 }

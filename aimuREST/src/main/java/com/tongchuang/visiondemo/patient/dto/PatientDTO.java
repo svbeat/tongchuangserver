@@ -10,7 +10,7 @@ import com.tongchuang.visiondemo.user.dto.User;
 public class PatientDTO {
 	private Patient	patientEntity;
 	private User			user;
-	private Integer	dpRelationshipId;
+	private Integer	relationshipId;
 	
 	
 	public PatientDTO() {
@@ -105,14 +105,14 @@ public class PatientDTO {
 		user.setPassword(password);
 	}
 
-	public Integer getDpRelationshipId() {
-		return dpRelationshipId;
+	public Integer getRelationshipId() {
+		return relationshipId;
 	}
 
-	public void setDpRelationshipId(Integer dpRelationshipId) {
-		this.dpRelationshipId = dpRelationshipId;
+	public void setRelationshipId(Integer relationshipId) {
+		this.relationshipId = relationshipId;
 	}
-	
+
 	
 
 }
