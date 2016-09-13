@@ -32,6 +32,29 @@ public class PatientSettings {
 	
 	private ExamFieldOption	examFieldOption;
 
+	public PatientSettings() {
+	}
+
+	public PatientSettings(PatientSettings defaultPatientSettings) {
+		this.examFieldOption = defaultPatientSettings.getExamFieldOption();
+		this.fixationRadius = defaultPatientSettings.getFixationRadius();
+		this.initStimulusDBLeft = defaultPatientSettings.getInitStimulusDBLeft();
+		this.initStimulusDBRight = defaultPatientSettings.getInitStimulusDBRight();
+		this.leftFixation = defaultPatientSettings.getLeftFixation();
+		this.patternType = defaultPatientSettings.getPatternType();
+		this.rightFixation = defaultPatientSettings.getRightFixation();
+		this.stimulateCountMax = defaultPatientSettings.getStimulateCountMax();
+		this.stimulateDuration = defaultPatientSettings.getStimulateDuration();
+		this.stimulateInterval = defaultPatientSettings.getStimulateInterval();
+		this.stimulusPrioritiesLeft = defaultPatientSettings.getStimulusPrioritiesLeft();
+		this.stimulusPrioritiesRight = defaultPatientSettings.getStimulusPrioritiesRight();
+		this.stimulusRadius = defaultPatientSettings.getStimulusRadius();
+		this.stimulusRunnerClass = defaultPatientSettings.getStimulusRunnerClass();
+		this.stimulusSelectorClass = defaultPatientSettings.getStimulusSelectorClass();
+		this.stimulusSpacing = defaultPatientSettings.getStimulusSpacing();
+		this.version = 1;
+	}
+
 
 
 	public Integer getVersion() {

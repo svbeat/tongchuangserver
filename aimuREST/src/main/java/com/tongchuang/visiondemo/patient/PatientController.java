@@ -20,16 +20,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.google.gson.Gson;
 import com.tongchuang.visiondemo.ApiError;
 import com.tongchuang.visiondemo.ApplicationConstants;
+import com.tongchuang.visiondemo.ApplicationController;
 import com.tongchuang.visiondemo.ApplicationConstants.EntityStatus;
+import com.tongchuang.visiondemo.ApplicationConstants.ExamCode;
 import com.tongchuang.visiondemo.common.ResponseList;
 import com.tongchuang.visiondemo.device.Calibration;
 import com.tongchuang.visiondemo.doctor.DoctorRepository;
 import com.tongchuang.visiondemo.doctor.dto.DoctorDTO;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
 import com.tongchuang.visiondemo.patient.dto.PatientDTO;
+import com.tongchuang.visiondemo.patient.dto.PatientSettings;
 import com.tongchuang.visiondemo.patient.entity.Patient;
+import com.tongchuang.visiondemo.patient.entity.PatientExamSettings;
+import com.tongchuang.visiondemo.patient.entity.PatientExamSettingsLog;
 import com.tongchuang.visiondemo.perimetry.PerimetryTest;
 import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
 import com.tongchuang.visiondemo.user.UserRepository;
@@ -55,19 +61,28 @@ public class PatientController {
 	private final PerimetryTestRepository perimetryTestRepository;
 	private PatientService			patientService;
 	
+	private PatientExamSettingsRepository patientExamSettingsRepository;
+	private PatientExamSettingsLogRepository patientExamSettingsLogRepository;
+	
+	private Gson				gson = new Gson();
+	
 	
 	
 	@Autowired
 	public PatientController(PatientRepository patientRepository, PerimetryTestRepository perimetryTestRepository,
 							DoctorRepository doctorRespository, UserRepository userRepository,
 							UserRoleRepository userRoleRepository,
-							PatientService patientService) {
+							PatientService patientService,
+							PatientExamSettingsRepository patientExamSettingsRepository,
+							PatientExamSettingsLogRepository patientExamSettingsLogRepository) {
 		this.patientRepository = patientRepository;
 		this.perimetryTestRepository = perimetryTestRepository;
 		this.doctorRespository = doctorRespository;
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.patientService = patientService;
+		this.patientExamSettingsRepository = patientExamSettingsRepository;
+		this.patientExamSettingsLogRepository = patientExamSettingsLogRepository;
 	}
 
 
@@ -214,6 +229,55 @@ public class PatientController {
 		ResponseList<PerimetryTest> response = new ResponseList<PerimetryTest>(perimetryExams);
 		response.setTotalCounts(total);
 		return new ResponseEntity<ResponseList<PerimetryTest>>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/patients/{patientid}/examsettings/default", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PatientSettings> resetPatientSettings(@PathVariable("patientid") String patientId,
+			@RequestParam("examCode") String examCode, @RequestParam("apiKey") String apiKey) {
+		
+		if (!ApplicationController.SUPER_API_KEY.equals(apiKey)) {
+			return new ResponseEntity<PatientSettings>(HttpStatus.UNAUTHORIZED);
+		}
+		
+		System.out.println("reset patient settings for patient:"+patientId);
+		PatientExamSettings defaultSettings =  patientExamSettingsRepository.findSetting(examCode, "0");
+		if (defaultSettings == null) {
+			return new ResponseEntity<PatientSettings>(HttpStatus.NOT_FOUND);
+		}
+		
+		PatientSettings defaultPatientSettings = gson.fromJson(defaultSettings.getExamSettings(),  PatientSettings.class);
+		
+		PatientExamSettings settings = patientExamSettingsRepository.findSetting(examCode, patientId);
+
+		PatientSettings patientSettings = null;
+		if (settings==null) {
+			settings = new PatientExamSettings();
+			settings.setExamCode(examCode);
+			settings.setPatientId(patientId);
+			patientSettings = new PatientSettings(defaultPatientSettings);
+		} else {
+			patientSettings = gson.fromJson(settings.getExamSettings(), PatientSettings.class);
+			
+			PatientExamSettingsLog settingLog = new PatientExamSettingsLog();
+			settingLog.setExamCode(ExamCode.PERIMETRY.name());
+			settingLog.setExamSettings(settings.getExamSettings());
+			settingLog.setPatientId(patientId);
+			settingLog.setVersion(patientSettings.getVersion());
+			
+			patientExamSettingsLogRepository.save(settingLog);
+			
+			patientSettings.setVersion(patientSettings.getVersion()+1);	
+			patientSettings.setInitStimulusDBLeft(defaultPatientSettings.getInitStimulusDBLeft());
+			patientSettings.setInitStimulusDBRight(defaultPatientSettings.getInitStimulusDBRight());
+			patientSettings.setStimulusPrioritiesLeft(defaultPatientSettings.getStimulusPrioritiesLeft());
+			patientSettings.setStimulusPrioritiesRight(defaultPatientSettings.getInitStimulusDBRight());
+		}
+		
+			
+		settings.setExamSettings(gson.toJson(patientSettings));				
+		patientExamSettingsRepository.save(settings);	
+		
+		return new ResponseEntity<PatientSettings>(patientSettings, HttpStatus.OK);
 	}
 	
 }

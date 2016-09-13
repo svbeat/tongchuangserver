@@ -46,6 +46,7 @@
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/doctor/DoctorController.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/doctor/DoctorRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/security/AuthResponse.java
+/Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/ApiError.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/job/entity/JobPending.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/patient/PatientRepository.java
 /Users/qingdi/workspace/aimuREST/src/main/java/com/tongchuang/visiondemo/device/entity/Device.java
