@@ -1,0 +1,56 @@
+<div id="print-content">
+	<div class="modal-header">
+		<div class="row">
+			<h5 class="modal-title">视野测试报告 (编号-{{testId}}-{{eye}})</h5>
+		</div>
+		<div class="row">
+			<div class="col-xs-4" align="left">
+				<span>姓名：</span> <span>{{patientName}}</span>
+			</div>
+			<div class="col-xs-2" align="left">
+				<span>性别：</span> <span ng-bind="gender|sex"></span>
+			</div>
+			<div class="col-xs-6" align="left">
+				<span>出生日期：</span> <span ng-bind="birthdate|date:'yyyy/MM/dd'"></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12" align="left">
+				<span>测试时间：</span> <span>{{testDate}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="modal-body" data-ng-init="init()">
+		<div class="row">
+			<div class="col-xs-6">
+				右眼（OD）
+			</div>
+			<div class="col-xs-6">
+				左眼（OS）
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6">
+				<canvas id="canvasTextRight" width="200" height="200"></canvas>
+			</div>
+			<div class="col-xs-6">
+				<canvas id="canvasTextLeft" width="200" height="200"></canvas>
+			</div>
+			<div class="col-xs-6">
+				<canvas id="canvasShadeRight" width="200" height="200"></canvas>
+			</div>
+			<div class="col-xs-6">
+				<canvas id="canvasShadeLeft" width="200" height="200"></canvas>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="pull-left">
+			<h5>&copy;2016 99aimu.com</h5>
+		</div>
+		<div class="pull-right hidden-print">
+			<button class="btn btn-primary" type="button" ng-click="print()">打印</button>
+			<button class="btn btn-primary" type="button" ng-click="close()">关闭</button>
+		</div>
+	</div>
+</div>

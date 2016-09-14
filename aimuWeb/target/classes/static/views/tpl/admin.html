@@ -1,6 +1,7 @@
 <div class="container navbar">
     <ul class="nav nav-tabs">
-        <li ng-class="{'active':activeTab==='tab1'}" ng-click="activeTab='tab1';innerTab='tab1';footprint('tab1')"><a href="javascript:;">首页</a></li>
+      <!--   <li ng-class="{'active':activeTab==='tab1'}" ng-click="activeTab='tab1';innerTab='tab1';footprint('tab1')"><a href="javascript:;">首页</a></li>
+       --> 
         <li ng-class="{'active':activeTab==='tab2'}" ng-click="activeTab='tab2';innerTab='tab2';footprint('tab2')"><a href="javascript:;">病人</a></li>
         <li ng-class="{'active':activeTab==='tab3'}" ng-click="activeTab='tab3';innerTab='tab3';footprint('tab3')"><a href="javascript:;">医生</a></li>
         <li ng-class="{'active':activeTab==='tab4'}" ng-click="activeTab='tab4';innerTab='tab4';footprint('tab4')"><a href="javascript:;">测试仪器</a></li>
@@ -154,7 +155,7 @@
             <ul class="nav nav-tabs">
                 <li ng-class="{'active':detailTab==='tab1'}" ng-click="detailTab='tab1'"><a href="javascript:;">测试结果</a></li>
                 <li ng-class="{'active':detailTab==='tab2'}" ng-click="detailTab='tab2'"><a href="javascript:;">指定医生</a></li>
-                <li ng-class="{'active':detailTab==='tab3'}" ng-click="detailTab='tab3'"><a href="javascript:;">测试预测</a></li>
+                <li ng-class="{'active':detailTab==='tab3'}" ng-click="detailTab='tab3'"><a href="javascript:;">测试预置</a></li>
                 <li ng-class="{'active':detailTab==='tab4'}" ng-click="detailTab='tab4'"><a href="javascript:;">测试分析</a></li>
                 <li ng-class="{'active':detailTab==='tab5'}" ng-click="detailTab='tab5'"><a href="javascript:;">看医笔记</a></li>
                 <li ng-class="{'active':detailTab==='tab6'}" ng-click="detailTab='tab6'"><a href="javascript:;">其它信息</a></li>
@@ -177,7 +178,7 @@
                                 <td ng-bind="test.type"></td>
                                 <td ng-bind="test.testDateDisplay"></td>
                                 <td ng-bind="test.status"></td>
-                                <td ng-click=";"><i class="icon-search"></i></td>
+                                <td ng-click="openTestReport(patientTmp, test)"><i class="icon-search"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -211,6 +212,18 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+              </div>
+              <div class="tab-pane-new" ng-show="detailTab==='tab3'">
+                <div class="btn-right">
+                    <button class="btn btn-info" ng-click="resetPatientSettings(patientTmp.patientId)">
+                        设置为标准值
+                    </button>
+                </div>
+                <div class="well well-lg">
+                	<pre>
+    					{{patientSettings|json}}
+  					</pre>
                 </div>
               </div>
 

@@ -4,7 +4,8 @@ require.config({
         "angular": "/bower_components/angular/angular.min",
         "angular-route": "/bower_components/angular-route/angular-route.min",
         "angular-cookies": "/bower_components/angular-cookies/angular-cookies.min",
-
+        "ngBootstrap" : 'http://bootzee.com/js/ui-bootstrap-tpls-0.11.2',
+        
         "Pagination": "/js/directives/angular.pagination",
         "AllFilter":"/js/filters/AllFilter",
 
@@ -16,7 +17,8 @@ require.config({
         "doctorCtrl":"/js/controllers/doctorCtrl",
         "patientCtrl":"/js/controllers/patientCtrl",
         // "instrumentCtrl":"/js/controllers/instrumentCtrl",
-        "loginCtrl":"/js/controllers/loginCtrl"
+        "loginCtrl":"/js/controllers/loginCtrl",
+        "testReportCtrl":"/js/controllers/testReportCtrl"
     },
     shim:{
         "angular": {
@@ -29,22 +31,23 @@ require.config({
         "angular-cookies": {
             deps: ["angular"],
             exports: "angular-cookies"
-        }
+        },
+        "ngBootstrap": { exports: 'ngBootstrap', deps: ['angular'] }
     },
     urlArgs: "version=" + Math.random(),
     waitSeconds: 0
 });
 
-require(["angular", "angular-route", "angular-cookies","Pagination",
+require(["angular", "angular-route", "angular-cookies","ngBootstrap","Pagination",
     "AllFilter",
     "Http","API",
-    "indexCtrl", "adminCtrl", "doctorCtrl", "patientCtrl", "loginCtrl"],
-    function(angular,angular_route,angular_cookies,Pagination,
+    "indexCtrl", "adminCtrl", "doctorCtrl", "patientCtrl", "loginCtrl","testReportCtrl"],
+    function(angular,angular_route,angular_cookies,ngBootstrap,Pagination,
         AllFilter,
         Http,API,
-        indexCtrl, adminCtrl, doctorCtrl, patientCtrl, loginCtrl){
+        indexCtrl, adminCtrl, doctorCtrl, patientCtrl, loginCtrl, testReportCtrl){
 
-var app = angular.module('app', ['ngRoute',"ngCookies"]);
+var app = angular.module('app', ['ngRoute',"ngCookies",'ui.bootstrap']);
 
 app.directive('tmPagination',Pagination);
 
@@ -59,6 +62,7 @@ app.controller("adminCtrl",adminCtrl)
 app.controller("doctorCtrl",doctorCtrl)
 app.controller("patientCtrl",patientCtrl)
 app.controller("loginCtrl",loginCtrl)
+app.controller("testReportCtrl",testReportCtrl)
 
 app.run(function($rootScope, $location, $routeParams, $route,API){
     var curusername = API.getCookies("k_username");

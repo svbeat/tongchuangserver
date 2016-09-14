@@ -1,5 +1,5 @@
 define(["angular"], function(angular) {
-	return function($scope,$filter, API){
+	return function($scope,$filter,$modal, API){
 		var role = API.getCookies("k_role");
 		var userid = API.getCookies('k_subjectid');
 		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab1';
@@ -21,6 +21,7 @@ define(["angular"], function(angular) {
 			switch(flag){
 				case 'patient':{
 					// $scope.activeTab = "hide";
+					$scope.detailTab = 'tab1';
 					$scope.innerTab='tab2-det';
 					// $scope.patientTmp = des;
 					API.getPatient(des.patientId).then(function(res){
@@ -35,7 +36,12 @@ define(["angular"], function(angular) {
 					// des.patientId = "9b7d8e61-ba5c-4e4a-903e-85cb75e49813";
 					API.getAllTestsOfPatint(des.patientId).then(function(res){
 						$scope.patientTests = res.items;
+					});
+					
+					API.getPatientSettings(des.patientId).then(function(res){
+						$scope.patientSettings = res;
 					})
+
 				}
 				break;
 				case 'doctor':{
@@ -260,14 +266,14 @@ define(["angular"], function(angular) {
 
 		 	if(type === "add") {
 				API.addPatient(obj).then(function(res){
-					if(res.status == 400){
+					if(res.code == 400 && res.status == 400){
 						showMessage(res.message);
 					}
 					updatePatients();
 				})
 		 	} else {
 		 		API.modPatient($scope.pat.patientId,obj).then(function(res){
-					if(res.status == 400){
+					if(res.code == 400 && res.status == 400){
 						showMessage(res.message);
 					}
 					updatePatients();
@@ -276,6 +282,12 @@ define(["angular"], function(angular) {
 
 		 	$scope.innerTab = $scope.backInnerTab;
 		 	
+		}
+
+		$scope.resetPatientSettings = function(patientId) {
+			API.resetPatientSettings(patientId).then(function(res){
+				$scope.patientSettings = res;
+			})			
 		}
 
 		$scope.regdoctor = function(e, type){
@@ -293,7 +305,7 @@ define(["angular"], function(angular) {
 
 			if(type === "add"){
 				API.addDoctor(obj).then(function(res){
-					if(res.status == 400){
+					if(res.code == 400 && res.status == 400){
 						showMessage(res.message);
 					}
 					// console.log(res)
@@ -301,7 +313,7 @@ define(["angular"], function(angular) {
 				})
 			} else {
 				API.modDoctor($scope.doc.doctorId,obj).then(function(res){
-					if(res.status == 400){
+					if(res.code == 400 && res.status == 400){
 						showMessage(res.message);
 					}
 					// console.log(res)
@@ -322,14 +334,14 @@ define(["angular"], function(angular) {
 
 			if(type === "add"){
 				API.addDevice(obj).then(function(res){
-					if(res.status == 400){
+					if(res.code == 400 && res.status == 400){
 						showMessage(res.message);
 					}
 					updateDevices();
 				})
 			} else {
 				API.modDevice($scope.dev.deviceId,obj).then(function(res){
-					if(res.status == 400){
+					if(res.code == 400 && res.status == 400){
 						showMessage(res.message);
 					}
 					updateDevices();
@@ -389,7 +401,7 @@ define(["angular"], function(angular) {
 		// 病人 分页配置
         $scope.patientConf = {
             currentPage: 0,
-            itemsPerPage: 5
+            itemsPerPage: 20
         };
 
         $scope.$watch('patientConf.currentPage + patientConf.itemsPerPage', function(){
@@ -462,6 +474,21 @@ define(["angular"], function(angular) {
 		}
 		
 		
+		$scope.openTestReport = function(patient, test) {
+			console.log('opening pop up:'+patient);
+			var modalInstance = $modal.open({
+				templateUrl: 'views/detailreport.html',
+				controller: 'testReportCtrl',
+				resolve: {
+					test: function () {
+						return test;
+					},
+					patient: function() {
+						return patient;
+					}
+				}
+			});
+		}
 		
 	}
 });
