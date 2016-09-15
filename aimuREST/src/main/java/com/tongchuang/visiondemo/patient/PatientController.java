@@ -280,4 +280,39 @@ public class PatientController {
 		return new ResponseEntity<PatientSettings>(patientSettings, HttpStatus.OK);
 	}
 	
+	
+	
+	@RequestMapping(value = "/patients/{patientid}/examsettings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PatientSettings> updatePatientSettings(@PathVariable("patientid") String patientId,
+			@RequestParam("examCode") String examCode, @RequestParam("apiKey") String apiKey,
+			@RequestBody PatientSettings patientSettings) {
+		
+		if (!ApplicationController.SUPER_API_KEY.equals(apiKey)) {
+			return new ResponseEntity<PatientSettings>(HttpStatus.UNAUTHORIZED);
+		}
+		
+		System.out.println("update patient settings for patient:"+patientId);
+		PatientExamSettings dbPatientExamSettings =  patientExamSettingsRepository.findSetting(examCode, patientId);
+		int version=1;
+		if (dbPatientExamSettings != null) {
+			PatientSettings origSettings = gson.fromJson(dbPatientExamSettings.getExamSettings(), PatientSettings.class);
+			version = origSettings.getVersion()==null?1:origSettings.getVersion()+1;
+			
+			PatientExamSettingsLog settingLog = new PatientExamSettingsLog();
+			settingLog.setExamCode(ExamCode.PERIMETRY.name());
+			settingLog.setExamSettings(dbPatientExamSettings.getExamSettings());
+			settingLog.setPatientId(patientId);
+			settingLog.setVersion(origSettings.getVersion());			
+			patientExamSettingsLogRepository.save(settingLog);			
+		} else {
+			dbPatientExamSettings = new PatientExamSettings();
+			dbPatientExamSettings.setExamCode(examCode);
+			dbPatientExamSettings.setPatientId(patientId);
+		}
+		patientSettings.setVersion(version);
+		dbPatientExamSettings.setExamSettings(gson.toJson(patientSettings));
+		patientExamSettingsRepository.save(dbPatientExamSettings);
+		
+		return new ResponseEntity<PatientSettings>(patientSettings, HttpStatus.OK);
+	}	
 }

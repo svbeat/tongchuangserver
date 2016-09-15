@@ -26,6 +26,8 @@ import com.tongchuang.visiondemo.patient.entity.PatientExamSettingsLog;
 
 @Service
 public class PerimetryTestServiceImpl implements PerimetryTestService {
+	private static final String DEFAULT_PATIENT_ID = "0";
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private PatientExamSettingsRepository patientExamSettingsRepository;
@@ -71,6 +73,14 @@ public class PerimetryTestServiceImpl implements PerimetryTestService {
 
 		for (String patientId : patientTests.keySet()) {
 			PatientExamSettings settings = patientExamSettingsRepository.findSetting(ExamCode.PERIMETRY.name(), patientId);
+			
+			boolean firstVersion = false;
+			if (settings == null) { 
+				// no setting for this patient, get the default one.
+				settings = patientExamSettingsRepository.findSetting(ExamCode.PERIMETRY.name(), DEFAULT_PATIENT_ID);
+				firstVersion = true;
+			}
+			
 			List<PerimetryTest> tests = perimetryTestRepository.getByPatientTestIds(patientId, patientTests.get(patientId));
 			
 			try {
@@ -102,17 +112,24 @@ public class PerimetryTestServiceImpl implements PerimetryTestService {
 				priorityLeftUpated = resetPriority(priorityLeft, latestResult.getExamResultLeft(), latestResult.getAllResponsesLeft());
 				priorityRightUpated = resetPriority(priorityRight, latestResult.getExamResultRight(), latestResult.getAllResponsesRight());
 				
-				if (initDBLeftUpated>0 || initDBRightUpated>0 || priorityLeftUpated>0 || priorityRightUpated>0) {
-					patientSettings.setVersion(patientSettings.getVersion()+1);				
+				if (firstVersion) {
+					patientSettings.setVersion(1);				
 					settings.setExamSettings(gson.toJson(patientSettings));				
-					patientExamSettingsRepository.save(settings);	
-					patientExamSettingsLogRepository.save(settingLog);
-					
-					logger.info("patient settings updated. initDBLeftUpated="+initDBLeftUpated+"; initDBRightUpated="+initDBRightUpated+
-							"; priorityLeftUpated"+priorityLeftUpated+"; priorityRightUpated"+priorityRightUpated);
+					patientExamSettingsRepository.save(settings);						
 				} else {
-					logger.info("no change on patient settings.");
-				}		
+					if (initDBLeftUpated>0 || initDBRightUpated>0 || priorityLeftUpated>0 || priorityRightUpated>0) {
+						patientSettings.setVersion(patientSettings.getVersion()+1);				
+						settings.setExamSettings(gson.toJson(patientSettings));				
+						patientExamSettingsRepository.save(settings);	
+						patientExamSettingsLogRepository.save(settingLog);
+						
+						logger.info("patient settings updated. initDBLeftUpated="+initDBLeftUpated+"; initDBRightUpated="+initDBRightUpated+
+								"; priorityLeftUpated"+priorityLeftUpated+"; priorityRightUpated"+priorityRightUpated);
+					} else {
+						logger.info("no change on patient settings.");
+					}						
+				}
+	
 				
 				for (PerimetryTest t : tests) {
 					successList.add(testId2JobId.get(t.getTestId()));

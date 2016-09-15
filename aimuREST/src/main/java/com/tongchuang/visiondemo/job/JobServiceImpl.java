@@ -60,7 +60,7 @@ public class JobServiceImpl {
 		if (ids == null || ids.isEmpty()) {
 			return 0;
 		}
-		int rowCount = visionDBTemplate.update("update job_pending set status='"+JobStatus.DONE+"'"+
+		int rowCount = visionDBTemplate.update("update job_pending set status='"+s.name() +"'"+
 				" where job_pending_id in (:ids)",
 			new MapSqlParameterSource("ids", ids));
 		return rowCount;
