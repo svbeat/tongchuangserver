@@ -15,6 +15,8 @@ public class Device {
 	private String	deviceId;
 	
 	private String	deviceType;
+	private String 	description;
+	
 	private String	deviceSettings;
 	
     @Enumerated(EnumType.STRING)
@@ -32,6 +34,14 @@ public class Device {
 	}
 	public void setDeviceType(String deviceType) {
 		this.deviceType = deviceType;
+	}
+	
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public String getDeviceSettings() {
