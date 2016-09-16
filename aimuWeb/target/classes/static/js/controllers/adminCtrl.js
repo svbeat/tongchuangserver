@@ -2,7 +2,7 @@ define(["angular"], function(angular) {
 	return function($scope,$filter,$modal, API){
 		var role = API.getCookies("k_role");
 		var userid = API.getCookies('k_subjectid');
-		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab1';
+		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab2';
 		$scope.innerTab = $scope.activeTab;
 
 		$scope.pat = {};
@@ -40,6 +40,7 @@ define(["angular"], function(angular) {
 					
 					API.getPatientSettings(des.patientId).then(function(res){
 						$scope.patientSettings = res;
+						$scope.patientSettingsJson = JSON.stringify(res, null, 2);
 					})
 
 				}
@@ -98,7 +99,19 @@ define(["angular"], function(angular) {
 			$scope.sdoctors =[];
 			$scope.doctorPatient={};
 		}
+		$scope.updatePatientSettings = function() {
+			$('#updatePatientSettings').modal('toggle')
+		}
 
+		$scope.savePatientSettings = function(id) {
+			$scope.patientSettings = JSON.parse($scope.patientSettingsJson);
+			API.savePatientSettings(id, $scope.patientSettings)
+				.then(function(res){
+					$scope.patientSettings = res;
+					$scope.patientSettingsJson = JSON.stringify(res, null, 2);
+				});
+		}
+		
 		$scope.getPatientForDoctor = function(){
 			$('#searchPatient').modal('toggle')
 			$scope.spatients =[];
@@ -261,7 +274,8 @@ define(["angular"], function(angular) {
 			  "name": $scope.pat.name,
 			  "password": $scope.pat.password,
 			  "phone": $scope.pat.phone,
-			  "username": $scope.pat.username
+			  "username": $scope.pat.username,
+			  "userid": $scope.pat.userid
 			};
 
 		 	if(type === "add") {
@@ -287,6 +301,7 @@ define(["angular"], function(angular) {
 		$scope.resetPatientSettings = function(patientId) {
 			API.resetPatientSettings(patientId).then(function(res){
 				$scope.patientSettings = res;
+				$scope.patientSettingsJson = JSON.stringify(res, null, 2);
 			})			
 		}
 
@@ -300,7 +315,8 @@ define(["angular"], function(angular) {
 				"name": $scope.doc.name,
 				"password": $scope.doc.password,
 				"phone": $scope.doc.phone,
-				"username": $scope.doc.username
+				"username": $scope.doc.username,
+				"userid": $scope.doc.uesrid
 			};
 
 			if(type === "add"){
@@ -329,6 +345,7 @@ define(["angular"], function(angular) {
 			  "deviceId": $scope.dev.deviceId,
 			  "deviceSettings": $scope.dev.deviceSettings,
 			  "deviceType": $scope.dev.deviceType,
+			  "description": $scope.dev.description,
 			  "status": "ACTIVE"
 			};
 
@@ -437,7 +454,7 @@ define(["angular"], function(angular) {
 			// 医生 分页配置
 	        $scope.doctorConf = {
 	            currentPage: 0,
-	            itemsPerPage: 5
+	            itemsPerPage: 20
 	        };
 
 	        $scope.$watch('doctorConf.currentPage + doctorConf.itemsPerPage', function(){
@@ -451,7 +468,7 @@ define(["angular"], function(angular) {
 	        // 医生 分页配置
 	        $scope.deviceConf = {
 	            currentPage: 0,
-	            itemsPerPage: 5
+	            itemsPerPage: 20
 	        };
 
 	        $scope.$watch('deviceConf.currentPage + deviceConf.itemsPerPage', function(){

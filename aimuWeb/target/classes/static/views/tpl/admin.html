@@ -107,8 +107,12 @@
                         <input type="text" class="form-control" ng-model="dev.deviceType">
                     </div>
                     <div class="form-group">
+                        <label for="username">简述:</label>
+                        <input type="text" class="form-control" ng-model="dev.description">
+                    </div>
+                    <div class="form-group">
                         <label for="username">校准参数:</label>
-                        <textarea rows="6" cols="20" class="form-control" ng-model="dev.deviceSettings"></textarea>
+                        <textarea rows="20" cols="20" class="form-control" ng-model="dev.deviceSettings"></textarea>
                     </div>
                     <button type="submit" class="btn btn-success" ng-click="innerTab==='tab4-reg'?regdevice($event,'add'):regdevice($event,'mod');">保存</button>
                     <button type="submit" class="btn btn-success" ng-click="cancelSave()">取消</button>
@@ -217,8 +221,11 @@
               <div class="tab-pane-new" ng-show="detailTab==='tab3'">
                 <div class="btn-right">
                     <button class="btn btn-info" ng-click="resetPatientSettings(patientTmp.patientId)">
-                        设置为标准值
+                        改为缺省值
                     </button>
+                    <button class="btn btn-info" ng-click="updatePatientSettings(patientTmp.patientId)">
+                        修改设置
+                	</button>
                 </div>
                 <div class="well well-lg">
                 	<pre>
@@ -333,9 +340,13 @@
             <div class="well well-lg">
                 <h4>序列号：<span ng-bind="deviceTmp.deviceId"></span></h4>
                 <h4>名称：<span ng-bind="deviceTmp.deviceType"></span></h4>
-                <h4>所属医院：<span>第xxx医院</span></h4>
-                <h4>校准参数：<span>OOOOOO</span></h4>
-                <h4>校准有效期：<span>xxx年</span></h4>
+                <h4>简述：<span ng-bind="deviceTmp.description"></span></h4>
+                <!-- h4>所属医院：<span>第xxx医院</span></h4>  -->
+                <h4>校准参数：</h4>
+                 <div class="well well-lg">
+    					{{deviceTmp.deviceSettings}}
+                </div>
+                <!-- h4>校准有效期：<span>xxx年</span></h4>  -->
             </div>
         </div>
         <!-- 首页 -->
@@ -424,20 +435,18 @@
                         <tr>
                             <th>序列号</th>
                             <th>类型</th>
-                            <th>校准参数</th>
+                            <th>简述</th>
                             <th>删除</th>
                             <th>修改</th>
-                            <th>详情</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="device in alldevices" d-id="{{device.deviceId}}">
-                            <td ng-bind="device.deviceId"></td>
+                        	<td class="under-line-des" ng-click="detail('device',device)" ng-bind="device.deviceId"></td>
                             <td ng-bind="device.deviceType"></td>
-                            <td ng-click="getParam(device.deviceSettings)"><i class="icon-search"></td>
+                            <td ng-bind="device.description"></td>
                             <td ng-click="delDevice($event, device.deviceId)"><i class="icon-minus"></i></td>
                             <td ng-click="mod('device',device)"><i class="icon-edit"></i></td>
-                            <td ng-click="detail('device',device)"><i class="icon-search"></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -498,6 +507,20 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="saveRelationship(doctorPatient.sdoctorid,patientTmp.patientId,1)">保存</button>
+    </div>
+</div>
+<!-- 更新病人设置 -->
+<div class="modal fade" id="updatePatientSettings" tabindex="-1" role="dialog" aria-labelledby="updatePatientSettingsLabel" aria-hidden="true" style="margin:auto;display:none">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">更新病人设置</h4>
+    </div>
+    <div class="modal-body" style="height:400px;text-align:center" id="updatePatientSettingsLabel">
+    	<textarea  ng-model="patientSettingsJson" rows=15, cols=80%></textarea>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="savePatientSettings(patientTmp.patientId)">保存</button>
     </div>
 </div>
 <!-- 问诊新病人 -->

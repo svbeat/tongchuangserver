@@ -1,0 +1,8 @@
+server:
+  port: 8170
+    
+zuul:
+  routes:
+    resource:
+      path: /restapi/**
+      url: http://localhost:8190

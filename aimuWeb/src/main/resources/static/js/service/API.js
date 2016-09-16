@@ -62,6 +62,10 @@ define(["angular"], function(angular) {
         	return Http.post("/patients/" + id + "/examsettings/default?examCode=PERIMETRY");
         }
         
+        this.savePatientSettings = function(id, settings) {
+        	return Http.post("/patients/" + id + "/examsettings?examCode=PERIMETRY", settings)
+        }
+        
         // device
         this.getAllDevices = function(){
             return Http.get("/devices");

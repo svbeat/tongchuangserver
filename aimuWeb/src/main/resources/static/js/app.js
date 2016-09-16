@@ -51,6 +51,43 @@ var app = angular.module('app', ['ngRoute',"ngCookies",'ui.bootstrap']);
 
 app.directive('tmPagination',Pagination);
 
+app.directive('objEdit', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            obj:'=obj'
+        }, 
+        link: function(scope, element, attrs) {
+            element.text(JSON.stringify(scope.obj, undefined, 2));
+            element.change(function(e) {
+                console.log(e.currentTarget.value);
+                scope.$apply(function() {
+                    scope.obj = JSON.parse(e.currentTarget.value);
+                });
+                console.log(scope.obj);
+            })
+        }
+    }
+});
+
+app.directive('jsonText', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attr, ngModel) {            
+          function into(input) {
+            console.log(JSON.parse(input));
+            return JSON.parse(input);
+          }
+          function out(data) {
+            return JSON.stringify(data);
+          }
+          ngModel.$parsers.push(into);
+          ngModel.$formatters.push(out);
+        }
+    };
+});
+
 app.filter("sex", AllFilter.sex)
 app.filter("age", AllFilter.age)
 

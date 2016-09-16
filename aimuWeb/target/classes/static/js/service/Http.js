@@ -1,6 +1,7 @@
 define(["angular"], function(angular) {
     function Http($http, $q) {
         var API_ADDRESS = "http://121.40.177.67:8190";
+        API_ADDRESS = "restapi/";
         // var API_ADDRESS = "http://outer.api/api.php";
         var HOST_ADDRESS = "http://121.40.177.67:8190";
 
