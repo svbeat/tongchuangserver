@@ -41,7 +41,16 @@ define(["angular"], function(angular) {
             return request("POST", url, data);
         }
         
-        this.get = function(url) {
+        this.get = function(url,data) {
+            if(data){
+                var paramsArray = []
+                Object.keys(data).forEach(key => paramsArray.push(key + '=' + encodeURIComponent(data[key])))
+                if (url.search(/\?/) === -1) {
+                    url += '?' + paramsArray.join('&')
+                } else {
+                    url += '&' + paramsArray.join('&')
+                }
+            }
            return request("GET", url);
         }
 

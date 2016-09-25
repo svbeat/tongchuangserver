@@ -18,6 +18,11 @@ define(["angular"], function(angular) {
 				// 时间年差
 				return thisYear - birthYear;
 			}
-		}
+		},
+		unsafe: ['$sce', function ($sce) {
+		    return function (val) {
+		        return $sce.trustAsHtml(val);
+		    };
+		}]
 	}
 })

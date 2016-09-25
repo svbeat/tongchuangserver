@@ -36,7 +36,7 @@
 .navbar-nav li a {
     line-height: 60px;
     height: 60px;
-    padding-top: 0;
+    padding-top: 5px;
 }
 
 
@@ -217,9 +217,45 @@ text-shadow: none;
     text-decoration: underline;
 }
 
-
+.bgimage {
+  background-image: url(images/background.jpg);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  
+  height: 100%;
+}
 
     </style>
+    
+
+<style>
+.intrinsic-container {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+ 
+/* 16x9 Aspect Ratio */
+.intrinsic-container-16x9 {
+  padding-bottom: 56.25%;
+}
+ 
+/* 4x3 Aspect Ratio */
+.intrinsic-container-4x3 {
+  padding-bottom: 75%;
+}
+ 
+.intrinsic-container iframe {
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+</style>
 </head>
 <body>
 	
@@ -233,8 +269,7 @@ text-shadow: none;
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!-- <a class="navbar-brand" href="#/"><img src="images/logo.png" height="50" width="100"></a> -->
-          <a class="navbar-brand" href="#/"><img src="images/logo.png" height="50" width="50">
+          <a class="navbar-brand" href="#/"><img src="images/logo-name-blue-green.png" height="50" width="120"></a>
           <!-- <a class="navbar-brand username" href="javascript:;" ng-bind="$root.curusername"></a> -->
         </div>
         <div id="navbar" class="navbar-collapse collapse">
@@ -264,7 +299,6 @@ text-shadow: none;
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="js/lib/bootstrap-datetimepicker.min.js"></script>
 <script src="js/lib/bootstrap-datetimepicker.zh-CN.js"></script>
-
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="js/asset/ie10-viewport-bug-workaround.js"></script>
 <!-- self -->

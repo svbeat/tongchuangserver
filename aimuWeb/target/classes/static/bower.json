@@ -13,13 +13,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "resolutions": {
-    "angular-cookies": "1.5.7",
-    "angular": "1.5.7",
-    "angular-route": "1.5.7"
-  },
-  "dependencies": {
-    "angular-ui-bootstrap": "^2.1.3"
-  }
+  ]
 }

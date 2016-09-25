@@ -3,14 +3,26 @@ define(["angular"], function(angular) {
 		var patientid = API.getCookies('k_subjectid');
 		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab4';
 
-		function updateDoctors(){
-			API.getAllDoctors().then(function(res){
-				// console.log(res)
-				if(!!res){
-					$scope.alldoctors = res.items
-				}
-			})
-		}
+		// function updateDoctors(){
+		// 	// API.getAllDoctors().then(function(res){
+		// 	// 	// console.log(res)
+		// 	// 	if(!!res){
+		// 	// 		$scope.alldoctors = res.items
+		// 	// 	}
+		// 	// })
+		// 	API.getAllDoctors({
+		// 		returnTotal: true,
+  //       		pageno:  $scope.doctorConf.currentPage-1,
+  //       		pagesize:  $scope.doctorConf.itemsPerPage
+		// 	}).then(function(res){
+		// 		// console.log(res)
+		// 		if(!!res){
+		// 			$scope.doctorConf.data = res.items;
+		// 			$scope.doctorConf.totalItems = res.totalCounts;
+		// 			$scope.alldoctors = res.items;
+		// 		}
+		// 	})
+		// }
 
 		function updateMyDoctors(){
 			// 测试demo
@@ -29,7 +41,7 @@ define(["angular"], function(angular) {
 		}
 
 
-		updateDoctors();
+		// updateDoctors();
 		updateMyDoctors()
 		getAllTest()
 
@@ -42,7 +54,13 @@ define(["angular"], function(angular) {
 
 		$scope.searchDoctor = function(e){
 			e.stopPropagation();
-			$scope.sdoctors = $filter('filter')($scope.alldoctors,{name:$scope.querydoctor});
+			API.getAllDoctors({
+				filter: !!$scope.querydoctor?$scope.querydoctor: "",
+				pageSize:1000
+			}).then(function(res){
+				$scope.sdoctors = res.items;
+			})
+			// $scope.sdoctors = $filter('filter')($scope.alldoctors,{name:$scope.querydoctor});
 
 		}
 

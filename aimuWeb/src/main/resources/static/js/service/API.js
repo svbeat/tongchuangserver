@@ -2,8 +2,8 @@ define(["angular"], function(angular) {
     function API($http, $q, $location, $cookies, Http) {
 
         // doctor
-        this.getAllDoctors = function(){
-            return Http.get("/doctors");
+        this.getAllDoctors = function(data){
+            return Http.get("/doctors",data);
         }
 
         this.getDoctor = function( id ) {
@@ -27,8 +27,8 @@ define(["angular"], function(angular) {
         }
 
         // patient
-        this.getAllPatients = function(){
-            return Http.get("/patients");
+        this.getAllPatients = function(data){
+            return Http.get("/patients",data);
         }
 
         this.getPatient = function( id ) {
@@ -67,8 +67,8 @@ define(["angular"], function(angular) {
         }
         
         // device
-        this.getAllDevices = function(){
-            return Http.get("/devices");
+        this.getAllDevices = function(data){
+            return Http.get("/devices",data);
         }
 
         this.getDevice = function( id ) {
@@ -141,7 +141,14 @@ define(["angular"], function(angular) {
         this.clearCookies = function(k) {
             this.setCookies(k, "", -1);
         }
+        
+        this.fetchNewsShort = function() {
+        	return Http.get("/news/short");
+        }
 
+        this.fetchNewsLong = function() {
+        	return Http.get("/news/long");
+        }
     }
     return API
 });
