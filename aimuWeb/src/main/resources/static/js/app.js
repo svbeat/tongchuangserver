@@ -4,7 +4,8 @@ require.config({
         "angular": "/bower_components/angular/angular.min",
         "angular-route": "/bower_components/angular-route/angular-route.min",
         "angular-cookies": "/bower_components/angular-cookies/angular-cookies.min",
-        "ngBootstrap" : 'http://bootzee.com/js/ui-bootstrap-tpls-0.11.2',
+       // "ngBootstrap" : 'http://bootzee.com/js/ui-bootstrap-tpls-0.11.2',
+        "ngBootstrap" : "/angular-ui-bootstrap/ui-bootstrap-tpls.min",
         
         "Pagination": "/js/directives/angular.pagination",
         "AllFilter":"/js/filters/AllFilter",
