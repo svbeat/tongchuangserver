@@ -1,7 +1,8 @@
 define(["angular"], function(angular) {
-	return function( $scope, $filter, API){
+	return function( $scope, $filter, $modal, API){
 		var patientid = API.getCookies('k_subjectid');
-		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab4';
+
+		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab3';
 
 		// function updateDoctors(){
 		// 	// API.getAllDoctors().then(function(res){
@@ -39,12 +40,18 @@ define(["angular"], function(angular) {
 				$scope.patientTests = res.items;
 			})
 		}
+		
+		function getCurrentPatient(){
+			API.getPatient(patientid).then(function(res){
+				$scope.patient = res;
+			})
+		}
 
 
 		// updateDoctors();
 		updateMyDoctors()
 		getAllTest()
-
+		getCurrentPatient()
 
 		$scope.getDoctorForPatient = function(){
 			$('#searchDoctor').modal('toggle')
@@ -83,7 +90,21 @@ define(["angular"], function(angular) {
 			}
 		}
 		
-
+		$scope.openTestReport = function(patient, test) {
+			console.log('opening pop up:'+patient);
+			var modalInstance = $modal.open({
+				templateUrl: 'views/detailreport.html',
+				controller: 'testReportCtrl',
+				resolve: {
+					test: function () {
+						return test;
+					},
+					patient: function() {
+						return patient;
+					}
+				}
+			});
+		}
 		
 		
 	}

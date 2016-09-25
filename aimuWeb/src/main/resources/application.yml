@@ -5,4 +5,4 @@ zuul:
   routes:
     resource:
       path: /restapi/**
-      url: http://localhost:8190
+      url: http://121.40.177.67:8190

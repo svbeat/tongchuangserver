@@ -2,7 +2,7 @@ define(["angular"], function(angular) {
 	return function($scope,$filter,$modal, API){
 		var role = API.getCookies("k_role");
 		var userid = API.getCookies('k_subjectid');
-		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab1';
+		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab2';
 		$scope.innerTab = $scope.activeTab;
 
 		$scope.pat = {};
@@ -454,7 +454,7 @@ define(["angular"], function(angular) {
 		// 病人 分页配置
 		$scope.patientConf = {
 				currentPage: 1,
-				itemsPerPage: 5
+				itemsPerPage: 10
 		};
 
 		$scope.$watch('patientConf.currentPage + patientConf.itemsPerPage', function(){
@@ -465,6 +465,7 @@ define(["angular"], function(angular) {
 
 			// $scope.allpatients = $scope.patientConf.data&&$scope.patientConf.data.slice(currentIndex,currentIndex+itemsPerPage)
 
+			/*
 			API.getAllPatients({
 				returnTotal: true,
 				pageno: currentPage-1,
@@ -473,7 +474,8 @@ define(["angular"], function(angular) {
 				$scope.patientConf.data = res.items;
 				$scope.patientConf.totalItems = res.totalCounts;
 				$scope.allpatients = res.items;
-			});
+			});*/
+			updatePatients();
 		});
 
 		function updatePatients(){
