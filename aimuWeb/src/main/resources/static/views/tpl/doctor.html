@@ -183,7 +183,7 @@
                         <td ng-bind="patient.birthdate|age"></td>
                         <td ng-bind="patient.address"></td>
                         <td ng-bind="patient.phone"></td>
-                        <td ng-click="getQR('patient:'+patient.patientId)"><i class="icon-qrcode"></i></td>
+                        <td ng-click="getQR(patient)"><i class="icon-qrcode"></i></td>
                         <td ng-click="delPatient($event, patient.patientId)"><i class="icon-minus"></i></td>
                         <td ng-click="mod('patient',patient)"><i class="icon-edit"></i></td>
                     </tr>

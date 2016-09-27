@@ -2,28 +2,9 @@ define(["angular"], function(angular) {
 	return function( $scope, $filter, $modal, API){
 		var patientid = API.getCookies('k_subjectid');
 
+		$scope.patientId = patientid;
 		$scope.activeTab = !!API.getCookies("k_activeTab")?API.getCookies("k_activeTab"):'tab3';
 
-		// function updateDoctors(){
-		// 	// API.getAllDoctors().then(function(res){
-		// 	// 	// console.log(res)
-		// 	// 	if(!!res){
-		// 	// 		$scope.alldoctors = res.items
-		// 	// 	}
-		// 	// })
-		// 	API.getAllDoctors({
-		// 		returnTotal: true,
-  //       		pageno:  $scope.doctorConf.currentPage-1,
-  //       		pagesize:  $scope.doctorConf.itemsPerPage
-		// 	}).then(function(res){
-		// 		// console.log(res)
-		// 		if(!!res){
-		// 			$scope.doctorConf.data = res.items;
-		// 			$scope.doctorConf.totalItems = res.totalCounts;
-		// 			$scope.alldoctors = res.items;
-		// 		}
-		// 	})
-		// }
 
 		function updateMyDoctors(){
 			// 测试demo
@@ -34,11 +15,48 @@ define(["angular"], function(angular) {
 				$scope.pdoctors = res.items;
 			})
 		}
+		
+		// 病人测试 分页配置
+		$scope.pTestConf = {
+				currentPage: 1,
+				itemsPerPage: 10
+		};
+
+		$scope.$watch('pTestConf.currentPage + pTestConf.itemsPerPage', function(){
+			// console.log($scope.patientConf.currentPage, $scope.patientConf.itemsPerPage)
+			var currentPage = $scope.pTestConf.currentPage;
+			var itemsPerPage = $scope.pTestConf.itemsPerPage;
+			var currentIndex = (currentPage-1)*itemsPerPage;
+
+			updatePatientTests($scope.patientId);
+		});
+
+		function updatePatientTests(patientId){
+			API.getAllTestsOfPatint(patientId, {
+				returnTotal: true,
+				pageno:  $scope.pTestConf.currentPage-1,
+				pagesize:  $scope.pTestConf.itemsPerPage
+			}).then(function(res){
+				// console.log(res)
+				if(!!res){
+					$scope.pTestConf.data = res.items;
+					$scope.pTestConf.totalItems = res.totalCounts;
+					$scope.patientTests = res.items;
+				}
+			})
+		}
+
 
 		function getAllTest(){
-			API.getAllTestsOfPatint(patientid).then(function(res){
+			API.getAllTestsOfPatint($scope.patientId,{
+				returnTotal: true,
+				pageno:  $scope.pTestConf.currentPage-1,
+				pagesize:  $scope.pTestConf.itemsPerPage
+			}).then(function(res){
+				$scope.pTestConf.data = res.items;
+				$scope.pTestConf.totalItems = res.totalCounts;
 				$scope.patientTests = res.items;
-			})
+			});
 		}
 		
 		function getCurrentPatient(){

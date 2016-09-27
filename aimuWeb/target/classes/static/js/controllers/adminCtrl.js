@@ -18,6 +18,7 @@ define(["angular"], function(angular) {
 		$scope.detail = function(flag, des){
 			console.log(flag,des)
 			$scope.detailTab = 'tab2';
+			$scope.currPatient=des;
 			switch(flag){
 			case 'patient':{
 				// $scope.activeTab = "hide";
@@ -34,7 +35,13 @@ define(["angular"], function(angular) {
 
 				// 测试demo
 				// des.patientId = "9b7d8e61-ba5c-4e4a-903e-85cb75e49813";
-				API.getAllTestsOfPatint(des.patientId).then(function(res){
+				API.getAllTestsOfPatint(des.patientId,{
+					returnTotal: true,
+					pageno:  $scope.pTestConf.currentPage-1,
+					pagesize:  $scope.pTestConf.itemsPerPage
+				}).then(function(res){
+					$scope.pTestConf.data = res.items;
+					$scope.pTestConf.totalItems = res.totalCounts;
 					$scope.patientTests = res.items;
 				});
 
@@ -42,6 +49,11 @@ define(["angular"], function(angular) {
 					$scope.patientSettings = res;
 					$scope.patientSettingsJson = JSON.stringify(res, null, 2);
 				})
+				
+				// QRcode
+				var qrText = 'patient:'+des.patientId;
+				var vOption = {text:qrText, width:80, height:80};
+				new QRCode(document.getElementById("qrcode"), vOption);
 			}
 			break;
 			case 'doctor':{
@@ -98,10 +110,12 @@ define(["angular"], function(angular) {
 			$scope.innerTab = $scope.backInnerTab;
 		}
 
-		$scope.getQR = function(str){
-			console.log(str)
+		$scope.getQR = function(patient){
+			var qrText = 'patient:'+patient.patientI;
+			console.log(qrText)
+			$scope.currPatient=patient;
 			$("#myModalLabel").html('');
-			new QRCode(document.getElementById("myModalLabel"), str);
+			new QRCode(document.getElementById("myModalLabel"), qrText);
 			$('#myModal').modal('toggle')
 		}
 
@@ -447,10 +461,6 @@ define(["angular"], function(angular) {
 			}
 		}
 
-
-
-
-
 		// 病人 分页配置
 		$scope.patientConf = {
 				currentPage: 1,
@@ -463,18 +473,6 @@ define(["angular"], function(angular) {
 			var itemsPerPage = $scope.patientConf.itemsPerPage;
 			var currentIndex = (currentPage-1)*itemsPerPage;
 
-			// $scope.allpatients = $scope.patientConf.data&&$scope.patientConf.data.slice(currentIndex,currentIndex+itemsPerPage)
-
-			/*
-			API.getAllPatients({
-				returnTotal: true,
-				pageno: currentPage-1,
-				pagesize: itemsPerPage
-			}).then(function(res){
-				$scope.patientConf.data = res.items;
-				$scope.patientConf.totalItems = res.totalCounts;
-				$scope.allpatients = res.items;
-			});*/
 			updatePatients();
 		});
 
@@ -543,7 +541,35 @@ define(["angular"], function(angular) {
 		}
 
 
-		// updatePatients();
+		// 病人测试 分页配置
+		$scope.pTestConf = {
+				currentPage: 1,
+				itemsPerPage: 10
+		};
+
+		$scope.$watch('pTestConf.currentPage + pTestConf.itemsPerPage', function(){
+			// console.log($scope.patientConf.currentPage, $scope.patientConf.itemsPerPage)
+			var currentPage = $scope.pTestConf.currentPage;
+			var itemsPerPage = $scope.pTestConf.itemsPerPage;
+			var currentIndex = (currentPage-1)*itemsPerPage;
+
+			updatePatientTests($scope.currPatient.patientId);
+		});
+
+		function updatePatientTests(patientId){
+			API.getAllTestsOfPatint(patientId, {
+				returnTotal: true,
+				pageno:  $scope.pTestConf.currentPage-1,
+				pagesize:  $scope.pTestConf.itemsPerPage
+			}).then(function(res){
+				// console.log(res)
+				if(!!res){
+					$scope.pTestConf.data = res.items;
+					$scope.pTestConf.totalItems = res.totalCounts;
+					$scope.patientTests = res.items;
+				}
+			})
+		}
 
 		$(".myform_datetime").datetimepicker({
 			format: 'yyyy-mm-dd',

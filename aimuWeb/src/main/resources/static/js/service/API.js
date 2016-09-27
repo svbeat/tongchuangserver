@@ -51,8 +51,8 @@ define(["angular"], function(angular) {
             return Http.get("/patients/" + id + "/doctors");
         }
         // tests
-        this.getAllTestsOfPatint = function(id) {
-            return Http.get("/patients/" + id + "/tests");
+        this.getAllTestsOfPatint = function(id, data) {
+            return Http.get("/patients/" + id + "/tests", data);
         }
         // patientSettings
         this.getPatientSettings = function(id) {
