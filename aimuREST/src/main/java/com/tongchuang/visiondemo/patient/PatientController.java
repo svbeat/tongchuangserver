@@ -216,14 +216,14 @@ public class PatientController {
 				@RequestParam(value = "returnTotal", required=false, defaultValue = "false") boolean returnTotal,
 				@RequestParam(value = "orderBy", required=false) String orderBy,
 				@RequestParam(value = "pageno", required=false, defaultValue = "0") int pageno, 
-				@RequestParam(value = "limit", required=false, defaultValue = "10") int limit) {
+				@RequestParam(value = "pagesize", required=false, defaultValue = "10") int pagesize) {
 		
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
 			return new ResponseEntity<ResponseList<PerimetryTest>>(HttpStatus.UNAUTHORIZED);
 		}
 		
-		System.out.println("Fetching PerimetryTest by patientId " + patientId+", pageno="+pageno+", limit="+limit);
-		List<PerimetryTest> perimetryExams = perimetryTestRepository.findByPatientId(patientId, new PageRequest(pageno, limit));
+		System.out.println("Fetching PerimetryTest by patientId " + patientId+", pageno="+pageno+", pagesize="+pagesize);
+		List<PerimetryTest> perimetryExams = perimetryTestRepository.findByPatientId(patientId, new PageRequest(pageno, pagesize));
 		int total = perimetryTestRepository.getTotalByPatientId(patientId);
 		
 		ResponseList<PerimetryTest> response = new ResponseList<PerimetryTest>(perimetryExams);
