@@ -51,6 +51,7 @@ define(["angular"], function(angular) {
 				})
 				
 				// QRcode
+				$("#qrcode").empty();
 				var qrText = 'patient:'+des.patientId;
 				var vOption = {text:qrText, width:80, height:80};
 				new QRCode(document.getElementById("qrcode"), vOption);
@@ -111,7 +112,7 @@ define(["angular"], function(angular) {
 		}
 
 		$scope.getQR = function(patient){
-			var qrText = 'patient:'+patient.patientI;
+			var qrText = 'patient:'+patient.patientId;
 			console.log(qrText)
 			$scope.currPatient=patient;
 			$("#myModalLabel").html('');
