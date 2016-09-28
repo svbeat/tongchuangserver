@@ -11,6 +11,10 @@ define(["angular"], function(angular) {
 		$scope.patient = test.patientId;
 		$scope.testDate = test.testDateDisplay;
 
+		function endsWith(str, c) {
+			return str.lastIndexOf(c) == (str.length-c.length);
+		}
+		
 		function showResult(textCanvasId, shadeCanvasId, examResult) {
 	    	var myRegexp = /q([0-9]+)r([0-9]+)c([0-9]+)/g;
 			var results = [];
@@ -39,7 +43,8 @@ define(["angular"], function(angular) {
 			    	
 			    	var dbValue = examResult[posCode];
 			    	var complete=true;
-			    	if (examResult[posCode].endsWith("?")) {
+			    	
+			    	if (endsWith(dbValue, "?")) {
 			    		dbValue = dbValue.substring(0, dbValue.length-1);
 			    		complete = false;
 			    	}
@@ -55,11 +60,6 @@ define(["angular"], function(angular) {
 			centerY=100;
 
 			var AMPLIFICATION = 0.1;
-
-			
-
-
-
 
 			for (var i = 0; i < results.length; i++) {
 				results[i].x = centerX+results[i].x;
@@ -82,7 +82,7 @@ define(["angular"], function(angular) {
 
 			for (var i = 0; i < results.length; i++) {
 				var db = results[i].db;
-		    	if (db.endsWith("+")||db.endsWith("-")) {
+		    	if (endsWith(db, "+")||endsWith(db, "-")) {
 		    		db = db.substring(0, db.length-1);
 		    	}
 				var shade = (db-10)*5;

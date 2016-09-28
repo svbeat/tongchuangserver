@@ -554,7 +554,10 @@ define(["angular"], function(angular) {
 			var itemsPerPage = $scope.pTestConf.itemsPerPage;
 			var currentIndex = (currentPage-1)*itemsPerPage;
 
-			updatePatientTests($scope.currPatient.patientId);
+			if (typeof $scope.currPatient !== 'undefined') {
+				updatePatientTests($scope.currPatient.patientId);	
+			}
+			
 		});
 
 		function updatePatientTests(patientId){
