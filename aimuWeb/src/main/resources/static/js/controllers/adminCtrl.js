@@ -50,6 +50,10 @@ define(["angular"], function(angular) {
 					$scope.patientSettingsJson = JSON.stringify(res, null, 2);
 				})
 				
+				API.getTestsTimeline(des.patientId).then(function(res){
+					$scope.testsTimeline = res;
+				})
+				
 				// QRcode
 				$("#qrcode").empty();
 				var qrText = 'patient:'+des.patientId;

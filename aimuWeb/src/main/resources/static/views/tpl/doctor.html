@@ -149,6 +149,47 @@
             </div>
           </div>
         </div>
+        				<div class="tab-pane-new" ng-show="detailTab==='tab3'">
+					<div class="btn-right">
+						<button class="btn btn-info"
+							ng-click="resetPatientSettings(patientTmp.patientId)">
+							改为缺省值</button>
+						<button class="btn btn-info"
+							ng-click="updatePatientSettings(patientTmp.patientId)">
+							修改设置</button>
+					</div>
+					<div class="well well-lg">
+						<pre>
+    					{{patientSettings|json}}
+  					</pre>
+					</div>
+				</div>
+				<div class="tab-pane-new" ng-show="detailTab==='tab4'">
+					<div class="well well-lg">
+						<pre>
+    					{{testsTimeline|json}}
+  					</pre>
+					</div>
+				</div>
+				<div class="tab-pane-new" ng-show="detailTab==='tab6'">
+					<div class="well well-lg">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>邮件</th>
+									<th>用户名</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td ng-bind="patientTmp.email"></td>
+									<td ng-bind="patientTmp.username"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+        
     </div>
 
 

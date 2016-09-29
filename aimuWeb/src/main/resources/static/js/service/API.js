@@ -54,6 +54,11 @@ define(["angular"], function(angular) {
         this.getAllTestsOfPatint = function(id, data) {
             return Http.get("/patients/" + id + "/tests", data);
         }
+        
+        this.getTestsTimeline = function(id) {
+        	return Http.get("/patients/" + id + "/tests/timeline");
+        }
+        
         // patientSettings
         this.getPatientSettings = function(id) {
         	return Http.get("/patients/" + id + "/examsettings?examCode=PERIMETRY");
@@ -66,6 +71,7 @@ define(["angular"], function(angular) {
         	return Http.post("/patients/" + id + "/examsettings?examCode=PERIMETRY", settings)
         }
         
+
         // device
         this.getAllDevices = function(data){
             return Http.get("/devices",data);
