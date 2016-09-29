@@ -21,6 +21,7 @@ com/tongchuang/visiondemo/ApplicationConstants$ExamCode.class
 com/tongchuang/visiondemo/ApplicationConstants.class
 com/tongchuang/visiondemo/perimetry/PerimetryTestRepository.class
 com/tongchuang/visiondemo/user/dto/UserRole.class
+com/tongchuang/visiondemo/patient/dto/TestsTimeline.class
 com/tongchuang/visiondemo/patient/dto/PatientDTO.class
 com/tongchuang/visiondemo/patient/PatientExamSettingsRepository.class
 com/tongchuang/visiondemo/user/dto/User.class
@@ -48,6 +49,7 @@ com/tongchuang/visiondemo/doctor/DoctorService.class
 com/tongchuang/visiondemo/ApiError.class
 com/tongchuang/visiondemo/patient/PatientService.class
 com/tongchuang/visiondemo/common/Point.class
+com/tongchuang/visiondemo/patient/PatientController$1.class
 com/tongchuang/visiondemo/util/ApplicationUtil.class
 com/tongchuang/visiondemo/perimetry/PerimetryTest.class
 com/tongchuang/visiondemo/ApplicationConstants$RelationshipType.class

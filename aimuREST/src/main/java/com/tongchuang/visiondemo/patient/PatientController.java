@@ -1,6 +1,15 @@
 package com.tongchuang.visiondemo.patient;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +42,11 @@ import com.tongchuang.visiondemo.doctor.dto.DoctorDTO;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
 import com.tongchuang.visiondemo.patient.dto.PatientDTO;
 import com.tongchuang.visiondemo.patient.dto.PatientSettings;
+import com.tongchuang.visiondemo.patient.dto.TestsTimeline;
 import com.tongchuang.visiondemo.patient.entity.Patient;
 import com.tongchuang.visiondemo.patient.entity.PatientExamSettings;
 import com.tongchuang.visiondemo.patient.entity.PatientExamSettingsLog;
+import com.tongchuang.visiondemo.perimetry.ExamResult;
 import com.tongchuang.visiondemo.perimetry.PerimetryTest;
 import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
 import com.tongchuang.visiondemo.user.UserRepository;
@@ -47,6 +58,7 @@ import com.tongchuang.visiondemo.util.ApplicationUtil;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
+
 
 @RestController
 @CrossOrigin
@@ -65,7 +77,7 @@ public class PatientController {
 	private PatientExamSettingsLogRepository patientExamSettingsLogRepository;
 	
 	private Gson				gson = new Gson();
-	
+    private static Pattern POS_CODE_PATTERN = Pattern.compile("q([0-9]+)r([0-9]+)c([0-9]+)");
 	
 	
 	@Autowired
@@ -315,4 +327,95 @@ public class PatientController {
 		
 		return new ResponseEntity<PatientSettings>(patientSettings, HttpStatus.OK);
 	}	
+	
+	@RequestMapping(value = "/patients/{patientId}/tests/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TestsTimeline> getPerimetryTests(@PathVariable("patientId") String patientId, 
+				@RequestParam("apiKey") String apiKey, 
+				@RequestParam(value = "pageno", required=false, defaultValue = "0") int pageno, 
+				@RequestParam(value = "pagesize", required=false, defaultValue = "10") int pagesize) {
+		
+		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
+			return new ResponseEntity<TestsTimeline>(HttpStatus.UNAUTHORIZED);
+		}
+		
+		System.out.println("Fetching PerimetryTest by patientId " + patientId+", pageno="+pageno+", pagesize="+pagesize);
+		List<PerimetryTest> perimetryExams = perimetryTestRepository.findByPatientId(patientId, new PageRequest(pageno, pagesize));
+		
+		List<String> testDates = new ArrayList<String>();
+		Map<String, String> resultsLeft = new HashMap<String, String>();
+		Map<String, String> resultsRight = new HashMap<String, String>();
+		for (PerimetryTest test : perimetryExams) {
+			testDates.add(test.getTestDateDisplay());
+			ExamResult r = gson.fromJson(test.getResult(), ExamResult.class);
+			appendResult(resultsLeft, r.getExamResultLeft());
+			appendResult(resultsRight, r.getExamResultRight());
+		}
+		
+		LinkedHashMap sortedResultsLeft = sortByPosCode(resultsLeft);
+		LinkedHashMap sortedResultRight = sortByPosCode(resultsRight)
+				;		
+		TestsTimeline testsTimeline = new TestsTimeline(patientId, testDates, sortedResultsLeft, sortedResultRight);
+
+		return new ResponseEntity<TestsTimeline>(testsTimeline, HttpStatus.OK);
+	}
+
+	private void appendResult(Map<String, String> results, Map<String, String> r) {
+		for (Map.Entry<String, String> me: r.entrySet()) {
+			String s = results.get(me.getKey());
+			if (s == null) {
+				s = me.getValue();
+			} else {
+				s = s+", "+me.getValue();
+			}
+			results.put(me.getKey(), s);
+		}
+	}
+	
+
+	private LinkedHashMap sortByPosCode(Map<String, String> results) {
+		
+		List<String> posCodes = new ArrayList<String>(results.keySet());
+		Collections.sort(posCodes, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {	        
+				Matcher m1 = POS_CODE_PATTERN.matcher(o1);
+				Matcher m2 = POS_CODE_PATTERN.matcher(o2);		
+				
+			    if (!m1.find()) {
+			          new RuntimeException("matcher1 not found!");
+			        }
+
+			    if (!m2.find()) {
+			          new RuntimeException("matcher2 not found!");
+			        }
+			    
+				int q1 = Integer.parseInt(m1.group(1));
+				int r1 = Integer.parseInt(m1.group(2));
+				int c1 = Integer.parseInt(m1.group(3));
+				
+				int q2 = Integer.parseInt(m2.group(1));
+				int r2 = Integer.parseInt(m2.group(2));
+				int c2 = Integer.parseInt(m2.group(3));
+				
+				if (q1 == q2) {
+					if (r1 == r2) {
+						return c1-c2;
+					} else {
+						return r1-r2;
+					}
+				} else {
+					return q1-q2;
+				}
+			}
+			
+		});
+		
+		LinkedHashMap sortedResults = new LinkedHashMap();
+		for (String s : posCodes) {
+			sortedResults.put(s, results.get(s));
+		}
+
+		return sortedResults;
+	}
+
 }
