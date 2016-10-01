@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface PerimetryTestRepository extends CrudRepository<PerimetryTest, Long> {
     
-    @Query("SELECT count(1) FROM PerimetryTest p WHERE patientId = :id") 
+    @Query("SELECT count(1) FROM PerimetryTest p WHERE patientId = :id and IFNULL(deleted, 'N')<>'Y'") 
     Integer getTotalByPatientId(@Param("id") String patientId);
     
     @Query("SELECT p FROM PerimetryTest p WHERE patientId = :patientid and testId in :testids and IFNULL(deleted, 'N')<>'Y' order by creationDate asc") 

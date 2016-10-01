@@ -76,22 +76,4 @@ public class UserController {
 		return new ResponseEntity<PatientSettings>(patientSettings, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/patients/{patientid}/examsettings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PatientSettings> getPatientSettings(@PathVariable("patientid") String patientId,
-			@RequestParam("examCode") String examCode, @RequestParam("apiKey") String apiKey) {
-		
-		if (!ApplicationController.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<PatientSettings>(HttpStatus.UNAUTHORIZED);
-		}
-		
-		System.out.println("Fetching patient settings for patient:"+patientId);
-		PatientExamSettings settings = patientExamSettingsRepository.findSetting(examCode, patientId);
-		if (settings==null) {
-			settings = patientExamSettingsRepository.findSetting(examCode, "0");
-			if (settings == null)
-				return new ResponseEntity<PatientSettings>(HttpStatus.NOT_FOUND);
-		}
-		PatientSettings patientSettings = gson.fromJson(settings.getExamSettings(),  PatientSettings.class);
-		return new ResponseEntity<PatientSettings>(patientSettings, HttpStatus.OK);
-	}
 }

@@ -95,10 +95,14 @@ public class PerimetryTestController {
 							+"; pastResults.size="+(pastResults==null?0:pastResults.size()));
 			logger.info("orig_result_left="+gson.toJson(eResult.getExamResultLeft()));
 			logger.info("orig_result_right="+gson.toJson(eResult.getExamResultRight()));
-			aggrAnalysis(eResult, pastResults);
-			logger.info("new_result_left="+gson.toJson(eResult.getExamResultLeft()));
-			logger.info("new_result_right="+gson.toJson(eResult.getExamResultRight()));
-			exam.setResult(gson.toJson(eResult));
+			try{
+				aggrAnalysis(eResult, pastResults);
+				logger.info("new_result_left="+gson.toJson(eResult.getExamResultLeft()));
+				logger.info("new_result_right="+gson.toJson(eResult.getExamResultRight()));
+				exam.setResult(gson.toJson(eResult));
+			} catch (Exception e) {
+				logger.error("error in aggrAnalysis:" +e.getMessage());
+			}
 		}
 		
 		exam = perimetryTestRepository.save(exam);
@@ -145,16 +149,23 @@ public class PerimetryTestController {
 			int maxUnSeen = -1;
 			for (Map<String, String> p : pastResponses) {
 				String pr = p.get(me.getKey());
-				if (pr != null) {
+				if (pr != null && !pr.trim().isEmpty()) {
 					String[] dvList = pr.split(";");
 					for (String dv : dvList) {
 						String[] d = dv.split(":");
-						int v = Integer.parseInt(d[0]);
-						if ("0".equals(d[1]) && v > maxUnSeen) {
-							maxUnSeen = v;
-						} else if ("1".equals(d[1]) && v > maxSeen) {
-							maxSeen = v;
+						try{
+							int v = Integer.parseInt(d[0]);
+							if ("0".equals(d[1]) && v > maxUnSeen) {
+								maxUnSeen = v;
+							} else if ("1".equals(d[1]) && v > maxSeen) {
+								maxSeen = v;
+							}							
+						} catch(Exception e) {
+							logger.error("error in processing pr="+pr);
+							e.printStackTrace();
+							throw e;
 						}
+
 					}
 				}				
 			}

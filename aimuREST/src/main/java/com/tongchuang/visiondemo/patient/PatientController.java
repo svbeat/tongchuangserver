@@ -243,6 +243,31 @@ public class PatientController {
 		return new ResponseEntity<ResponseList<PerimetryTest>>(response, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/patients/{patientid}/examsettings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PatientSettings> getPatientSettings(@PathVariable("patientid") String patientId,
+			@RequestParam("examCode") String examCode, @RequestParam("apiKey") String apiKey) {
+		
+		if (!ApplicationController.SUPER_API_KEY.equals(apiKey)) {
+			return new ResponseEntity<PatientSettings>(HttpStatus.UNAUTHORIZED);
+		}
+		
+		System.out.println("Fetching patient settings for patient:"+patientId);
+		PatientExamSettings settings = patientExamSettingsRepository.findSetting(examCode, patientId);
+		if (settings==null) {
+			settings = patientExamSettingsRepository.findSetting(examCode, "0");
+			if (settings == null)
+				return new ResponseEntity<PatientSettings>(HttpStatus.NOT_FOUND);
+		}
+		
+		PatientSettings patientSettings = gson.fromJson(settings.getExamSettings(),  PatientSettings.class);
+		
+		patientSettings.setInitStimulusDBLeft(sortByPosCode(patientSettings.getInitStimulusDBLeft()));
+		patientSettings.setInitStimulusDBRight(sortByPosCode(patientSettings.getInitStimulusDBRight()));
+		patientSettings.setStimulusPrioritiesLeft(sortByPosCode(patientSettings.getStimulusPrioritiesLeft()));
+		patientSettings.setStimulusPrioritiesRight(sortByPosCode(patientSettings.getStimulusPrioritiesRight()));
+		return new ResponseEntity<PatientSettings>(patientSettings, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/patients/{patientid}/examsettings/default", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PatientSettings> resetPatientSettings(@PathVariable("patientid") String patientId,
 			@RequestParam("examCode") String examCode, @RequestParam("apiKey") String apiKey) {
@@ -372,7 +397,7 @@ public class PatientController {
 	}
 	
 
-	private LinkedHashMap sortByPosCode(Map<String, String> results) {
+	private LinkedHashMap sortByPosCode(Map<String, ?> results) {
 		
 		List<String> posCodes = new ArrayList<String>(results.keySet());
 		Collections.sort(posCodes, new Comparator<String>() {
