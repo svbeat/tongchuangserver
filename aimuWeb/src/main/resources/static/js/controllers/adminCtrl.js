@@ -84,6 +84,20 @@ define(["angular"], function(angular) {
 			}
 		}
 
+		$scope.delTest = function(patientId, testId) {
+			API.delTest(testId).then(function(res){
+				API.getAllTestsOfPatint(patientId,{
+					returnTotal: true,
+					pageno:  $scope.pTestConf.currentPage-1,
+					pagesize:  $scope.pTestConf.itemsPerPage
+				}).then(function(res){
+					$scope.pTestConf.data = res.items;
+					$scope.pTestConf.totalItems = res.totalCounts;
+					$scope.patientTests = res.items;
+				});
+			})
+		}
+		
 		$scope.searchDoctor = function(e){
 			e.stopPropagation();
 			API.getAllDoctors({
@@ -469,7 +483,7 @@ define(["angular"], function(angular) {
 		// 病人 分页配置
 		$scope.patientConf = {
 				currentPage: 1,
-				itemsPerPage: 10
+				itemsPerPage: 50
 		};
 
 		$scope.$watch('patientConf.currentPage + patientConf.itemsPerPage', function(){

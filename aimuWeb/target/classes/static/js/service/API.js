@@ -59,6 +59,10 @@ define(["angular"], function(angular) {
         	return Http.get("/patients/" + id + "/tests/timeline");
         }
         
+        this.delTest = function(id) {
+        	return Http.delete("/perimetrytests/" + id);
+        }
+        
         // patientSettings
         this.getPatientSettings = function(id) {
         	return Http.get("/patients/" + id + "/examsettings?examCode=PERIMETRY");

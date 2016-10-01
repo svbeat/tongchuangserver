@@ -51,99 +51,20 @@ var app = angular.module('app', ['ngRoute',"ngCookies",'ui.bootstrap']);
 
 app.directive('tmPagination',Pagination);
 
-app.directive('lazyLoad', ['$window', '$q', function ($window, $q) {
-    function load_script() {
-        var s = document.createElement('script'); // use global document since Angular's $document is weak
-        s.src = 'http://news.baidu.com/ns?word=%E7%9C%BC%E7%A7%91&tn=newsfcu&from=news&cl=2&rn=5&ct=0';
-        document.body.appendChild(s);
-    }
-    function lazyLoadApi(key) {
-        var deferred = $q.defer();
-        $window.initialize = function () {
-            deferred.resolve();
-        };
-        // thanks to Emil Stenström: http://friendlybit.com/js/lazy-loading-asyncronous-javascript/
-        if ($window.attachEvent) {  
-            $window.attachEvent('onload', load_script); 
-        } else {
-            $window.addEventListener('load', load_script, false);
-        }
-        return deferred.promise;
-    }
+app.directive('ngReallyClick', [function() {
     return {
-        restrict: 'E',
-        link: function (scope, element, attrs) { // function content is optional
-        // in this example, it shows how and when the promises are resolved
-            if ($window.baidu) {
-                console.log('gmaps already loaded');
-            } else {
-                lazyLoadApi().then(function () {
-                    console.log('promise resolved');
-                    if ($window.google && $window.google.maps) {
-                        console.log('gmaps loaded');
-                    } else {
-                        console.log('gmaps not loaded');
-                    }
-                }, function () {
-                    console.log('promise rejected');
-                });
-            }
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.bind('click', function() {
+                var message = attrs.ngReallyMessage;
+                if (message && confirm(message)) {
+                    scope.$apply(attrs.ngReallyClick);
+                }
+            });
         }
-    };
+    }
 }]);
 
-app.directive('lazyTest', function($parse, $rootScope, $compile) {
-    return {
-        restrict: 'E',
-        terminal: true,
-        link: function(scope, element, attr) {
-            if (attr.ngSrc) {
-                 var domElem = '<script src="'+attr.ngSrc+'"></script>';
-                var tmp1 = $compile(domElem);
-                var tmp2 = $compile(domElem)(scope);
-                 $(element).append($compile(domElem)(scope));
-            }
-        }
-    };
-});
-
-
-app.directive('lazyTest', function ($http) {
-        var directive = {
-            link: link,
-            restrict: 'E',
-            scope: {
-                ad: '=ad',
-            }
-        };
-
-        return directive;
-
-        function link(scope, element, attrs){
-
-            var _el = angular.element(element);
-
-            var url = 'http://news.baidu.com/ns?word=%E7%9C%BC%E7%A7%91&tn=newsfcu&from=news&cl=2&rn=5&ct=0';
-
-            var request = {
-                method: 'GET',
-                url: url,
-                headers: {
-                    'X-Authentication': undefined
-                }
-            };
-
-            if (url) {
-                $http(request).then(function(response) {
-                    var html = response.data.substr(16);
-                    html = html.substring(0, html.length - 4);
-                    _el.html(html);
-                });
-            }
-
-        };
-    }
-   );
 app.filter("sex", AllFilter.sex)
 app.filter("age", AllFilter.age)
 app.filter("unsafe", AllFilter.unsafe)

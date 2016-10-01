@@ -62,31 +62,35 @@
             </button>
         </div>
         <div class="well well-lg">
-          <h1 ng-bind="patientTmp.name"></h1>
-          <h4 style="margin-top:25px">
-            <div class="row">
-              <div class="col-md-4 col-xs-6">
-                <span>出生日期：</span>
-                <span ng-bind="patientTmp.birthdate|date:'yyyy/MM/dd'"></span>
-              </div>
-              <div class="col-md-8 col-xs-6">
-                <span>性别：</span>
-                <span ng-bind="patientTmp.gender|sex">女</span>
-              </div>
-            </div>
-          </h4>
-          <h4>
-            <div class="row">
-              <div class="col-md-4 col-xs-6">
-                <span>联系电话：</span>
-                <span ng-bind="patientTmp.phone"></span>
-              </div>
-              <div class="col-md-8 col-xs-6">
-                <span>地址：</span>
-                <span ng-bind="patientTmp.address"></span>
-              </div>
-            </div>
-          </h4>
+				<div class="row">
+					<div class="col-sm-10">
+				<h2 ng-bind="patientTmp.name"></h2>
+
+						<h5>
+							<div class="row">
+								<div class="col-sm-6">
+									<span>出生日期：</span> <span
+										ng-bind="patientTmp.birthdate|date:'yyyy/MM/dd'">1950/05/01</span>
+								</div>
+								<div class="col-sm-6">
+									<span>性别：</span> <span ng-bind="patientTmp.gender|sex">女</span>
+								</div>
+
+							</div>
+						</h5>
+						<h5>
+							<div class="row">
+								<div class="col-sm-6">
+									<span>联系电话：</span> <span ng-bind="patientTmp.phone">123-456-7890</span>
+								</div>
+								<div class="col-sm-6">
+									<span>地址：</span> <span ng-bind="patientTmp.address"></span>
+								</div>
+							</div>
+						</h5>
+					</div>
+					<div class="col-sm-2" style="margin-top:15px" id="qrcode"></div>
+				</div>
         </div>
         <ul class="nav nav-tabs">
             <li ng-class="{'active':detailTab==='tab1'}" ng-click="detailTab='tab1'"><a href="javascript:;">测试结果</a></li>
@@ -105,6 +109,7 @@
                             <th>测试名称</th>
                             <th>测试日期</th>
                             <th>结果</th>
+                            <th>删除</th>
                             <th>报告</th>
                         </tr>
                     </thead>
@@ -113,10 +118,14 @@
                             <td ng-bind="test.type"></td>
                             <td ng-bind="test.testDateDisplay"></td>
                             <td ng-bind="test.status"></td>
-                            <td ng-click=";"><i class="icon-search"></i></td>
+                            <td ng-really-message="确定删除?" ng-really-click="delTest(patientTmp.patientId, test.testId)"><i
+										class="icon-minus"></i></td>
+							<td ng-click="openTestReport(patientTmp, test)"><i
+										class="icon-search"></i></td>
                         </tr>
                     </tbody>
                 </table>
+                <tm-pagination conf="pTestConf"></tm-pagination>
             </div>
           </div>
           <div class="tab-pane-new" ng-show="detailTab==='tab2'">
