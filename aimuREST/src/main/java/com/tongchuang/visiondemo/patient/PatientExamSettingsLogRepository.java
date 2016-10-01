@@ -12,6 +12,8 @@ import com.tongchuang.visiondemo.patient.entity.PatientExamSettingsLog;
 import com.tongchuang.visiondemo.user.dto.UserInfo;
 
 public interface PatientExamSettingsLogRepository extends CrudRepository<PatientExamSettingsLog, Integer> {
-
+	 @Query("SELECT p FROM PatientExamSettingsLog p WHERE patientId = :id and examCode=:code and version=:version")
+	 public PatientExamSettingsLog findSetting(@Param("code")String examCode, 
+			 @Param("id")String  patientId, @Param("version") Integer version);
 
 }

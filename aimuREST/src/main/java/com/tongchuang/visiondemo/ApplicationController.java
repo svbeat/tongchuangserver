@@ -41,30 +41,6 @@ public class ApplicationController {
 	private final JobPendingRepository jobPendingRepository;
 	
 
-	@RequestMapping(value = "/{patientId}/perimetrytests", method = RequestMethod.POST)
-	public ResponseEntity<Void> addPerimetryTest(@PathVariable String patientId, @RequestParam("apiKey") String apiKey, @RequestBody PerimetryTest exam, UriComponentsBuilder ucBuilder) {
-		if (!SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
-		}
-		
-		exam = perimetryTestRepository.save(exam);
-		
-		PerimetryPendingDetails pendingDetails =  new PerimetryPendingDetails();
-		pendingDetails.setPatientId(patientId);
-		pendingDetails.setTestId(exam.getTestId());
-		JobPending jobPending  = new JobPending();
-		
-		Gson gson = new Gson();
-		jobPending.setDetails(gson.toJson(pendingDetails));
-		jobPending.setJobCode(JobCode.PERIMETRY_POSTPROCESS);
-		jobPendingRepository.save(jobPending);
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/perimetrytests/{id}").buildAndExpand(exam.getTestId()).toUri());
-		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	}
-
-
 	@RequestMapping(value = "/{patientId}/perimetrytests", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PerimetryTest>> getPerimetryTest(@PathVariable("patientId") String patientId, 
 				@RequestParam("apiKey") String apiKey, 
@@ -105,7 +81,7 @@ public class ApplicationController {
 		return new ResponseEntity<PerimetryTest>(perimetryExam, HttpStatus.OK);
 	}
 
-
+/*
 	@RequestMapping(value = "/perimetrytests/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deletePerimetryTest(@PathVariable("id") long id, @RequestParam("apiKey") String apiKey) {
 		
@@ -120,7 +96,7 @@ public class ApplicationController {
 		perimetryTestRepository.save(perimetryTest);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+*/
 	
 	@RequestMapping(value = "/calibrations", method = RequestMethod.POST)
 	public ResponseEntity<Void> updateCalibration(@RequestParam("apiKey") String apiKey, 

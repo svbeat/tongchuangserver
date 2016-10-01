@@ -29,6 +29,7 @@ com/tongchuang/visiondemo/perimetry/PerimetryTestServiceImpl.class
 com/tongchuang/visiondemo/user/UserRepository.class
 com/tongchuang/visiondemo/user/dto/UserInfo$Role.class
 com/tongchuang/visiondemo/user/UserController.class
+com/tongchuang/visiondemo/perimetry/PerimetryTestController.class
 com/tongchuang/visiondemo/relationship/entity/Relationship.class
 com/tongchuang/visiondemo/ApplicationConstants$EntityStatus.class
 com/tongchuang/visiondemo/news/NewsService.class

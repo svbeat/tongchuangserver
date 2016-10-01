@@ -30,7 +30,7 @@ public class Application {
         return new Docket(DocumentationType.SWAGGER_2) 
           .select()                                  
           .apis(RequestHandlerSelectors.basePackage("com.tongchuang.visiondemo"))              
-          .paths(PathSelectors.regex("/patients.*|/doctors.*|/devices.*|/relationships.*|/userroles.*|/hospitals.*|/login.*"))  
+          .paths(PathSelectors.regex("/patients.*|/perimetrytests.*|/doctors.*|/devices.*|/relationships.*|/userroles.*|/hospitals.*|/login.*"))  
           //.paths(PathSelectors.any())
           .build();                                           
     }

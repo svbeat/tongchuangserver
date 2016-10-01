@@ -31,6 +31,8 @@ public class PatientSettings {
 	private PatternType patternType;
 	
 	private ExamFieldOption	examFieldOption;
+	
+	private String		aggrAnalysis;
 
 	public PatientSettings() {
 	}
@@ -52,6 +54,7 @@ public class PatientSettings {
 		this.stimulusRunnerClass = defaultPatientSettings.getStimulusRunnerClass();
 		this.stimulusSelectorClass = defaultPatientSettings.getStimulusSelectorClass();
 		this.stimulusSpacing = defaultPatientSettings.getStimulusSpacing();
+		this.aggrAnalysis = defaultPatientSettings.getAggrAnalysis();
 		this.version = 1;
 	}
 
@@ -195,6 +198,14 @@ public class PatientSettings {
 
 	public void setExamFieldOption(ExamFieldOption examFieldOption) {
 		this.examFieldOption = examFieldOption;
+	}
+
+	public String getAggrAnalysis() {
+		return aggrAnalysis;
+	}
+
+	public void setAggrAnalysis(String aggrAnalysis) {
+		this.aggrAnalysis = aggrAnalysis;
 	}
 
 	
