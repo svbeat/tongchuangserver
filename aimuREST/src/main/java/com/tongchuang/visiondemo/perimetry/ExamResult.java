@@ -22,6 +22,10 @@ public class ExamResult {
 
     private Map<String, String> examResultRight;
     private Map<String, String> allResponsesRight;
+    
+    private String     blindSpotCheckedLeft;
+    private String     blindSpotCheckedRight;
+    
 	public int getId() {
 		return id;
 	}
@@ -99,6 +103,18 @@ public class ExamResult {
 	}
 	public void setAllResponsesRight(Map<String, String> allResponsesRight) {
 		this.allResponsesRight = allResponsesRight;
+	}
+	public String getBlindSpotCheckedLeft() {
+		return blindSpotCheckedLeft;
+	}
+	public void setBlindSpotCheckedLeft(String blindSpotCheckedLeft) {
+		this.blindSpotCheckedLeft = blindSpotCheckedLeft;
+	}
+	public String getBlindSpotCheckedRight() {
+		return blindSpotCheckedRight;
+	}
+	public void setBlindSpotCheckedRight(String blindSpotCheckedRight) {
+		this.blindSpotCheckedRight = blindSpotCheckedRight;
 	}
     
     

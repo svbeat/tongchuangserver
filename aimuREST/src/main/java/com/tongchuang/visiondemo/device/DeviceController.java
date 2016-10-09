@@ -1,5 +1,8 @@
 package com.tongchuang.visiondemo.device;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -115,17 +118,35 @@ public class DeviceController {
 
 	
 	@RequestMapping(value = "/devices/{deviceId}", method = RequestMethod.GET)
-	public ResponseEntity<Device> getDevice(@PathVariable("deviceId")String deviceId, @RequestParam("apiKey") String apiKey) {
+	public ResponseEntity<Device> getOrCreateDevice(@PathVariable("deviceId")String deviceId, @RequestParam("apiKey") String apiKey) {
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
 			return new ResponseEntity<Device>(HttpStatus.UNAUTHORIZED);
 		}
 		Device device = deviceRepository.findOne(deviceId);
 		if (device == null) {
-			return new ResponseEntity<Device>(HttpStatus.NOT_FOUND); 
+			Device defaultDevice = deviceRepository.findOne("0");
+			if (defaultDevice == null) {
+				return new ResponseEntity<Device>(HttpStatus.NOT_FOUND); 	
+			}
+			
+			device = new Device();
+			device.setDeviceId(deviceId);
+			device.setDescription(defaultDescription());
+			device.setDeviceSettings(defaultDevice.getDeviceSettings());
+			device.setDeviceType(defaultDevice.getDeviceType());
+			device.setStatus(EntityStatus.ACTIVE);
+			deviceRepository.save(device);			
 		}
 		return new ResponseEntity<Device>(device, HttpStatus.CREATED);
 	}
 	
+	private String defaultDescription() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		//get current date time with Date()
+		Date date = new Date();
+		return "default:"+dateFormat.format(date);
+	}
+
 	@RequestMapping(value = "/devices/{deviceId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteDevice(@PathVariable("deviceId") String deviceId, @RequestParam("apiKey") String apiKey) {
 		
