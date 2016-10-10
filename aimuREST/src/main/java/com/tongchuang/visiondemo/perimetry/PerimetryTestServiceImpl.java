@@ -23,6 +23,7 @@ import com.tongchuang.visiondemo.patient.PatientExamSettingsRepository;
 import com.tongchuang.visiondemo.patient.dto.PatientSettings;
 import com.tongchuang.visiondemo.patient.entity.PatientExamSettings;
 import com.tongchuang.visiondemo.patient.entity.PatientExamSettingsLog;
+import com.tongchuang.visiondemo.perimetry.entity.PerimetryTest;
 
 @Service
 public class PerimetryTestServiceImpl implements PerimetryTestService {

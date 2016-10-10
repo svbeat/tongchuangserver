@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import com.tongchuang.visiondemo.perimetry.entity.PerimetryTest;
+
 public interface PerimetryTestRepository extends CrudRepository<PerimetryTest, Long> {
     
     @Query("SELECT count(1) FROM PerimetryTest p WHERE patientId = :id and IFNULL(deleted, 'N')<>'Y'") 

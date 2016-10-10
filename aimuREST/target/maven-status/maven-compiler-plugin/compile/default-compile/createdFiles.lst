@@ -17,6 +17,7 @@ com/tongchuang/visiondemo/user/dto/UserInfo.class
 com/tongchuang/visiondemo/device/dto/DeviceSettings.class
 com/tongchuang/visiondemo/patient/entity/Patient.class
 com/tongchuang/visiondemo/patient/PatientConstants.class
+com/tongchuang/visiondemo/perimetry/entity/PerimetryTest.class
 com/tongchuang/visiondemo/ApplicationConstants$ExamCode.class
 com/tongchuang/visiondemo/ApplicationConstants.class
 com/tongchuang/visiondemo/perimetry/PerimetryTestRepository.class
@@ -52,7 +53,6 @@ com/tongchuang/visiondemo/patient/PatientService.class
 com/tongchuang/visiondemo/common/Point.class
 com/tongchuang/visiondemo/patient/PatientController$1.class
 com/tongchuang/visiondemo/util/ApplicationUtil.class
-com/tongchuang/visiondemo/perimetry/PerimetryTest.class
 com/tongchuang/visiondemo/ApplicationConstants$RelationshipType.class
 com/tongchuang/visiondemo/patient/PatientRepository.class
 com/tongchuang/visiondemo/doctor/DoctorController.class
@@ -61,6 +61,7 @@ com/tongchuang/visiondemo/news/NewsController.class
 com/tongchuang/visiondemo/notification/NotificationRepository.class
 com/tongchuang/visiondemo/patient/dto/PatientSettings$PatternType.class
 com/tongchuang/visiondemo/patient/PatientController.class
+com/tongchuang/visiondemo/perimetry/dto/PerimetryTestDTO.class
 com/tongchuang/visiondemo/patient/entity/PatientExamSettings.class
 com/tongchuang/visiondemo/doctor/PatientDTOMapper.class
 com/tongchuang/visiondemo/device/Calibration.class

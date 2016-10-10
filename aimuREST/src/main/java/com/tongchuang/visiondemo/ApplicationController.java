@@ -27,8 +27,8 @@ import com.tongchuang.visiondemo.job.JobPendingRepository;
 import com.tongchuang.visiondemo.job.entity.JobPending;
 import com.tongchuang.visiondemo.notification.Notification;
 import com.tongchuang.visiondemo.notification.NotificationRepository;
-import com.tongchuang.visiondemo.perimetry.PerimetryTest;
 import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
+import com.tongchuang.visiondemo.perimetry.entity.PerimetryTest;
 
 @RestController
 @CrossOrigin

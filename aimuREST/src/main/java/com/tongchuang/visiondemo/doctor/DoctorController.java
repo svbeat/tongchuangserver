@@ -37,7 +37,7 @@ import com.tongchuang.visiondemo.patient.PatientRepository;
 import com.tongchuang.visiondemo.patient.PatientService;
 import com.tongchuang.visiondemo.patient.dto.PatientDTO;
 import com.tongchuang.visiondemo.patient.entity.Patient;
-import com.tongchuang.visiondemo.perimetry.PerimetryTest;
+import com.tongchuang.visiondemo.perimetry.entity.PerimetryTest;
 import com.tongchuang.visiondemo.relationship.RelationshipRepository;
 import com.tongchuang.visiondemo.relationship.entity.Relationship;
 import com.tongchuang.visiondemo.user.UserRepository;

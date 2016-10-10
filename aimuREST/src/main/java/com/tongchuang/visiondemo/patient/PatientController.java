@@ -47,8 +47,9 @@ import com.tongchuang.visiondemo.patient.entity.Patient;
 import com.tongchuang.visiondemo.patient.entity.PatientExamSettings;
 import com.tongchuang.visiondemo.patient.entity.PatientExamSettingsLog;
 import com.tongchuang.visiondemo.perimetry.ExamResult;
-import com.tongchuang.visiondemo.perimetry.PerimetryTest;
 import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
+import com.tongchuang.visiondemo.perimetry.dto.PerimetryTestDTO;
+import com.tongchuang.visiondemo.perimetry.entity.PerimetryTest;
 import com.tongchuang.visiondemo.user.UserRepository;
 import com.tongchuang.visiondemo.user.UserRoleRepository;
 import com.tongchuang.visiondemo.user.dto.User;
@@ -222,7 +223,7 @@ public class PatientController {
 	
 	
 	@RequestMapping(value = "/patients/{patientId}/tests", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseList<PerimetryTest>> getPerimetryTests(@PathVariable("patientId") String patientId, 
+	public ResponseEntity<ResponseList<PerimetryTestDTO>> getPerimetryTests(@PathVariable("patientId") String patientId, 
 				@RequestParam("apiKey") String apiKey, 
 				@RequestParam(value = "filter", required=false) String filter,
 				@RequestParam(value = "returnTotal", required=false, defaultValue = "false") boolean returnTotal,
@@ -231,18 +232,40 @@ public class PatientController {
 				@RequestParam(value = "pagesize", required=false, defaultValue = "10") int pagesize) {
 		
 		if (!ApplicationConstants.SUPER_API_KEY.equals(apiKey)) {
-			return new ResponseEntity<ResponseList<PerimetryTest>>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<ResponseList<PerimetryTestDTO>>(HttpStatus.UNAUTHORIZED);
 		}
 		
 		System.out.println("Fetching PerimetryTest by patientId " + patientId+", pageno="+pageno+", pagesize="+pagesize);
 		List<PerimetryTest> perimetryExams = perimetryTestRepository.findByPatientId(patientId, new PageRequest(pageno, pagesize));
+
 		int total = perimetryTestRepository.getTotalByPatientId(patientId);
 		
-		ResponseList<PerimetryTest> response = new ResponseList<PerimetryTest>(perimetryExams);
+		List<PerimetryTestDTO> perimetryExamsDTO = postPoulateResult(perimetryExams);
+
+		
+		ResponseList<PerimetryTestDTO> response = new ResponseList<PerimetryTestDTO>(perimetryExamsDTO);
 		response.setTotalCounts(total);
-		return new ResponseEntity<ResponseList<PerimetryTest>>(response, HttpStatus.OK);
+		return new ResponseEntity<ResponseList<PerimetryTestDTO>>(response, HttpStatus.OK);
 	}
 	
+	private List<PerimetryTestDTO> postPoulateResult(List<PerimetryTest> perimetryExams) {
+		if (perimetryExams == null) {
+			return null;
+		}
+		
+		List<PerimetryTestDTO> results = new ArrayList<PerimetryTestDTO>();
+		for (PerimetryTest test : perimetryExams) {
+			PerimetryTestDTO dto = new PerimetryTestDTO(test);
+			ExamResult r = gson.fromJson(test.getResult(), ExamResult.class);
+			dto.setBlindSpotCheckedLeft(r.getBlindSpotCheckedLeft());
+			dto.setBlindSpotCheckedRight(r.getBlindSpotCheckedRight());
+			results.add(dto);
+		}
+		// TODO Auto-generated method stub
+		return results;
+	}
+
+
 	@RequestMapping(value = "/patients/{patientid}/examsettings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PatientSettings> getPatientSettings(@PathVariable("patientid") String patientId,
 			@RequestParam("examCode") String examCode, @RequestParam("apiKey") String apiKey) {

@@ -27,7 +27,7 @@ import com.tongchuang.visiondemo.device.Calibration;
 import com.tongchuang.visiondemo.doctor.entity.Doctor;
 import com.tongchuang.visiondemo.patient.PatientRepository;
 import com.tongchuang.visiondemo.patient.entity.Patient;
-import com.tongchuang.visiondemo.perimetry.PerimetryTest;
+import com.tongchuang.visiondemo.perimetry.entity.PerimetryTest;
 import com.tongchuang.visiondemo.user.UserRoleRepository;
 import com.tongchuang.visiondemo.util.ApplicationUtil;
 

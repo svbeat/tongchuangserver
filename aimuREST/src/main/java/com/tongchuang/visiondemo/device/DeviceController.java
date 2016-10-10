@@ -45,7 +45,7 @@ public class DeviceController {
 	}
 
 	@RequestMapping(value = "/devices/{deviceId}/examsettings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DeviceSettings> getDeviceSettings(@PathVariable("deviceId") String deviceId, @RequestParam("apiKey") String apiKey) {
+	public ResponseEntity<DeviceSettings> getOrCreateDeviceSettings(@PathVariable("deviceId") String deviceId, @RequestParam("apiKey") String apiKey) {
 		
 		if (!ApplicationController.SUPER_API_KEY.equals(apiKey)) {
 			return new ResponseEntity<DeviceSettings>(HttpStatus.UNAUTHORIZED);
@@ -54,7 +54,19 @@ public class DeviceController {
 		System.out.println("Fetching DeviceSettings for deviceId " + deviceId);
 		Device device = deviceRepository.findOne(deviceId);
 		if (device==null) {
-			return new ResponseEntity<DeviceSettings>(HttpStatus.NOT_FOUND);
+			//return new ResponseEntity<DeviceSettings>(HttpStatus.NOT_FOUND);
+			Device defaultDevice = deviceRepository.findOne("0");
+			if (defaultDevice == null) {
+				return new ResponseEntity<DeviceSettings>(HttpStatus.NOT_FOUND); 	
+			}
+			
+			device = new Device();
+			device.setDeviceId(deviceId);
+			device.setDescription(defaultDescription());
+			device.setDeviceSettings(defaultDevice.getDeviceSettings());
+			device.setDeviceType(defaultDevice.getDeviceType());
+			device.setStatus(EntityStatus.ACTIVE);
+			deviceRepository.save(device);	
 		}
 		DeviceSettings deviceSettings = gson.fromJson(device.getDeviceSettings(),  DeviceSettings.class);
 		return new ResponseEntity<DeviceSettings>(deviceSettings, HttpStatus.OK);

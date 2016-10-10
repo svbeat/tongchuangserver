@@ -41,8 +41,8 @@ import com.tongchuang.visiondemo.patient.PatientExamSettingsRepository;
 import com.tongchuang.visiondemo.patient.dto.PatientSettings;
 import com.tongchuang.visiondemo.patient.entity.PatientExamSettings;
 import com.tongchuang.visiondemo.patient.entity.PatientExamSettingsLog;
-import com.tongchuang.visiondemo.perimetry.PerimetryTest;
 import com.tongchuang.visiondemo.perimetry.PerimetryTestRepository;
+import com.tongchuang.visiondemo.perimetry.entity.PerimetryTest;
 
 @RestController
 @CrossOrigin
