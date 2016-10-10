@@ -640,7 +640,7 @@ define(["angular"], function(angular) {
 			// 医生 分页配置
 			$scope.deviceConf = {
 					currentPage: 1,
-					itemsPerPage: 5
+					itemsPerPage: 20
 			};
 
 			$scope.$watch('deviceConf.currentPage + deviceConf.itemsPerPage', function(){

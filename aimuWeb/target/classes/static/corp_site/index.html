@@ -27,14 +27,14 @@ html, body {
 }
 
 body {
-	background-image: url(company.jpg);
+	background-image: url(FirstPage.jpg);
 	background-repeat: no-repeat;
-	background-size: 100% 100%;
+	background-size: 100%;
 }
 
 .title {
 	font-family: "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-	font-family: “Arial”, ”Microsoft YaHei”, ”黑体”, ”宋体”, sans-serif;
+	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
 	text-align: right;
 	color: #00dec4;
 	font-size: 42px;
@@ -70,18 +70,32 @@ body {
 	border-width: 0px;
 	border-color: grey;
 	border-radius: 50px;
+	text-align: center;
+	color: grey;
 	-webkit-border-radius: 50px;
 	-moz-border-radius: 50px;
 }
+
+.entrance {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   width: 100%;
+   height: 100%;
+   text-indent: -9999px; /* we don't need to see the text, but some users and robots such as Google do */
+}
+
 </style>
 
 </head>
-<body onclick='window.location.href="https://www.99aimu.com"'>
-
+<body>
+<a href="https://www.99aimu.com" class="entrance"></a>
 	<!-- HTML -->
-
+<!--  
 	<a href="https://www.99aimu.com">
-		<div class="img-circular"></div>
+		<div class="img-circular">点击进入爱目健康中心</div>
 	</a>
 	<div class="title top">
 		<b> 智能&nbsp;&nbsp;&nbsp;云享&nbsp;&nbsp;&nbsp;大数据</b>
@@ -90,5 +104,6 @@ body {
 		<img src="Logo-light-blue-green-enboss.png" width="50px"
 			style="vertical-align: sub"><b>&nbsp;&nbsp;让我们清晰看世界<b>
 	</div>
+	-->
 </body>
 </html>

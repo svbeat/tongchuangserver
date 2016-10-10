@@ -108,7 +108,7 @@
                         <tr>
                             <th>测试名称</th>
                             <th>测试日期</th>
-                            <th>结果</th>
+                            <th>盲点移动</th>
                             <th>删除</th>
                             <th>报告</th>
                         </tr>
@@ -117,7 +117,7 @@
                         <tr ng-repeat="test in patientTests" d-id="{{test.testId}}">
                             <td ng-bind="test.type"></td>
                             <td ng-bind="test.testDateDisplay"></td>
-                            <td ng-bind="test.status"></td>
+                            <td>左眼:{{test.blindSpotCheckedLeft||'?'}}; 右眼:{{test.blindSpotCheckedRight||'?'}}</td>
                             <td ng-really-message="确定删除?" ng-really-click="delTest(patientTmp.patientId, test.testId)"><i
 										class="icon-minus"></i></td>
 							<td ng-click="openTestReport(patientTmp, test)"><i
