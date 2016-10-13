@@ -68,6 +68,7 @@ app.directive('ngReallyClick', [function() {
 app.filter("sex", AllFilter.sex)
 app.filter("age", AllFilter.age)
 app.filter("unsafe", AllFilter.unsafe)
+app.filter("beijingDate", AllFilter.beijingDate)
 
 app.service("Http", Http)
 app.service("API", API)

@@ -19,6 +19,12 @@ define(["angular"], function(angular) {
 				return thisYear - birthYear;
 			}
 		},
+		beijingDate: function() {
+			return function(val){
+				var beijing = val + (3600000 * 8);
+				return new Date(beijing);
+			}
+		},
 		unsafe: ['$sce', function ($sce) {
 		    return function (val) {
 		        return $sce.trustAsHtml(val);

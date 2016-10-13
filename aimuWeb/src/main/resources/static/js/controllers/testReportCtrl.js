@@ -9,7 +9,10 @@ define(["angular"], function(angular) {
 		$scope.gender = patient.gender;
 		$scope.testId = test.testId;
 		$scope.patient = test.patientId;
-		$scope.testDate = test.testDateDisplay;
+		var beijing = test.testDate + (3600000 * 8);
+		$scope.testDate = new Date(beijing);
+		$scope.testDeviceId = test.testDeviceId;
+ 
 
 		function endsWith(str, c) {
 			return str.lastIndexOf(c) == (str.length-c.length);

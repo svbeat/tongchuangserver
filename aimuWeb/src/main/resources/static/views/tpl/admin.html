@@ -200,6 +200,7 @@
 								<tr>
 									<th>测试名称</th>
 									<th>测试日期</th>
+									<th>测试仪器</th>
 									<th>盲点移动</th>
 									<th>删除</th>
 									<th>报告</th>
@@ -208,7 +209,8 @@
 							<tbody>
 								<tr ng-repeat="test in patientTests" d-id="{{test.testId}}">
 									<td ng-bind="test.type"></td>
-									<td ng-bind="test.testDateDisplay"></td>
+									<td ng-bind="test.testDate|beijingDate|date:'yyyy-MM-dd'"></td>
+									<td ng-bind="test.testDeviceId"></td>
 									<td>左眼:{{test.blindSpotCheckedLeft||'?'}}; 右眼:{{test.blindSpotCheckedRight||'?'}}</td>
 									<td ng-really-message="确定删除?" ng-really-click="delTest(patientTmp.patientId, test.testId)"><i
 										class="icon-minus"></i></td>
@@ -507,7 +509,7 @@
 <!-- QR-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
-	style="margin: auto; display: none">
+	style="margin: auto; display: none; width:400px; height:400px">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">×</button>

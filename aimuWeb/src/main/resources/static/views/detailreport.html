@@ -15,8 +15,11 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12" align="left">
-				<span>测试时间：</span> <span>{{testDate}}</span>
+			<div class="col-xs-4" align="left">
+				<span>测试时间：</span> <span ng-bind="testDate|date:'yyyy/MM/dd'"></span>
+			</div>
+			<div class="col-xs-8" align="left">
+				<span>测试仪器：</span> <span ng-bind="testDeviceId"></span>
 			</div>
 		</div>
 	</div>
@@ -49,7 +52,7 @@
 			<h5>&copy;2016 99aimu.com</h5>
 		</div>
 		<div class="pull-right hidden-print">
-			<button class="btn btn-primary" type="button" ng-click="print()">打印</button>
+			<!-- button class="btn btn-primary" type="button" ng-click="print()">打印</button-->
 			<button class="btn btn-primary" type="button" ng-click="close()">关闭</button>
 		</div>
 	</div>
