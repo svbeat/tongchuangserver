@@ -22,8 +22,8 @@ define(["angular"], function(angular) {
             return Http.post('/doctors/' + id, data)
         }
 
-        this.getPatientsOfDoctor = function(id) {
-            return Http.get("/doctors/" + id + "/patients");
+        this.getPatientsOfDoctor = function(id, data) {
+            return Http.get("/doctors/" + id + "/patients", data);
         }
 
         // patient

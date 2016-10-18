@@ -77,12 +77,12 @@ define(["angular"], function(angular) {
                     scope.conf.numberOfPages = Math.ceil(scope.conf.totalItems/scope.conf.itemsPerPage);
 
                     // judge currentPage > scope.numberOfPages
-                    if(scope.conf.currentPage < 1){
-                        scope.conf.currentPage = 1;
-                    }
-
                     if(scope.conf.currentPage > scope.conf.numberOfPages){
                         scope.conf.currentPage = scope.conf.numberOfPages;
+                    }
+                    
+                    if(scope.conf.currentPage < 1){
+                        scope.conf.currentPage = 1;
                     }
 
                     // jumpPageNum

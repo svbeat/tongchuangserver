@@ -70,7 +70,13 @@ define(["angular"], function(angular) {
 				});
 
 				// $scope.sdoctorid = dex.doctorId;
-				API.getPatientsOfDoctor(des.doctorId).then(function(res){
+				API.getPatientsOfDoctor(des.doctorId, {
+					returnTotal: true,
+					pageno:  $scope.patientConf.currentPage-1,
+					pagesize:  $scope.patientConf.itemsPerPage
+				}).then(function(res){
+					$scope.patientConf.data = res.items;
+					$scope.patientConf.totalItems = res.totalCounts;
 					$scope.dpatients = res.items;
 				});
 			}
@@ -178,7 +184,13 @@ define(["angular"], function(angular) {
 					}
 					break;
 					case 2:{
-						API.getPatientsOfDoctor(docid).then(function(res){
+						API.getPatientsOfDoctor(docid, {
+							returnTotal: true,
+							pageno:  $scope.patientConf.currentPage-1,
+							pagesize:  $scope.patientConf.itemsPerPage
+						}).then(function(res){
+							$scope.patientConf.data = res.items;
+							$scope.patientConf.totalItems = res.totalCounts;
 							$scope.dpatients = res.items;
 						});
 					}
@@ -200,7 +212,13 @@ define(["angular"], function(angular) {
 				}
 				break;
 				case 2:{
-					API.getPatientsOfDoctor(docid).then(function(res){
+					API.getPatientsOfDoctor(docid, {
+						returnTotal: true,
+						pageno:  $scope.patientConf.currentPage-1,
+						pagesize:  $scope.patientConf.itemsPerPage
+					}).then(function(res){
+						$scope.patientConf.data = res.items;
+						$scope.patientConf.totalItems = res.totalCounts;
 						$scope.dpatients = res.items;
 					});
 				}
@@ -258,10 +276,14 @@ define(["angular"], function(angular) {
 					}
 				})
 			} else if(role === "DOCTOR") {
-				API.getPatientsOfDoctor(userid).then(function(res){
+				API.getPatientsOfDoctor(userid, {
+					returnTotal: true,
+					pageno:  $scope.patientConf.currentPage-1,
+					pagesize:  $scope.patientConf.itemsPerPage
+				}).then(function(res){
 					if(!!res){
 						$scope.patientConf.data = res.items;
-						$scope.patientConf.totalItems = res.items.length;
+						$scope.patientConf.totalItems = res.totalCounts;
 						$scope.allpatients = res.items.slice(0,$scope.patientConf.itemsPerPage)
 					}
 				})
@@ -510,10 +532,14 @@ define(["angular"], function(angular) {
 					}
 				})
 			} else if(role === "DOCTOR") {
-				API.getPatientsOfDoctor(userid).then(function(res){
+				API.getPatientsOfDoctor(userid, {
+					returnTotal: true,
+					pageno:  $scope.patientConf.currentPage-1,
+					pagesize:  $scope.patientConf.itemsPerPage
+				}).then(function(res){
 					if(!!res){
 						$scope.patientConf.data = res.items;
-						$scope.patientConf.totalItems = res.items.length;
+						$scope.patientConf.totalItems = res.totalCounts;
 						$scope.allpatients = res.items.slice(0,$scope.patientConf.itemsPerPage)
 					}
 				})
