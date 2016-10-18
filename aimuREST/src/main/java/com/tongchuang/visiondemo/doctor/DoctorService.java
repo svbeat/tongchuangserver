@@ -125,7 +125,7 @@ public class DoctorService {
 		String SQL = " SELECT p.*, r.relationship_id FROM patient p, relationship r "
 					+ "where r.relationship_type='DOCTOR_PATIENT' "
 					+ "and IFNULL(r.deleted, 'N')<>'Y' and r.subject_id=:doctorId "
-					+ "and r.object_id=p.patient_id and p.status<>'DELETED' "
+					+ "and r.object_id=p.patient_id and p.status<>'DELETED' order by p.name asc "
 					+ "limit :offset, :rowCount";
 
 		SqlParameterSource namedParameters = new MapSqlParameterSource("doctorId", doctorId)

@@ -12,12 +12,12 @@ import com.tongchuang.visiondemo.patient.entity.PatientExamSettings;
 
 public interface PatientRepository extends CrudRepository<Patient, String> {
 	
-	 @Query("SELECT p FROM Patient p where p.status<>'DELETED' and p.name like :filter")
+	 @Query("SELECT p FROM Patient p where p.status<>'DELETED' and p.name like :filter order by p.name asc")
 	 public List<Patient> getPatients(@Param("filter")String filter, Pageable pageable);
 	 
 	 @Query("SELECT p FROM Patient p, Relationship r where r.relationshipType='DOCTOR_PATIENT' "
 	 		+ "and IFNULL(r.deleted, 'N')<>'Y' and r.subjectId=:doctorid "
-	 		+ "and r.objectId=p.patientId and p.status<>'DELETED'")
+	 		+ "and r.objectId=p.patientId and p.status<>'DELETED' order by p.name asc")
 	 public List<Patient> getPatientsByDoctorId(@Param("doctorid") String doctorId, Pageable pageable);
 	
 	 
