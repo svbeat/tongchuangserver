@@ -1,25 +1,28 @@
 <div id="print-content">
-	<div class="modal-header">
+	<div class="modal-header" style="font-size:12px;">
 		<div class="row">
-			<h5 class="modal-title">视野测试报告 (编号-{{testId}}-{{eye}})</h5>
+			<h5 class="modal-title" style="font-weight:bold;">视野测试报告 (编号-{{testId}}-{{eye}})</h5>
 		</div>
 		<div class="row">
 			<div class="col-xs-4" align="left">
-				<span>姓名：</span> <span>{{patientName}}</span>
+				<span>姓名: </span> <span>{{patientName}}</span>
 			</div>
-			<div class="col-xs-2" align="left">
-				<span>性别：</span> <span ng-bind="gender|sex"></span>
+			<div class="col-xs-4" align="left">
+				<span>出生日期: </span> <span ng-bind="birthdate|date:'yyyy/MM/dd'"></span>
 			</div>
-			<div class="col-xs-6" align="left">
-				<span>出生日期：</span> <span ng-bind="birthdate|date:'yyyy/MM/dd'"></span>
+			<div class="col-xs-4" align="left">
+				<span>性别: </span> <span ng-bind="gender|sex"></span>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-4" align="left">
-				<span>测试时间：</span> <span ng-bind="testDate|date:'yyyy/MM/dd'"></span>
+				<span>测试时间: </span> <span ng-bind="testDate|date:'yyyy/MM/dd'"></span>
 			</div>
-			<div class="col-xs-8" align="left">
-				<span>测试仪器：</span> <span ng-bind="testDeviceId"></span>
+			<div class="col-xs-4" align="left">
+				<span>盲点移动: </span> <span>左眼:{{blindSpotCheckedLeft||'?'}}; 右眼:{{blindSpotCheckedRight||'?'}}</span>
+			</div>
+			<div class="col-xs-4" align="right">
+				<span style="font-size:8px;" ng-bind="testDeviceId">
 			</div>
 		</div>
 	</div>

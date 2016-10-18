@@ -12,8 +12,9 @@ define(["angular"], function(angular) {
 		var beijing = test.testDate + (3600000 * 8);
 		$scope.testDate = new Date(beijing);
 		$scope.testDeviceId = test.testDeviceId;
- 
-
+		$scope.blindSpotCheckedLeft = test.blindSpotCheckedLeft;
+		$scope.blindSpotCheckedRight = test.blindSpotCheckedRight;
+		
 		function endsWith(str, c) {
 			return str.lastIndexOf(c) == (str.length-c.length);
 		}
@@ -88,7 +89,10 @@ define(["angular"], function(angular) {
 		    	if (endsWith(db, "+")||endsWith(db, "-")) {
 		    		db = db.substring(0, db.length-1);
 		    	}
-				var shade = (db-10)*5;
+				var shade = (db-10)*10;
+				if (shade>255) {
+					shade=255;
+				}
 				context.fillStyle='rgb('+shade+','+shade+','+shade+')';
 				context.fillRect(results[i].x, results[i].y,displayInterval,displayInterval);
 			}
